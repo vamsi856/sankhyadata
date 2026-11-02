@@ -3,7 +3,6 @@
 
 export const site = {
   name: "SankhyaData",
-  // TODO(owner): replace with the real inbox before launch.
   email: "hello@sankhyadata.com",
   description:
     "SankhyaData records first-person video of real work for physical AI: 15,000+ hours across 70 business types. We supply the devices, recorders, annotators, narrators and IT support, and bill on approved hours.",
@@ -55,7 +54,7 @@ export const library = {
 export const steps = [
   {
     role: "Devices",
-    text: "We ship the capture kit set up and charged: head-mounted iPhones and cap cameras.",
+    text: "We ship the capture kit set up and charged: head-mounted iPhones, cap cameras and head straps.",
   },
   {
     role: "Recorders",
@@ -95,6 +94,10 @@ export const rigs = [
     name: "Cap camera",
     text: "A camera on the brim of a cap. Light enough for long shifts, natural head movement.",
   },
+  {
+    name: "Head strap",
+    text: "A camera on an elastic head strap, centred at the forehead, for hands-busy work.",
+  },
 ];
 
 export const billing = {
@@ -106,9 +109,10 @@ export const billing = {
 };
 
 /**
- * Google Drive folders with sample recordings. The team's sample folder
- * ("Egocentric Samples – 1h per type") is private today; add its share link here once
- * it is set to "Anyone with the link can view".
+ * Google Drive folders with sample recordings, shown as rows in the Samples section.
+ * Set each folder to "Anyone with the link can view" first, then add it here, e.g.
+ *   { title: "One hour per business type", text: "Raw first-person video, 1080p", href: "https://drive.google.com/drive/folders/..." },
+ * While this list is empty the section shows an "Ask for access" email link instead.
  */
 export const samples: { title: string; text: string; href: string }[] = [];
 

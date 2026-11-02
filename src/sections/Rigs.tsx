@@ -12,7 +12,7 @@ export function Rigs() {
             Each rig is fitted and tested for the task before recording starts.
           </p>
         </div>
-        <ul className="m-0 mt-14 grid list-none gap-5 p-0 md:grid-cols-2">
+        <ul className="m-0 mt-14 grid list-none gap-5 p-0 lg:grid-cols-3">
           {rigs.map((rig) => (
             <li key={rig.name} className="ticks rounded-[var(--radius-card)] p-7 sm:p-9">
               <h3 className="m-0 text-[clamp(1.6rem,2.6vw,2.1rem)]">{rig.name}</h3>
