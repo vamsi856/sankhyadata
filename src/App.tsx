@@ -1,15 +1,34 @@
-import { MotionProvider, Reveal, useSmoothScroll } from "@/lib/motion";
+import { MotionProvider, useSmoothScroll } from "@/lib/motion";
+import { Header } from "@/sections/Header";
+import { Hero } from "@/sections/Hero";
+import { HowItWorks } from "@/sections/HowItWorks";
+import { ITTeam } from "@/sections/ITTeam";
+import { Rigs } from "@/sections/Rigs";
+import { Billing } from "@/sections/Billing";
+import { Samples } from "@/sections/Samples";
+import { Contact, Footer } from "@/sections/Contact";
 
-// Work in progress: the full page is being rebuilt section by section.
 export default function App() {
   useSmoothScroll();
   return (
     <MotionProvider>
-      <main className="mx-auto max-w-3xl p-10">
-        <Reveal>
-          <h1 className="text-4xl font-semibold tracking-tight">SankhyaData</h1>
-        </Reveal>
+      <a
+        href="#main"
+        className="sr-only z-50 rounded-full bg-ink px-4 py-2 text-paper focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+      >
+        Skip to content
+      </a>
+      <Header />
+      <main id="main">
+        <Hero />
+        <HowItWorks />
+        <ITTeam />
+        <Rigs />
+        <Billing />
+        <Samples />
+        <Contact />
       </main>
+      <Footer />
     </MotionProvider>
   );
 }

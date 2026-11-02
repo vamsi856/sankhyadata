@@ -1,2 +1,236 @@
+/* Design direction: Hallmark "Vantage" structure (instrument-quiet, hairline corner ticks,
+   Geologica with sharpened corners), re-grounded for SankhyaData per Anthropic's
+   frontend-design calibration: daylight ground instead of near-black + acid accent;
+   the chartreuse signal is reserved for what annotators mark (labels, "approved"). */
 @import "tailwindcss";
-@import "tw-animate-css";
+
+@font-face {
+  font-family: "Geologica";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/geologica-latin-shrp.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+/* ---- Tokens: every colour and font on the page goes through these ---- */
+:root {
+  --paper: oklch(96.2% 0.004 120);
+  --paper-2: oklch(93.4% 0.006 120);
+  --paper-3: oklch(90% 0.008 120);
+  --ink: oklch(19% 0.008 250);
+  --ink-2: oklch(36% 0.01 250);
+  --muted: oklch(52% 0.012 250);
+  --rule: oklch(86% 0.008 120);
+  --rule-2: oklch(76% 0.01 120);
+  --label: oklch(90% 0.2 125);
+  --label-ink: oklch(22% 0.05 125);
+  --on-image: oklch(98% 0.004 120);
+  --scrim: oklch(15% 0.01 250 / 0.62);
+  --focus: oklch(19% 0.008 250);
+
+  --font-sans: "Geologica", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-short: 160ms;
+  --dur-mid: 420ms;
+
+  --radius-card: 6px;
+  --radius-pill: 999px;
+  --tick: 12px;
+  --container: 76rem;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-paper-3: var(--paper-3);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-rule-2: var(--rule-2);
+  --color-label: var(--label);
+  --color-label-ink: var(--label-ink);
+  --color-on-image: var(--on-image);
+  --color-scrim: var(--scrim);
+  --font-sans: var(--font-sans);
+  --ease-out: var(--ease-out);
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% - var(--gap))); }
+}
+@keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to { transform: translateY(calc(-100% - var(--gap))); }
+}
+
+/* ---- Base ---- */
+html,
+body {
+  overflow-x: clip;
+}
+html {
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 340;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  font-variation-settings: "SHRP" 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1,
+h2,
+h3 {
+  font-weight: 330;
+  font-variation-settings: "SHRP" 100;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  overflow-wrap: break-word;
+  min-width: 0;
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+::selection {
+  background: var(--label);
+  color: var(--label-ink);
+}
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+  transition: none;
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* ---- Components ---- */
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2.5rem);
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+    font-weight: 400;
+  }
+
+  /* Hairline frame drawn only at its corners */
+  .ticks {
+    position: relative;
+  }
+  .ticks::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border: 1px solid var(--rule-2);
+    -webkit-mask:
+      conic-gradient(at var(--tick) var(--tick), transparent 75%, #000 0)
+      0 0 / calc(100% - var(--tick)) calc(100% - var(--tick));
+    mask:
+      conic-gradient(at var(--tick) var(--tick), transparent 75%, #000 0)
+      0 0 / calc(100% - var(--tick)) calc(100% - var(--tick));
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 48px;
+    padding: 0 1.4rem;
+    border: 0;
+    border-radius: var(--radius-pill);
+    font: 420 1rem/1 var(--font-sans);
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      background-color var(--dur-short) var(--ease-out),
+      color var(--dur-short) var(--ease-out),
+      box-shadow var(--dur-short) var(--ease-out),
+      transform var(--dur-short) var(--ease-out);
+  }
+  .btn:active {
+    transform: scale(0.98);
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .btn-primary:hover {
+    background: var(--ink-2);
+  }
+  .btn-line {
+    background: transparent;
+    color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--rule-2);
+  }
+  .btn-line:hover {
+    box-shadow: inset 0 0 0 1px var(--ink);
+  }
+
+  .link {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--rule-2);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color var(--dur-short) var(--ease-out);
+  }
+  .link:hover {
+    text-decoration-color: var(--ink);
+  }
+}
+
+/* Hero entrance: pure CSS so it plays on first paint, before JavaScript loads */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+.enter {
+  animation: rise 0.9s var(--ease-out) both;
+  animation-delay: var(--d, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
