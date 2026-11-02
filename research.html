@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Research — Firstperson Labs</title>
+  <meta name="description" content="Research kits, open egocentric datasets, open-source tools and publications from Firstperson Labs." />
+  <meta name="theme-color" content="#07090c" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <div class="announce">FP Glass Gen 1 research kits are now shipping to partners. <a href="research.html#apply">Apply for a kit</a></div>
+
+  <header class="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="brand" aria-label="Firstperson Labs home">
+        <svg class="brand__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="14" stroke="#5eead4" stroke-width="2"/><path d="M6 16c3-5.5 6.5-8 10-8s7 2.5 10 8c-3 5.5-6.5 8-10 8s-7-2.5-10-8Z" stroke="#a78bfa" stroke-width="2"/><circle cx="16" cy="16" r="3.5" fill="#5eead4"/></svg>
+        Firstperson Labs
+      </a>
+      <ul class="nav__links">
+        <li><a href="devices.html">Devices</a></li>
+        <li><a href="data.html">Data</a></li>
+        <li><a href="research.html" aria-current="page">Research</a></li>
+        <li><a href="research.html#datasets">Datasets</a></li>
+        <li><a href="contact.html">Company</a></li>
+      </ul>
+      <div class="nav__cta">
+        <a class="btn btn--ghost" href="research.html#apply">Get a kit</a>
+        <a class="btn btn--primary" href="contact.html">Talk to us</a>
+        <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow">Research</span>
+        <h1>Open tools and data for <span class="grad">egocentric AI</span> research.</h1>
+        <p class="lede">We work with academic and industry labs on egocentric perception, contextual AI and robot learning, and we release datasets, models and tools to the community.</p>
+        <div class="btn-row" style="margin-top:28px">
+          <a class="btn btn--primary" href="#apply">Apply for a research kit</a>
+          <a class="btn btn--ghost" href="#datasets">Datasets</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- DATASETS -->
+    <section class="section" id="datasets">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Open datasets</span>
+          <h2>Datasets</h2>
+          <p class="lede">Released for non-commercial research. Commercial licences are available on request.</p>
+        </div>
+        <div class="grid grid--3">
+          <article class="card dataset reveal">
+            <div class="dataset__thumb"><svg viewBox="0 0 300 150" width="100%" height="100%"><rect width="300" height="150" fill="#121a24"/><path d="M0 100 L300 100 L300 150 L0 150Z" fill="#1d2735"/><circle cx="150" cy="76" r="26" fill="none" stroke="#5eead4" stroke-dasharray="4 3"/><path d="M90 150 C100 120 120 110 140 112 L150 150Z M210 150 C200 120 180 110 160 112 L150 150Z" fill="#8f6650"/><text x="10" y="18" fill="#5eead4" font-family="monospace" font-size="9">hands_3d · objects_6dof</text></svg></div>
+            <div class="dataset__meta"><span class="pill pill--live">Released</span><span class="pill">Kitchens</span></div>
+            <h3>FP-Kitchens</h3>
+            <p>Unscripted cooking in many different home kitchens, with 3D hands, object 6DoF and step-level actions.</p>
+            <a class="link-arrow" href="#">Explore dataset</a>
+          </article>
+          <article class="card dataset reveal">
+            <div class="dataset__thumb"><svg viewBox="0 0 300 150" width="100%" height="100%"><rect width="300" height="150" fill="#121a24"/><g stroke="#2c3a4c"><rect x="20" y="30" width="60" height="100" fill="#18212d"/><rect x="90" y="30" width="60" height="100" fill="#18212d"/><rect x="160" y="30" width="60" height="100" fill="#18212d"/><rect x="230" y="30" width="60" height="100" fill="#18212d"/></g><path d="M20 70 H290 M20 100 H290" stroke="#2c3a4c"/><rect x="104" y="76" width="30" height="20" fill="none" stroke="#a78bfa"/><text x="10" y="18" fill="#a78bfa" font-family="monospace" font-size="9">pick · place · scan</text></svg></div>
+            <div class="dataset__meta"><span class="pill pill--live">Released</span><span class="pill">Logistics</span></div>
+            <h3>FP-Warehouse</h3>
+            <p>Picking, packing and inventory tasks recorded by experienced workers on real shifts, with stereo depth.</p>
+            <a class="link-arrow" href="#">Explore dataset</a>
+          </article>
+          <article class="card dataset reveal">
+            <div class="dataset__thumb"><svg viewBox="0 0 300 150" width="100%" height="100%"><rect width="300" height="150" fill="#121a24"/><path d="M20 120 Q80 40 150 80 T280 50" fill="none" stroke="#fbbf24" stroke-width="2"/><g fill="#fbbf24"><circle cx="60" cy="78" r="4"/><circle cx="150" cy="80" r="4"/><circle cx="230" cy="62" r="4"/></g><text x="10" y="18" fill="#fbbf24" font-family="monospace" font-size="9">gaze · fixations · narration</text></svg></div>
+            <div class="dataset__meta"><span class="pill pill--soon">Coming soon</span><span class="pill">Daily life</span></div>
+            <h3>FP-Attention</h3>
+            <p>Long-form daily-life recordings with dense gaze, fixations and think-aloud narration.</p>
+            <a class="link-arrow" href="#">Join waitlist</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLS -->
+    <section class="section section--alt" id="tools">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Tools &amp; models</span>
+          <h2>Open source</h2>
+        </div>
+        <div class="grid grid--4">
+          <div class="card reveal"><h3>FP SDK</h3><p>Python/C++ tools for recording playback, calibration and export.</p><a class="link-arrow" href="#">GitHub</a></div>
+          <div class="card reveal"><h3>FP Blur</h3><p>A real-time face, plate and screen de-identification model for egocentric video.</p><a class="link-arrow" href="#">GitHub</a></div>
+          <div class="card reveal"><h3>FP Hands</h3><p>3D hand pose estimation from egocentric multi-camera input.</p><a class="link-arrow" href="#">Hugging Face</a></div>
+          <div class="card reveal"><h3>Dataset Explorer</h3><p>Browse episodes, labels and gaze in the browser before you download.</p><a class="link-arrow" href="#">Open explorer</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAPERS -->
+    <section class="section" id="papers">
+      <div class="container">
+        <div class="section-head reveal"><span class="eyebrow">Publications</span><h2>Papers &amp; technical reports</h2></div>
+        <div class="faq reveal">
+          <details><summary>FP Glass: A Lightweight Multi-Sensor Platform for Egocentric Capture</summary><p>A technical report on the FP Glass hardware: sensor selection, the hardware time-sync architecture, calibration and on-device perception. <a class="link-arrow" href="#">PDF</a></p></details>
+          <details><summary>Scaling Human Demonstrations for Robot Manipulation with Egocentric Video</summary><p>A study of how egocentric data volume and diversity affect downstream policy performance. <a class="link-arrow" href="#">PDF</a></p></details>
+          <details><summary>FP-Kitchens: A Dataset of Unscripted Home Cooking</summary><p>The dataset paper: collection protocol, annotation schema, benchmarks and a datasheet. <a class="link-arrow" href="#">PDF</a></p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- APPLY -->
+    <section class="section section--alt" id="apply">
+      <div class="container split">
+        <div class="reveal">
+          <span class="eyebrow">Research kit</span>
+          <h2>Apply for a research kit</h2>
+          <p class="lede">Applications are open on a rolling basis to university labs, non-profits and industry research teams.</p>
+          <div class="card mt-lg" style="padding:24px">
+            <h3 style="font-size:1rem">Each kit includes</h3>
+            <ul>
+              <li>FP Glass devices (2–10 per lab) with charging and prescription inserts</li>
+              <li>FP SDK, calibration tools and cloud machine-perception credits</li>
+              <li>Early access to new open datasets</li>
+              <li>A dedicated research liaison and a partner Slack channel</li>
+            </ul>
+          </div>
+        </div>
+        <form class="form card reveal" data-demo>
+          <div class="form__row">
+            <label>Full name<input name="name" required autocomplete="name" /></label>
+            <label>Work / university email<input type="email" name="email" required autocomplete="email" /></label>
+          </div>
+          <div class="form__row">
+            <label>Institution<input name="org" required autocomplete="organization" /></label>
+            <label>Role
+              <select name="role"><option>Faculty / PI</option><option>Postdoc</option><option>PhD student</option><option>Industry researcher</option><option>Other</option></select>
+            </label>
+          </div>
+          <label>Research area
+            <select name="area"><option>Robot learning / manipulation</option><option>Egocentric perception</option><option>AR / contextual AI</option><option>HCI &amp; accessibility</option><option>Other</option></select>
+          </label>
+          <label>Proposed project<textarea name="project" required placeholder="What would you study with FP Glass? (≈200 words)"></textarea></label>
+          <label class="check"><input type="checkbox" required /> I agree to the research kit terms and the participant-consent requirements.</label>
+          <button class="btn btn--primary" type="submit">Submit application</button>
+          <div class="form__success">Thanks for applying. We'll review your application and reply within three weeks.</div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <a href="index.html" class="brand">
+            <svg class="brand__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="14" stroke="#5eead4" stroke-width="2"/><path d="M6 16c3-5.5 6.5-8 10-8s7 2.5 10 8c-3 5.5-6.5 8-10 8s-7-2.5-10-8Z" stroke="#a78bfa" stroke-width="2"/><circle cx="16" cy="16" r="3.5" fill="#5eead4"/></svg>
+            Firstperson Labs
+          </a>
+          <p style="margin-top:16px;max-width:300px;font-size:.92rem">Egocentric devices and data that help machines learn from the human perspective.</p>
+        </div>
+        <div><h5>Devices</h5><ul><li><a href="devices.html#glass">FP Glass</a></li><li><a href="devices.html#rig">FP Rig</a></li><li><a href="devices.html#specs">Specifications</a></li><li><a href="devices.html#sdk">SDK</a></li></ul></div>
+        <div><h5>Data</h5><ul><li><a href="data.html">Platform</a></li><li><a href="data.html#collection">Custom collection</a></li><li><a href="data.html#formats">Formats</a></li><li><a href="research.html#datasets">Open datasets</a></li></ul></div>
+        <div><h5>Research</h5><ul><li><a href="research.html#apply">Research kit</a></li><li><a href="research.html#tools">Tools &amp; models</a></li><li><a href="research.html#papers">Publications</a></li></ul></div>
+        <div><h5>Company</h5><ul><li><a href="contact.html">Contact</a></li><li><a href="contact.html#careers">Careers</a></li><li><a href="data.html#privacy">Responsible data</a></li></ul></div>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span data-year></span> Firstperson Labs. All rights reserved.</span>
+        <nav><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Health &amp; safety</a><a href="#">Regulatory</a></nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>

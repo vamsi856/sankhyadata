@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Firstperson Labs — Egocentric devices &amp; data for physical AI</title>
+  <meta name="description" content="Firstperson Labs builds wearable egocentric capture devices and runs large-scale first-person data collection for robotics, AR and embodied AI." />
+  <meta property="og:title" content="Firstperson Labs — The human perspective, captured for AI" />
+  <meta property="og:description" content="Wearable capture devices, managed data collection, and training-ready egocentric datasets." />
+  <meta name="theme-color" content="#07090c" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <div class="announce">FP Glass Gen 1 research kits are now shipping to partners. <a href="research.html#apply">Apply for a kit</a></div>
+
+  <header class="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="brand" aria-label="Firstperson Labs home">
+        <svg class="brand__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="14" stroke="#5eead4" stroke-width="2"/><path d="M6 16c3-5.5 6.5-8 10-8s7 2.5 10 8c-3 5.5-6.5 8-10 8s-7-2.5-10-8Z" stroke="#a78bfa" stroke-width="2"/><circle cx="16" cy="16" r="3.5" fill="#5eead4"/></svg>
+        Firstperson Labs
+      </a>
+      <ul class="nav__links">
+        <li><a href="devices.html">Devices</a></li>
+        <li><a href="data.html">Data</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="research.html#datasets">Datasets</a></li>
+        <li><a href="contact.html">Company</a></li>
+      </ul>
+      <div class="nav__cta">
+        <a class="btn btn--ghost" href="research.html#apply">Get a kit</a>
+        <a class="btn btn--primary" href="contact.html">Talk to us</a>
+        <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero__grid">
+        <div>
+          <span class="eyebrow">Egocentric data for physical AI</span>
+          <h1>Bringing the <span class="grad">human perspective</span> to machines.</h1>
+          <p class="lede">We build wearable capture devices and run first-person data collection at scale. Robots, AR systems and embodied AI models can then learn from how people actually see, move and use their hands.</p>
+          <div class="btn-row">
+            <a class="btn btn--primary" href="contact.html">Start a data program</a>
+            <a class="btn btn--ghost" href="devices.html">Explore devices</a>
+          </div>
+          <div class="hero__meta">
+            <div><strong>8</strong>synchronized sensor streams</div>
+            <div><strong>&lt;1&nbsp;ms</strong>cross-sensor sync</div>
+            <div><strong>On-device</strong>face &amp; PII blurring</div>
+          </div>
+        </div>
+
+        <!-- Simulated egocentric capture -->
+        <div class="viewport" data-viewport role="img" aria-label="Simulated first-person capture: hands reaching for a mug on a kitchen counter, with gaze, object detection and IMU overlays">
+          <svg class="viewport__scene" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b2633"/><stop offset="1" stop-color="#121a24"/></linearGradient>
+              <linearGradient id="counter" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a3442"/><stop offset="1" stop-color="#151c26"/></linearGradient>
+              <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c79a7e"/><stop offset="1" stop-color="#8f6650"/></linearGradient>
+              <radialGradient id="light" cx=".7" cy=".1" r=".8"><stop offset="0" stop-color="#5eead4" stop-opacity=".12"/><stop offset="1" stop-color="#5eead4" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect width="400" height="300" fill="url(#wall)"/>
+            <!-- cabinets -->
+            <rect x="20" y="20" width="110" height="80" rx="4" fill="#1f2b39" stroke="#2c3a4c"/>
+            <rect x="140" y="20" width="110" height="80" rx="4" fill="#1f2b39" stroke="#2c3a4c"/>
+            <rect x="260" y="20" width="120" height="80" rx="4" fill="#1f2b39" stroke="#2c3a4c"/>
+            <rect x="70" y="56" width="10" height="3" rx="1.5" fill="#3b4b60"/><rect x="190" y="56" width="10" height="3" rx="1.5" fill="#3b4b60"/><rect x="315" y="56" width="10" height="3" rx="1.5" fill="#3b4b60"/>
+            <!-- backsplash tiles -->
+            <g stroke="#223040" stroke-width="1">
+              <path d="M0 130H400M0 150H400"/>
+              <path d="M40 110V160M100 110V160M160 110V160M220 110V160M280 110V160M340 110V160"/>
+            </g>
+            <!-- counter in perspective -->
+            <path d="M-20 165 L420 165 L470 300 L-70 300 Z" fill="url(#counter)"/>
+            <path d="M-20 165 L420 165" stroke="#3a4759" stroke-width="2"/>
+            <!-- cutting board -->
+            <path d="M95 200 L215 196 L232 250 L82 256 Z" fill="#6b4f37"/>
+            <path d="M95 200 L215 196 L217 202 L96 206 Z" fill="#81624a"/>
+            <!-- vegetables -->
+            <ellipse cx="135" cy="226" rx="16" ry="10" fill="#c2410c"/>
+            <ellipse cx="170" cy="222" rx="11" ry="8" fill="#65a30d"/>
+            <!-- mug -->
+            <path d="M262 168 h40 v48 a8 8 0 0 1 -8 8 h-24 a8 8 0 0 1 -8 -8 Z" fill="#e2e8f0"/>
+            <ellipse cx="282" cy="168" rx="20" ry="5" fill="#cbd5e1"/>
+            <ellipse cx="282" cy="168" rx="16" ry="3.5" fill="#3f2a1d"/>
+            <path d="M302 178 q16 2 14 16 q-2 12 -14 12" stroke="#e2e8f0" stroke-width="6" fill="none"/>
+            <!-- knife -->
+            <path d="M330 232 L380 214 L384 220 L336 240 Z" fill="#94a3b8"/>
+            <path d="M318 236 L334 230 L338 240 L322 246 Z" fill="#1e293b"/>
+            <!-- left hand -->
+            <path d="M60 300 C70 270 95 250 120 246 C132 244 140 250 138 258 C150 252 162 254 160 264 C170 260 178 266 172 276 L150 300 Z" fill="url(#skin)"/>
+            <!-- right hand reaching to mug -->
+            <path d="M300 300 C292 270 268 252 262 236 C258 226 268 222 276 230 L290 246 C288 232 296 228 302 236 C306 228 314 230 314 240 C320 234 328 238 324 250 C326 272 336 286 340 300 Z" fill="url(#skin)"/>
+            <rect width="400" height="300" fill="url(#light)"/>
+          </svg>
+
+          <div class="viewport__hud">
+            <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+            <div class="hud-tl"><span class="rec">REC</span> &nbsp;<span data-ts>00:00.00</span><br>RGB 1408×1408 · 30fps<br>frame <span data-frame>000000</span><br>task: make_coffee · grasp(mug)</div>
+            <div class="hud-tr">SLAM ✓ tracking<br><span data-pose>yaw 0.0°  pitch -18.0°</span><br>gaze conf 0.97</div>
+            <div class="hud-bl">IMU 1kHz<div class="imu"></div></div>
+
+            <div class="bbox" style="left:63%;top:52%;width:14%;height:23%"><span>mug 0.98</span></div>
+            <div class="bbox bbox--v" style="left:62%;top:72%;width:21%;height:28%"><span>hand_R · 21kp</span></div>
+            <div class="bbox bbox--v" style="left:15%;top:80%;width:30%;height:20%"><span>hand_L · 21kp</span></div>
+            <div class="bbox" style="left:20%;top:64%;width:39%;height:22%"><span>cutting_board</span></div>
+            <div class="gaze"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRIP -->
+    <div class="strip">
+      <div class="container strip__inner">
+        <span class="strip__label">Built for teams in</span>
+        <span class="chip">Humanoid robotics</span>
+        <span class="chip">Manipulation &amp; dexterity</span>
+        <span class="chip">AR / smart glasses</span>
+        <span class="chip">World models</span>
+        <span class="chip">Assistive AI</span>
+        <span class="chip">Academic research</span>
+      </div>
+    </div>
+
+    <!-- WHAT WE DO -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">What we do</span>
+          <h2>Hardware, operations and data under one roof.</h2>
+          <p class="lede">Most teams have to stitch together a sensor vendor, a field-ops agency and an annotation shop. We handle the whole pipeline, from the first frame to a training-ready dataset.</p>
+        </div>
+        <div class="grid grid--3">
+          <article class="card pillar reveal">
+            <div class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 11h4l2-3h8l2 3h4"/><circle cx="7" cy="14" r="3"/><circle cx="17" cy="14" r="3"/><path d="M10 14h4"/></svg></div>
+            <span class="card__num">01 — Devices</span>
+            <h3>Wearable capture hardware</h3>
+            <p>Our glasses and head-mounted rigs are light enough to wear all day. Multi-camera RGB, eye tracking, IMUs, spatial audio and on-device SLAM are all clocked to one timebase.</p>
+            <a class="link-arrow" href="devices.html">See the devices</a>
+          </article>
+          <article class="card pillar reveal">
+            <div class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/><path d="M18 4l2 2-2 2M6 4 4 6l2 2"/></svg></div>
+            <span class="card__num">02 — Collection</span>
+            <h3>Managed data collection</h3>
+            <p>We recruit, consent, train and pay participants across homes, kitchens, warehouses, retail floors and factories. You set the task taxonomy and we run the fieldwork.</p>
+            <a class="link-arrow" href="data.html#collection">How collection works</a>
+          </article>
+          <article class="card pillar reveal">
+            <div class="card__icon card__icon--v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></div>
+            <span class="card__num">03 — Data platform</span>
+            <h3>Training-ready datasets</h3>
+            <p>Our pipeline adds 3D hand pose, object 6DoF, action segments, gaze and narration. Data ships in MCAP, RLDS, LeRobot or WebDataset, so it drops into your training stack.</p>
+            <a class="link-arrow" href="data.html">Explore the platform</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEVICE TEASER -->
+    <section class="section section--alt">
+      <div class="container split">
+        <div class="reveal">
+          <span class="eyebrow">FP Glass · Gen 1</span>
+          <h2>A research-grade sensor suite in a 78&nbsp;g frame.</h2>
+          <p class="lede">The glasses look and feel like ordinary eyewear, so people act naturally. Inside, eight sensor streams share a single hardware clock.</p>
+          <div class="grid grid--2 mt-lg" style="gap:14px">
+            <div class="modality"><span class="tag">VISION</span><h4>1× RGB + 4× global-shutter SLAM</h4><p>Wide FOV for full hand–object coverage.</p></div>
+            <div class="modality"><span class="tag">GAZE</span><h4>Binocular eye tracking</h4><p>Gaze vector, vergence &amp; pupil at 90 Hz.</p></div>
+            <div class="modality"><span class="tag">MOTION</span><h4>Dual IMU · 1 kHz</h4><p>Plus magnetometer &amp; barometer.</p></div>
+            <div class="modality"><span class="tag">AUDIO</span><h4>7-mic spatial array</h4><p>For narration &amp; sound-event grounding.</p></div>
+          </div>
+          <div class="btn-row mt-lg"><a class="btn btn--primary" href="devices.html">Full specifications</a></div>
+        </div>
+        <div class="panel reveal device-fig">
+          <svg viewBox="0 0 520 300" aria-label="Diagram of FP Glass showing sensor locations">
+            <g fill="none" stroke="#3a4a5e" stroke-width="2">
+              <path d="M40 120 Q40 90 80 88 L220 88 Q246 88 252 112 L260 140 L268 112 Q274 88 300 88 L440 88 Q480 90 480 120 L470 170 Q462 206 420 206 L330 206 Q296 206 286 176 L272 140 L248 140 L234 176 Q224 206 190 206 L100 206 Q58 206 50 170 Z" fill="#141c26"/>
+              <path d="M40 112 L6 104 M480 112 L514 104" stroke-width="5" stroke-linecap="round"/>
+            </g>
+            <path d="M62 120 Q64 102 90 102 L210 102 Q232 102 236 120 L226 170 Q220 192 192 192 L104 192 Q72 192 66 168 Z" fill="#0d1520" opacity=".9"/>
+            <path d="M458 120 Q456 102 430 102 L310 102 Q288 102 284 120 L294 170 Q300 192 328 192 L416 192 Q448 192 454 168 Z" fill="#0d1520" opacity=".9"/>
+            <!-- sensors -->
+            <circle cx="260" cy="100" r="7" fill="#5eead4"/>
+            <circle cx="56" cy="102" r="5" fill="#a78bfa"/><circle cx="464" cy="102" r="5" fill="#a78bfa"/>
+            <circle cx="70" cy="190" r="5" fill="#a78bfa"/><circle cx="450" cy="190" r="5" fill="#a78bfa"/>
+            <circle cx="150" cy="186" r="4" fill="#fbbf24"/><circle cx="370" cy="186" r="4" fill="#fbbf24"/>
+            <circle cx="300" cy="94" r="3" fill="#94a3b8"/><circle cx="220" cy="94" r="3" fill="#94a3b8"/><circle cx="420" cy="94" r="3" fill="#94a3b8"/>
+            <!-- callouts -->
+            <g class="callout-line"><path d="M260 93 V40 H300"/><path d="M56 97 V40 H90"/><path d="M450 195 V270"/><path d="M150 190 V262 H190"/><path d="M420 89 V60 H470"/></g>
+            <text class="callout-text" x="306" y="44">RGB 1408² · 110° FOV</text>
+            <text class="callout-text" x="96" y="44">Global-shutter SLAM ×4</text>
+            <text class="callout-text" x="196" y="266">Eye-tracking IR ×2</text>
+            <text class="callout-text" x="400" y="284">IMU · baro · mag</text>
+            <text class="callout-text" x="430" y="56">Mics ×7</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODALITIES -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head section-head--center reveal">
+          <span class="eyebrow">What's in the data</span>
+          <h2>Every frame comes with context.</h2>
+          <p class="lede">Raw sensor streams are only the first layer. Each recording is calibrated, time-aligned and enriched with machine and human labels before you receive it.</p>
+        </div>
+        <div class="grid grid--4">
+          <div class="modality reveal"><span class="tag">3D HANDS</span><h4>21-keypoint hand pose</h4><p>Per-frame MANO fits for both hands, with contact states.</p></div>
+          <div class="modality reveal"><span class="tag">OBJECTS</span><h4>6DoF object tracks</h4><p>Segmentation masks, categories and grasp types.</p></div>
+          <div class="modality reveal"><span class="tag">ACTIONS</span><h4>Dense action segments</h4><p>Verb–noun steps aligned to your task taxonomy.</p></div>
+          <div class="modality reveal"><span class="tag">GAZE</span><h4>Gaze &amp; attention</h4><p>3D gaze rays projected into every camera.</p></div>
+          <div class="modality reveal"><span class="tag">TRAJECTORY</span><h4>6DoF head pose</h4><p>Closed-loop SLAM trajectories and semi-dense point clouds.</p></div>
+          <div class="modality reveal"><span class="tag">LANGUAGE</span><h4>Narration &amp; captions</h4><p>Wearer voice-over plus timestamped dense captions.</p></div>
+          <div class="modality reveal"><span class="tag">SCENE</span><h4>3D environment scans</h4><p>Room meshes and object layouts for digital twins.</p></div>
+          <div class="modality reveal"><span class="tag">PRIVACY</span><h4>De-identified by default</h4><p>Faces, screens and plates blurred before upload.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="section--tight">
+      <div class="container">
+        <div class="stats reveal">
+          <div class="stat"><strong class="grad">30+</strong><span>environment types covered</span></div>
+          <div class="stat"><strong>1&nbsp;kHz</strong><span>IMU sampling, hardware-synced</span></div>
+          <div class="stat"><strong>6</strong><span>export formats, incl. LeRobot &amp; RLDS</span></div>
+          <div class="stat"><strong>100%</strong><span>consented, compensated participants</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">How a program runs</span>
+          <h2>From task spec to training data in weeks.</h2>
+        </div>
+        <div class="grid grid--4 steps">
+          <div class="step reveal"><h3>Scope</h3><p>Together we define the tasks, environments, participant demographics and labels your model needs.</p></div>
+          <div class="step reveal"><h3>Deploy</h3><p>We ship calibrated devices and train collectors in the right settings, whether homes, kitchens or factory lines.</p></div>
+          <div class="step reveal"><h3>Capture &amp; QA</h3><p>Live dashboards track coverage, sync health and quality. Bad sessions get flagged and re-collected.</p></div>
+          <div class="step reveal"><h3>Deliver</h3><p>You receive annotated, de-identified episodes in your format, with a datasheet and full provenance.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIVACY -->
+    <section class="section section--alt">
+      <div class="container split split--rev">
+        <div class="reveal">
+          <span class="eyebrow">Responsible by design</span>
+          <h2>Consent, privacy and fair pay aren't add-ons.</h2>
+          <p class="lede">Collecting first-person data from real people in real places carries responsibility. We built our process around that.</p>
+          <div class="card mt-lg" style="padding:24px">
+            <ul class="mt-0">
+              <li>Informed, revocable consent for every participant, plus bystander signage and opt-out</li>
+              <li>On-device blurring of faces, licence plates and screens before data leaves the glasses</li>
+              <li>Participants are compensated at or above local living wage</li>
+              <li>Encrypted at rest and in transit, regional data residency, SOC 2–aligned controls</li>
+              <li>A datasheet with every dataset, covering demographics, environments and known gaps</li>
+            </ul>
+          </div>
+        </div>
+        <div class="panel reveal">
+          <div class="dataset__thumb" style="height:auto;aspect-ratio:16/10">
+            <svg viewBox="0 0 320 200" width="100%" height="100%" aria-label="Illustration of on-device face blurring">
+              <rect width="320" height="200" fill="#121a24"/>
+              <rect x="0" y="140" width="320" height="60" fill="#1b2532"/>
+              <g>
+                <circle cx="110" cy="70" r="24" fill="#8f6650"/>
+                <rect x="78" y="96" width="64" height="70" rx="20" fill="#334155"/>
+                <circle cx="230" cy="78" r="20" fill="#a37b63"/>
+                <rect x="204" y="100" width="52" height="64" rx="18" fill="#3f4b5e"/>
+              </g>
+              <defs><filter id="blur"><feGaussianBlur stdDeviation="6"/></filter></defs>
+              <circle cx="110" cy="70" r="26" fill="#64748b" filter="url(#blur)"/>
+              <circle cx="230" cy="78" r="22" fill="#64748b" filter="url(#blur)"/>
+              <rect x="82" y="42" width="56" height="56" rx="6" fill="none" stroke="#5eead4" stroke-dasharray="4 3"/>
+              <rect x="206" y="54" width="48" height="48" rx="6" fill="none" stroke="#5eead4" stroke-dasharray="4 3"/>
+              <text x="82" y="36" fill="#5eead4" font-family="JetBrains Mono, monospace" font-size="9">face · blurred</text>
+              <text x="206" y="48" fill="#5eead4" font-family="JetBrains Mono, monospace" font-size="9">face · blurred</text>
+              <text x="12" y="190" fill="#6b7889" font-family="JetBrains Mono, monospace" font-size="9">on-device · before upload</text>
+            </svg>
+          </div>
+          <p class="muted mt-lg mb-0" style="font-size:.9rem">FP Blur is our open-source de-identification model and runs on the glasses in real time. <a class="link-arrow" href="research.html#tools">Learn more</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="container">
+        <div class="cta reveal">
+          <span class="eyebrow">Research program</span>
+          <h2>Put FP Glass in your lab.</h2>
+          <p>Academic and industry researchers can apply for research kits. Each kit includes devices, the SDK, cloud processing credits and access to our open datasets.</p>
+          <div class="btn-row">
+            <a class="btn btn--primary" href="research.html#apply">Apply for a research kit</a>
+            <a class="btn btn--ghost" href="contact.html">Enterprise data programs</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="section--tight" style="padding-bottom:96px">
+      <div class="container split">
+        <div>
+          <h3 style="font-size:1.5rem">Get updates from Firstperson Labs</h3>
+          <p class="mb-0">Dataset releases, device updates and research, about once a month.</p>
+        </div>
+        <form class="form" data-demo>
+          <div class="newsletter">
+            <input type="email" required placeholder="you@company.com" aria-label="Email address" />
+            <button class="btn btn--primary" type="submit">Subscribe</button>
+          </div>
+          <p class="form__note">You can unsubscribe at any time. See our <a href="#" style="text-decoration:underline">privacy policy</a>.</p>
+          <div class="form__success">Thanks, you're on the list.</div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <a href="index.html" class="brand">
+            <svg class="brand__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="14" stroke="#5eead4" stroke-width="2"/><path d="M6 16c3-5.5 6.5-8 10-8s7 2.5 10 8c-3 5.5-6.5 8-10 8s-7-2.5-10-8Z" stroke="#a78bfa" stroke-width="2"/><circle cx="16" cy="16" r="3.5" fill="#5eead4"/></svg>
+            Firstperson Labs
+          </a>
+          <p style="margin-top:16px;max-width:300px;font-size:.92rem">Egocentric devices and data that help machines learn from the human perspective.</p>
+        </div>
+        <div><h5>Devices</h5><ul><li><a href="devices.html#glass">FP Glass</a></li><li><a href="devices.html#rig">FP Rig</a></li><li><a href="devices.html#specs">Specifications</a></li><li><a href="devices.html#sdk">SDK</a></li></ul></div>
+        <div><h5>Data</h5><ul><li><a href="data.html">Platform</a></li><li><a href="data.html#collection">Custom collection</a></li><li><a href="data.html#formats">Formats</a></li><li><a href="research.html#datasets">Open datasets</a></li></ul></div>
+        <div><h5>Research</h5><ul><li><a href="research.html#apply">Research kit</a></li><li><a href="research.html#tools">Tools &amp; models</a></li><li><a href="research.html#papers">Publications</a></li></ul></div>
+        <div><h5>Company</h5><ul><li><a href="contact.html">Contact</a></li><li><a href="contact.html#careers">Careers</a></li><li><a href="data.html#privacy">Responsible data</a></li></ul></div>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span data-year></span> Firstperson Labs. All rights reserved.</span>
+        <nav><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Health &amp; safety</a><a href="#">Regulatory</a></nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>
