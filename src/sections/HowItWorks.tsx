@@ -8,9 +8,6 @@ export function HowItWorks() {
           <h2 id="how-title" className="m-0 max-w-md text-[clamp(2rem,4vw,3.25rem)]">
             One crew, from device to delivery.
           </h2>
-          <p className="mb-0 mt-5 max-w-sm text-ink-2">
-            Every role in the capture is ours, so nothing gets lost between vendors.
-          </p>
         </div>
         <ol className="m-0 list-none border-t border-rule p-0">
           {steps.map((step, i) => (

@@ -44,12 +44,6 @@ export function CaptureFrame() {
           />
         </picture>
 
-        {/* Recorder layer: the device's own read-out */}
-        <div className="pointer-events-none absolute left-3 top-3 flex items-center gap-2 rounded-full bg-scrim px-3 py-1 text-[0.8125rem] text-on-image sm:left-4 sm:top-4">
-          <span className="hidden sm:inline">Head-mounted iPhone</span>
-          <span aria-hidden className="hidden h-3 w-px bg-on-image/40 sm:block" />
-          <span className="num">{hero.frame.timecode}</span>
-        </div>
 
         {/* Annotator layer */}
         <m.div

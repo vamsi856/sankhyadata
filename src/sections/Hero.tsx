@@ -8,18 +8,16 @@ export function Hero() {
         <div className="max-w-xl">
           <h1
             id="hero-title"
-            className="enter m-0 text-[clamp(2.6rem,6.2vw,4.75rem)]"
-            style={{ ["--d" as string]: "0ms" }}
+            className="m-0 text-[clamp(2.6rem,6.2vw,4.75rem)]"
           >
             {hero.title}
           </h1>
           <p
-            className="enter mb-0 mt-6 max-w-md text-[1.1875rem] leading-relaxed text-ink-2"
-            style={{ ["--d" as string]: "90ms" }}
+            className="mb-0 mt-6 max-w-md text-[1.1875rem] leading-relaxed text-ink-2"
           >
             {hero.sentence}
           </p>
-          <div className="enter mt-9 flex flex-wrap gap-3" style={{ ["--d" as string]: "180ms" }}>
+          <div className="mt-9 flex flex-wrap gap-3">
             <a href={hero.primary.href} className="btn btn-primary">
               {hero.primary.label}
             </a>

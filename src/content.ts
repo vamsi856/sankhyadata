@@ -21,14 +21,13 @@ export const hero = {
   primary: { label: "See sample data", href: "#samples" },
   secondary: { label: "Talk to us", href: "#contact" },
   frame: {
-    alt: "First-person view looking down at two hands shaping clay on a spinning potter's wheel.",
-    timecode: "00:41:12",
+    alt: "A potter's hands shaping clay on a spinning wheel (example frame, not SankhyaData footage).",
     narration: "Pressing in with both thumbs to narrow the neck.",
   },
 };
 
 export const library = {
-  title: "Real work, recorded from the worker's eyes.",
+  title: "Seventy kinds of workplace, one camera angle: the worker’s own.",
   figure: "15,000+",
   unit: "hours",
   caption: "of first-person video from 70 business types, recorded on site where the work happens.",
@@ -54,7 +53,7 @@ export const library = {
 export const steps = [
   {
     role: "Devices",
-    text: "We ship the capture kit set up and charged: head-mounted iPhones, cap cameras and head straps.",
+    text: "We ship the capture kit, set up and charged.",
   },
   {
     role: "Recorders",
@@ -81,22 +80,22 @@ export const itTeam = {
     { title: "Devices", text: "Setup, updates, charging and spares for every rig." },
     { title: "Environment", text: "Network, power and storage ready before the first take." },
     { title: "Storage", text: "Secure uploads, with verified nightly backups." },
-    { title: "Client portal", text: "Samples, review and deliveries behind your own login." },
+    { title: "Client portal", text: "Review and deliveries behind your own login." },
   ],
 };
 
 export const rigs = [
   {
     name: "Head-mounted iPhone",
-    text: "Eye-level video from a phone strapped at the forehead, with its motion sensors.",
+    text: "Eye-level video plus the phone’s motion sensors.",
   },
   {
     name: "Cap camera",
-    text: "A camera on the brim of a cap. Light enough for long shifts, natural head movement.",
+    text: "Light enough for a full shift.",
   },
   {
     name: "Head strap",
-    text: "A camera on an elastic head strap, centred at the forehead, for hands-busy work.",
+    text: "Centred at the forehead for hands-busy work.",
   },
 ];
 
@@ -114,7 +113,13 @@ export const billing = {
  *   { title: "One hour per business type", text: "Raw first-person video, 1080p", href: "https://drive.google.com/drive/folders/..." },
  * While this list is empty the section shows an "Ask for access" email link instead.
  */
-export const samples: { title: string; text: string; href: string }[] = [];
+export const samples: { title: string; text: string; href: string }[] = [
+  {
+    title: "One hour per business type",
+    text: "163 raw first-person videos, about 66 hours across 69 business types.",
+    href: "https://drive.google.com/drive/folders/1rkpSmdg9qPHSHGtRoVYuPVcDalpMD1Js",
+  },
+];
 
 export const contact = {
   title: "Tell us what to record.",

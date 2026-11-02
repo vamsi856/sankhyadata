@@ -1,5 +1,4 @@
 import { library } from "@/content";
-import { Marquee } from "@/components/ui/marquee";
 
 export function Library() {
   return (
@@ -32,18 +31,14 @@ export function Library() {
         </dl>
       </div>
 
-      <div
-        className="border-t border-rule py-7 [mask-image:linear-gradient(90deg,transparent,var(--ink)_8%,var(--ink)_92%,transparent)]"
-        aria-label="Examples of business types in the library"
-        role="region"
-      >
-        <Marquee speed="slow" pauseOnHover repeat={2} style={{ ["--gap" as string]: "3.5rem" }}>
+      <div className="border-t border-rule">
+        <ul aria-label="Examples of business types in the library" className="container-page my-0 flex list-none flex-wrap gap-x-10 gap-y-2 py-8">
           {library.types.map((type) => (
-            <span key={type} className="whitespace-nowrap text-[clamp(1.25rem,2.2vw,1.75rem)] font-[300] tracking-[-0.02em] text-ink-2">
+            <li key={type} className="text-[clamp(1.125rem,1.8vw,1.5rem)] font-[300] tracking-[-0.02em] text-ink-2">
               {type}
-            </span>
+            </li>
           ))}
-        </Marquee>
+        </ul>
       </div>
     </section>
   );
