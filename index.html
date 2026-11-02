@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Firstperson Labs — Egocentric devices &amp; data for physical AI</title>
-  <meta name="description" content="Firstperson Labs builds wearable egocentric capture devices and runs large-scale first-person data collection for robotics, AR and embodied AI." />
-  <meta property="og:title" content="Firstperson Labs — The human perspective, captured for AI" />
+  <title>SankhyaData — Egocentric devices &amp; data for physical AI</title>
+  <meta name="description" content="SankhyaData builds wearable egocentric capture devices and runs large-scale first-person data collection for robotics, AR and embodied AI." />
+  <meta property="og:title" content="SankhyaData — The human perspective, captured for AI" />
   <meta property="og:description" content="Wearable capture devices, managed data collection, and training-ready egocentric datasets." />
   <meta name="theme-color" content="#07090c" />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
@@ -15,13 +15,13 @@
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
-  <div class="announce">FP Glass Gen 1 research kits are now shipping to partners. <a href="research.html#apply">Apply for a kit</a></div>
+  <div class="announce">Sankhya Glass Gen 1 research kits are now shipping to partners. <a href="research.html#apply">Apply for a kit</a></div>
 
   <header class="nav">
     <div class="container nav__inner">
-      <a href="index.html" class="brand" aria-label="Firstperson Labs home">
+      <a href="index.html" class="brand" aria-label="SankhyaData home">
         <svg class="brand__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="14" stroke="#5eead4" stroke-width="2"/><path d="M6 16c3-5.5 6.5-8 10-8s7 2.5 10 8c-3 5.5-6.5 8-10 8s-7-2.5-10-8Z" stroke="#a78bfa" stroke-width="2"/><circle cx="16" cy="16" r="3.5" fill="#5eead4"/></svg>
-        Firstperson Labs
+        SankhyaData
       </a>
       <ul class="nav__links">
         <li><a href="devices.html">Devices</a></li>
@@ -32,7 +32,7 @@
       </ul>
       <div class="nav__cta">
         <a class="btn btn--ghost" href="research.html#apply">Get a kit</a>
-        <a class="btn btn--primary" href="contact.html">Talk to us</a>
+        <a class="btn btn--primary" href="contact.html">Book a demo</a>
         <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
         </button>
@@ -49,8 +49,8 @@
           <h1>Bringing the <span class="grad">human perspective</span> to machines.</h1>
           <p class="lede">We build wearable capture devices and run first-person data collection at scale. Robots, AR systems and embodied AI models can then learn from how people actually see, move and use their hands.</p>
           <div class="btn-row">
-            <a class="btn btn--primary" href="contact.html">Start a data program</a>
-            <a class="btn btn--ghost" href="devices.html">Explore devices</a>
+            <a class="btn btn--primary" href="contact.html">Book a demo</a>
+            <a class="btn btn--ghost" href="research.html#datasets">Get sample data</a>
           </div>
           <div class="hero__meta">
             <div><strong>8</strong>synchronized sensor streams</div>
@@ -132,6 +132,56 @@
       </div>
     </div>
 
+    <!-- HEAD + WRIST -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Head + wrist capture</span>
+          <h2>See <span class="grad">what</span> people do and <span class="grad">how</span> their hands do it.</h2>
+          <p class="lede">A head camera on its own misses a lot. Hands block the view of the object, and fingertips are tiny in a wide shot. SankhyaData records the head view and both wrist views together, on one clock.</p>
+        </div>
+        <div class="split">
+          <div class="panel reveal" style="padding:20px">
+            <div class="grid grid--2" style="gap:12px">
+              <figure style="margin:0">
+                <div class="dataset__thumb" style="height:auto;aspect-ratio:4/3">
+                  <svg viewBox="0 0 200 150" width="100%" height="100%" aria-label="Head camera view: hand blocks the object">
+                    <rect width="200" height="150" fill="#121a24"/><path d="M0 80 H200 V150 H0Z" fill="#1d2735"/>
+                    <rect x="88" y="62" width="30" height="34" rx="4" fill="#e2e8f0"/>
+                    <path d="M70 150 C76 120 92 104 110 100 C122 98 130 104 126 114 L132 150Z" fill="#a37b63"/>
+                    <rect x="84" y="58" width="38" height="42" fill="none" stroke="#fbbf24" stroke-dasharray="3 3"/>
+                    <text x="8" y="14" fill="#5eead4" font-family="monospace" font-size="8">HEAD · 30 fps</text>
+                    <text x="84" y="54" fill="#fbbf24" font-family="monospace" font-size="7">occluded</text>
+                  </svg>
+                </div>
+                <figcaption class="muted" style="font-size:.82rem;margin-top:8px">Head view: the scene, the goal, what comes next</figcaption>
+              </figure>
+              <figure style="margin:0">
+                <div class="dataset__thumb" style="height:auto;aspect-ratio:4/3">
+                  <svg viewBox="0 0 200 150" width="100%" height="100%" aria-label="Wrist camera view: close-up of fingers gripping the handle">
+                    <rect width="200" height="150" fill="#101720"/>
+                    <rect x="70" y="20" width="90" height="110" rx="10" fill="#e2e8f0"/>
+                    <path d="M160 50 q34 6 30 40 q-4 28 -30 30" stroke="#e2e8f0" stroke-width="12" fill="none"/>
+                    <path d="M0 150 L0 70 C30 60 60 70 96 84 C110 90 108 100 96 100 L60 98 C80 106 78 116 64 116 L30 116 L40 150Z" fill="#a37b63"/>
+                    <g fill="#a78bfa"><circle cx="96" cy="92" r="3"/><circle cx="66" cy="110" r="3"/><circle cx="40" cy="78" r="3"/><circle cx="20" cy="92" r="3"/></g>
+                    <text x="8" y="14" fill="#a78bfa" font-family="monospace" font-size="8">WRIST R · 30 fps</text>
+                    <text x="104" y="144" fill="#a78bfa" font-family="monospace" font-size="7">grasp: cylindrical</text>
+                  </svg>
+                </div>
+                <figcaption class="muted" style="font-size:.82rem;margin-top:8px">Wrist view: finger placement, grip, contact</figcaption>
+              </figure>
+            </div>
+          </div>
+          <div class="grid reveal" style="gap:14px;align-content:center">
+            <div class="modality"><span class="tag">OCCLUSION</span><h4>The object stays in view</h4><p>When the hand covers the object in the head view, the wrist camera still sees it.</p></div>
+            <div class="modality"><span class="tag">FINE DETAIL</span><h4>Fingertips at full resolution</h4><p>Grips, small adjustments and contact points are big in frame, not a few pixels.</p></div>
+            <div class="modality"><span class="tag">BIMANUAL</span><h4>Left and right hands</h4><p>Two wrist units capture two-handed tasks such as folding, pouring and assembly.</p></div>
+            <div class="modality"><span class="tag">CONTEXT</span><h4>The head view keeps the "why"</h4><p>Where the person looks, where they walk, and which step comes next.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- WHAT WE DO -->
     <section class="section">
       <div class="container">
@@ -170,7 +220,7 @@
     <section class="section section--alt">
       <div class="container split">
         <div class="reveal">
-          <span class="eyebrow">FP Glass · Gen 1</span>
+          <span class="eyebrow">Sankhya Glass · Gen 1</span>
           <h2>A research-grade sensor suite in a 78&nbsp;g frame.</h2>
           <p class="lede">The glasses look and feel like ordinary eyewear, so people act naturally. Inside, eight sensor streams share a single hardware clock.</p>
           <div class="grid grid--2 mt-lg" style="gap:14px">
@@ -182,7 +232,7 @@
           <div class="btn-row mt-lg"><a class="btn btn--primary" href="devices.html">Full specifications</a></div>
         </div>
         <div class="panel reveal device-fig">
-          <svg viewBox="0 0 520 300" aria-label="Diagram of FP Glass showing sensor locations">
+          <svg viewBox="0 0 520 300" aria-label="Diagram of Sankhya Glass showing sensor locations">
             <g fill="none" stroke="#3a4a5e" stroke-width="2">
               <path d="M40 120 Q40 90 80 88 L220 88 Q246 88 252 112 L260 140 L268 112 Q274 88 300 88 L440 88 Q480 90 480 120 L470 170 Q462 206 420 206 L330 206 Q296 206 286 176 L272 140 L248 140 L234 176 Q224 206 190 206 L100 206 Q58 206 50 170 Z" fill="#141c26"/>
               <path d="M40 112 L6 104 M480 112 L514 104" stroke-width="5" stroke-linecap="round"/>
@@ -294,7 +344,7 @@
               <text x="12" y="190" fill="#6b7889" font-family="JetBrains Mono, monospace" font-size="9">on-device · before upload</text>
             </svg>
           </div>
-          <p class="muted mt-lg mb-0" style="font-size:.9rem">FP Blur is our open-source de-identification model and runs on the glasses in real time. <a class="link-arrow" href="research.html#tools">Learn more</a></p>
+          <p class="muted mt-lg mb-0" style="font-size:.9rem">Sankhya Blur is our open-source de-identification model and runs on the glasses in real time. <a class="link-arrow" href="research.html#tools">Learn more</a></p>
         </div>
       </div>
     </section>
@@ -304,7 +354,7 @@
       <div class="container">
         <div class="cta reveal">
           <span class="eyebrow">Research program</span>
-          <h2>Put FP Glass in your lab.</h2>
+          <h2>Put Sankhya Glass in your lab.</h2>
           <p>Academic and industry researchers can apply for research kits. Each kit includes devices, the SDK, cloud processing credits and access to our open datasets.</p>
           <div class="btn-row">
             <a class="btn btn--primary" href="research.html#apply">Apply for a research kit</a>
@@ -318,7 +368,7 @@
     <section class="section--tight" style="padding-bottom:96px">
       <div class="container split">
         <div>
-          <h3 style="font-size:1.5rem">Get updates from Firstperson Labs</h3>
+          <h3 style="font-size:1.5rem">Get updates from SankhyaData</h3>
           <p class="mb-0">Dataset releases, device updates and research, about once a month.</p>
         </div>
         <form class="form" data-demo>
@@ -339,17 +389,17 @@
         <div>
           <a href="index.html" class="brand">
             <svg class="brand__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="14" stroke="#5eead4" stroke-width="2"/><path d="M6 16c3-5.5 6.5-8 10-8s7 2.5 10 8c-3 5.5-6.5 8-10 8s-7-2.5-10-8Z" stroke="#a78bfa" stroke-width="2"/><circle cx="16" cy="16" r="3.5" fill="#5eead4"/></svg>
-            Firstperson Labs
+            SankhyaData
           </a>
           <p style="margin-top:16px;max-width:300px;font-size:.92rem">Egocentric devices and data that help machines learn from the human perspective.</p>
         </div>
-        <div><h5>Devices</h5><ul><li><a href="devices.html#glass">FP Glass</a></li><li><a href="devices.html#rig">FP Rig</a></li><li><a href="devices.html#specs">Specifications</a></li><li><a href="devices.html#sdk">SDK</a></li></ul></div>
+        <div><h5>Devices</h5><ul><li><a href="devices.html#glass">Sankhya Glass</a></li><li><a href="devices.html#rig">Sankhya Rig</a></li><li><a href="devices.html#wrist">Sankhya Wrist</a></li><li><a href="devices.html#specs">Specifications</a></li><li><a href="devices.html#sdk">SDK</a></li></ul></div>
         <div><h5>Data</h5><ul><li><a href="data.html">Platform</a></li><li><a href="data.html#collection">Custom collection</a></li><li><a href="data.html#formats">Formats</a></li><li><a href="research.html#datasets">Open datasets</a></li></ul></div>
         <div><h5>Research</h5><ul><li><a href="research.html#apply">Research kit</a></li><li><a href="research.html#tools">Tools &amp; models</a></li><li><a href="research.html#papers">Publications</a></li></ul></div>
         <div><h5>Company</h5><ul><li><a href="contact.html">Contact</a></li><li><a href="contact.html#careers">Careers</a></li><li><a href="data.html#privacy">Responsible data</a></li></ul></div>
       </div>
       <div class="footer__bottom">
-        <span>© <span data-year></span> Firstperson Labs. All rights reserved.</span>
+        <span>© <span data-year></span> SankhyaData. All rights reserved.</span>
         <nav><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Health &amp; safety</a><a href="#">Regulatory</a></nav>
       </div>
     </div>

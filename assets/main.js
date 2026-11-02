@@ -1,4 +1,4 @@
-// Firstperson Labs — site interactions (no dependencies)
+// SankhyaData — site interactions (no dependencies)
 (function () {
   "use strict";
 
