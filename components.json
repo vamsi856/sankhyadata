@@ -16,5 +16,9 @@
     "lib": "@/lib",
     "utils": "@/lib/utils",
     "hooks": "@/hooks"
+  },
+  "registries": {
+    "@watermelon": "https://registry.watermelon.sh/r/{name}.json",
+    "@kokonutui": "https://kokonutui.com/r/{name}.json"
   }
 }

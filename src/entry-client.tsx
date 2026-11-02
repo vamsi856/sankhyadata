@@ -1,16 +1,19 @@
-import { StrictMode } from "react";
-import { createRoot, hydrateRoot } from "react-dom/client";
 import "./index.css";
-import App from "./App";
+import { createRoot, hydrateRoot } from "react-dom/client";
+import { IslandContent, islands, type IslandName } from "./islands";
+import { startSmoothScroll } from "./lib/smooth-scroll";
 
 const root = document.getElementById("root")!;
-const app = (
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
 
-// The production build pre-renders the page to static HTML (see scripts/prerender.mjs),
-// so we hydrate that markup instead of re-rendering it. In dev the root is empty.
-if (root.hasChildNodes()) hydrateRoot(root, app);
-else createRoot(root).render(app);
+if (root.hasChildNodes()) {
+  // Production: the page is prerendered HTML. Hydrate only the interactive islands.
+  document.querySelectorAll<HTMLElement>("[data-island]").forEach((el) => {
+    const name = el.dataset.island as IslandName;
+    if (name in islands) hydrateRoot(el, <IslandContent name={name} />);
+  });
+} else if (import.meta.env.DEV) {
+  // Development: no prerender, so render the whole page.
+  import("./App").then(({ default: App }) => createRoot(root).render(<App />));
+}
+
+startSmoothScroll();

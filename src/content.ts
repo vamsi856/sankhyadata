@@ -1,15 +1,17 @@
 // All copy and links for the site live here, so they can be edited without touching layout.
+// Facts come from the team's own operations notes (library size, process, delivery format).
 
 export const site = {
   name: "SankhyaData",
+  // TODO(owner): replace with the real inbox before launch.
   email: "hello@sankhyadata.com",
   description:
-    "SankhyaData records egocentric (first-person) video for physical AI. We supply the devices, recorders, annotators, narrators and IT support, and bill on approved hours.",
+    "SankhyaData records first-person video of real work for physical AI: 15,000+ hours across 70 business types. We supply the devices, recorders, annotators, narrators and IT support, and bill on approved hours.",
 };
 
 export const nav = [
+  { label: "Library", href: "#library" },
   { label: "How it works", href: "#how-it-works" },
-  { label: "Rigs", href: "#rigs" },
   { label: "Billing", href: "#billing" },
   { label: "Samples", href: "#samples" },
 ];
@@ -26,6 +28,30 @@ export const hero = {
   },
 };
 
+export const library = {
+  title: "Real work, recorded from the worker's eyes.",
+  figure: "15,000+",
+  unit: "hours",
+  caption: "of first-person video from 70 business types, recorded on site where the work happens.",
+  specs: [
+    { term: "Video", detail: "1080p at 30 fps, HEVC originals" },
+    { term: "Samples", detail: "One hour for every business type" },
+    { term: "Organised by", detail: "Business type, recording centre and date" },
+  ],
+  // Examples from the library's business types.
+  types: [
+    "Agriculture farm",
+    "Appliance repair",
+    "Auto repair",
+    "Bicycle repair",
+    "Bread bakery",
+    "Building materials manufacturing",
+    "Cake shop",
+    "Car detailing",
+    "Metal fabrication",
+  ],
+};
+
 export const steps = [
   {
     role: "Devices",
@@ -33,19 +59,19 @@ export const steps = [
   },
   {
     role: "Recorders",
-    text: "Trained recorders wear the rigs and film the tasks you list, where they really happen.",
+    text: "Recorders wear the rigs and film real work where it happens.",
   },
   {
     role: "Annotators",
-    text: "Annotators label every clip against your schema: actions, hands, objects, steps.",
+    text: "Annotators write scene descriptions and subtitles to your guidelines.",
   },
   {
     role: "Narrators",
-    text: "Narrators add a spoken account of what is happening and why.",
+    text: "Narrators voice each scene in ANC headphones, after a microphone and room check.",
   },
   {
     role: "Review",
-    text: "Each hour is checked against your spec. Only approved hours are delivered.",
+    text: "Every submission gets an AI quality score. A QC reviewer takes the low scores and spot-checks one approval in ten.",
   },
 ];
 
@@ -53,10 +79,10 @@ export const itTeam = {
   title: "Our own IT team keeps the field running.",
   sentence: "Recorders record. Everything around them is handled in-house.",
   items: [
-    { title: "Device setup", text: "Provisioning, updates, charging and spares for every rig." },
-    { title: "Environment", text: "Network, power and storage at each site before the first take." },
-    { title: "Uploads", text: "Secure transfer from device to storage, checked end to end." },
-    { title: "Support", text: "A person to call when something stops working, on site or remote." },
+    { title: "Devices", text: "Setup, updates, charging and spares for every rig." },
+    { title: "Environment", text: "Network, power and storage ready before the first take." },
+    { title: "Storage", text: "Secure uploads, with verified nightly backups." },
+    { title: "Client portal", text: "Samples, review and deliveries behind your own login." },
   ],
 };
 
@@ -67,23 +93,28 @@ export const rigs = [
   },
   {
     name: "Cap camera",
-    text: "A camera on the brim of a cap. Light enough for long sessions, natural head movement.",
+    text: "A camera on the brim of a cap. Light enough for long shifts, natural head movement.",
   },
 ];
 
 export const billing = {
   title: "You are billed for approved hours.",
   sentence:
-    "Every recorded hour is reviewed against your specification. Hours that pass are counted and delivered.",
+    "Every recorded hour is reviewed against your specification. Only hours that pass are counted, billed and delivered.",
   states: ["Recorded", "Reviewed", "Approved", "Delivered"],
+  notes: { Approved: "What you are billed for", Delivered: "In numbered batches with a checksum manifest" } as Record<string, string>,
 };
 
-/** Google Drive folders with sample recordings. Filled from the team's shared links. */
+/**
+ * Google Drive folders with sample recordings. The team's sample folder
+ * ("Egocentric Samples – 1h per type") is private today; add its share link here once
+ * it is set to "Anyone with the link can view".
+ */
 export const samples: { title: string; text: string; href: string }[] = [];
 
 export const contact = {
   title: "Tell us what to record.",
-  sentence: "Send your task list and the hours you need. We reply with a capture plan.",
+  sentence: "Send your task list and the hours you need. We reply with a capture plan and samples.",
 };
 
 export const credits = {

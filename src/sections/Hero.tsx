@@ -1,5 +1,5 @@
 import { hero } from "@/content";
-import { CaptureFrame } from "@/components/CaptureFrame";
+import { Island } from "@/islands";
 
 export function Hero() {
   return (
@@ -28,8 +28,9 @@ export function Hero() {
             </a>
           </div>
         </div>
-        <div className="enter" style={{ ["--d" as string]: "120ms" }}>
-          <CaptureFrame />
+        {/* Not faded in: the photo paints at once, so it can be the page's largest paint. */}
+        <div>
+          <Island name="frame" />
         </div>
       </div>
     </section>

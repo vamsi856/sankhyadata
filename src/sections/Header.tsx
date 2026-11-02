@@ -14,7 +14,7 @@ export function Wordmark() {
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-rule bg-paper/85 backdrop-blur-md [backdrop-filter:saturate(140%)_blur(12px)]">
+    <header className="sticky top-0 z-40 border-b border-rule bg-paper">
       <div className="container-page flex h-16 items-center justify-between gap-6">
         <a href="#top" className="rounded-[4px] text-ink no-underline" aria-label={`${site.name}, back to top`}>
           <Wordmark />

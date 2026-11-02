@@ -9,7 +9,7 @@ export function Rigs() {
             Rigs we have run in the field.
           </h2>
           <p className="m-0 max-w-lg self-end text-ink-2">
-            We choose the rig for the task and the setting, then fit and test it before recording starts.
+            Each rig is fitted and tested for the task before recording starts.
           </p>
         </div>
         <ul className="m-0 mt-14 grid list-none gap-5 p-0 md:grid-cols-2">

@@ -4,3 +4,6 @@ dist/
 *.local
 *.tsbuildinfo
 dist-server/
+.taste-skill/
+.hallmark/
+.impeccable/

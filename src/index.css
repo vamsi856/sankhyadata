@@ -1,8 +1,13 @@
+/* Hallmark · shape: Stage hero over a crew ledger · genre: modern-minimal · theme: vantage (re-grounded on daylight paper) · job: hire · draw: manual
+ * hero: Stage, head on five columns and the capture frame on seven · nav: wordmark, section index and one action (a long single page, so the links are its contents) · footer: a mast, wordmark over links, credit line · imagery: photographs · signature: the capture frame whose annotator and narrator layers you can switch · vantage: interior, steel moved to daylight
+ * axes: light/grotesk-sans/chromatic-lime · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S3 R5 V4 · weakest: S, the frame is a library photo; swap in a frame from SankhyaData's own samples */
+
 /* Design direction: Hallmark "Vantage" structure (instrument-quiet, hairline corner ticks,
    Geologica with sharpened corners), re-grounded for SankhyaData per Anthropic's
    frontend-design calibration: daylight ground instead of near-black + acid accent;
    the chartreuse signal is reserved for what annotators mark (labels, "approved"). */
-@import "tailwindcss";
+@import "tailwindcss" source(".");
 
 @font-face {
   font-family: "Geologica";
@@ -78,6 +83,7 @@ body {
   overflow-x: clip;
 }
 html {
+  scroll-padding-top: 5rem;
   background: var(--paper);
   color: var(--ink);
   -webkit-text-size-adjust: 100%;
@@ -104,18 +110,25 @@ h3 {
   min-width: 0;
   text-wrap: balance;
 }
-p {
-  text-wrap: pretty;
-}
 ::selection {
   background: var(--label);
   color: var(--label-ink);
+}
+html {
+  scrollbar-color: var(--rule-2) var(--paper);
+  caret-color: var(--ink);
 }
 :focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 3px;
   border-radius: 4px;
   transition: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.lenis) {
+    scroll-behavior: smooth;
+  }
 }
 
 /* Lenis */
@@ -155,10 +168,10 @@ html.lenis body {
     pointer-events: none;
     border: 1px solid var(--rule-2);
     -webkit-mask:
-      conic-gradient(at var(--tick) var(--tick), transparent 75%, #000 0)
+      conic-gradient(at var(--tick) var(--tick), transparent 75%, var(--ink) 0)
       0 0 / calc(100% - var(--tick)) calc(100% - var(--tick));
     mask:
-      conic-gradient(at var(--tick) var(--tick), transparent 75%, #000 0)
+      conic-gradient(at var(--tick) var(--tick), transparent 75%, var(--ink) 0)
       0 0 / calc(100% - var(--tick)) calc(100% - var(--tick));
   }
 
@@ -184,6 +197,12 @@ html.lenis body {
   }
   .btn:active {
     transform: scale(0.98);
+  }
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.5;
+    transform: none;
   }
   .btn-primary {
     background: var(--ink);
@@ -225,6 +244,10 @@ html.lenis body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-vertical {
+    animation: none !important;
+  }
   *,
   *::before,
   *::after {
