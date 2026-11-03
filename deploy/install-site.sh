@@ -25,7 +25,7 @@ install -m 0644 "$SITE_CADDY" "$SITE_CONF"
 grep -qE '^\s*import\s+/etc/caddy/sites/\*' "$CADDYFILE" || printf '\nimport /etc/caddy/sites/*.caddy\n' >> "$CADDYFILE"
 
 if caddy validate --config "$CADDYFILE" --adapter caddyfile >/dev/null 2>&1; then
-  systemctl reload caddy
+  systemctl reload-or-restart caddy
   echo "live: $(readlink "$SITE_ROOT/current")"
 else
   echo "Caddy rejected the config; restoring the previous one" >&2

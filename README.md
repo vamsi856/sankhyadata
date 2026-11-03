@@ -45,6 +45,12 @@ curl -fsSL https://raw.githubusercontent.com/vamsi856/sankhyadata/main/deploy/se
 
 DNS (Hostinger): `A` `@` → `178.105.159.139`; `CNAME` `www` → `sankhyadata.com`.
 
+New dedicated server (Hetzner project `sankhyadata`): with a project API token in
+`HCLOUD_TOKEN`, `python3 deploy/provision-hetzner.py` creates a firewall (80, 443, ICMP only)
+and an Ubuntu 24.04 server whose first boot ([`deploy/cloud-init.yaml`](deploy/cloud-init.yaml))
+installs Caddy, automatic security updates and the updater above, with no manual login. Then
+point the domain's `A`/`AAAA` records at the addresses it prints.
+
 Useful on the server: `systemctl list-timers sankhyadata-pull.timer`,
 `journalctl -u sankhyadata-pull -n 50`, roll back with
 `ln -sfn /var/www/sankhyadata/releases/<older> /var/www/sankhyadata/current`.
