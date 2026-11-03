@@ -1,0 +1,26 @@
+# SankhyaData marketing site, served by the portal server's Caddy.
+# Installed by .github/workflows/deploy.yml to /etc/caddy/sites/sankhyadata.caddy.
+sankhyadata.com {
+	root * /var/www/sankhyadata/current
+	encode zstd gzip
+	file_server
+
+	# Hashed build files never change; fonts and media may be replaced under the same name.
+	@hashed path /assets/*
+	header @hashed Cache-Control "public, max-age=31536000, immutable"
+	@static path /fonts/* /media/* /favicon.svg
+	header @static Cache-Control "public, max-age=604800"
+	@html path / /index.html
+	header @html Cache-Control "no-cache"
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		-Server
+	}
+}
+
+www.sankhyadata.com {
+	redir https://sankhyadata.com{uri} permanent
+}

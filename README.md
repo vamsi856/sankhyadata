@@ -23,13 +23,26 @@ All text and links are in [`src/content.ts`](src/content.ts).
   with a frame from your own footage (keep the same file names; AVIF + WebP + JPEG), then
   remove the credit in `src/content.ts`.
 
-## Deploy (GitHub Pages)
+## Deploy (Hetzner)
 
-Every push to `main` runs [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
-One-time setup: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-The site is served at **https://sankhyadata.com** (custom domain; `public/CNAME`).
-DNS at Hostinger: four `A` records for `@` → 185.199.108.153, 185.199.109.153,
-185.199.110.153, 185.199.111.153, and `CNAME` `www` → `vamsi856.github.io`.
+GitHub only holds the code. Every push to `main` runs
+[`.github/workflows/deploy-hetzner.yml`](.github/workflows/deploy-hetzner.yml): it builds the
+site and copies `dist/` to the Hetzner server (`178.105.159.139`) as a new release in
+`/var/www/sankhyadata/releases/`, then switches `/var/www/sankhyadata/current` to it
+(the last 5 releases are kept for rollback). The server's Caddy serves it at
+**https://sankhyadata.com** using [`deploy/sankhyadata.caddy`](deploy/sankhyadata.caddy),
+installed by [`deploy/install-site.sh`](deploy/install-site.sh); Caddy issues the HTTPS
+certificate automatically, and a rejected config is rolled back so other sites on the
+server keep running.
+
+One-time setup:
+- Repository secret `HETZNER_SSH_KEY`: the private key for `root@178.105.159.139`
+  (Settings → Secrets and variables → Actions).
+- DNS at Hostinger: `A` record `@` → `178.105.159.139` (replacing the parking record) and
+  `CNAME` `www` → `sankhyadata.com`.
+- GitHub Pages is not used; turn it off under Settings → Pages.
+
+Roll back: on the server, `ln -sfn /var/www/sankhyadata/releases/<older> /var/www/sankhyadata/current`.
 
 ## How it is built (and why it is fast)
 

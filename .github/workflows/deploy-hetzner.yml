@@ -1,0 +1,66 @@
+name: Deploy to Hetzner
+
+# GitHub only holds the code. Every push to main builds the site here and ships the
+# static files to the Hetzner server, where Caddy serves https://sankhyadata.com.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-hetzner
+  cancel-in-progress: false
+
+env:
+  HOST: 178.105.159.139
+  SSH_USER: root
+  SITE_ROOT: /var/www/sankhyadata
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+      - name: Set up SSH
+        env:
+          KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          if [ -z "$KEY" ]; then
+            echo "::error::Add the repository secret HETZNER_SSH_KEY (Settings > Secrets and variables > Actions)."
+            exit 1
+          fi
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$KEY" > ~/.ssh/id_deploy && chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -T 15 -H "$HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          printf 'Host target\n  HostName %s\n  User %s\n  IdentityFile ~/.ssh/id_deploy\n  IdentitiesOnly yes\n' "$HOST" "$SSH_USER" > ~/.ssh/config
+
+      - name: Upload release
+        run: |
+          RELEASE="$SITE_ROOT/releases/${GITHUB_SHA::12}"
+          echo "RELEASE=$RELEASE" >> "$GITHUB_ENV"
+          tar -C dist -czf - . | ssh target "mkdir -p '$RELEASE' && tar --no-same-owner -xzf - -C '$RELEASE'"
+          scp -q deploy/sankhyadata.caddy target:/tmp/sankhyadata.caddy
+          scp -q deploy/install-site.sh target:/tmp/install-site.sh
+
+      - name: Activate release and configure Caddy
+        run: ssh target "bash /tmp/install-site.sh '$RELEASE'"
+
+      - name: Check the live site
+        run: |
+          ssh target "test -f '$SITE_ROOT/current/index.html'" && echo "release is live on the server"
+          if curl -fsS -o /dev/null --max-time 20 https://sankhyadata.com/; then
+            echo "https://sankhyadata.com is serving"
+          else
+            echo "::notice::https://sankhyadata.com is not reachable yet. Point its DNS A record at $HOST; Caddy issues the certificate once DNS resolves."
+          fi

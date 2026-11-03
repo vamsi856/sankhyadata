@@ -13,8 +13,10 @@ approved hours.
   Only the islands in `src/islands.tsx` hydrate. New interactivity = a new island.
 - All copy and links: `src/content.ts`. Design tokens: `:root` in `src/index.css`.
 
-Commands: `npm run dev`, `npm run build` (output in `dist/`), deployed by
-`.github/workflows/deploy.yml` to GitHub Pages.
+Commands: `npm run dev`, `npm run build` (output in `dist/`). GitHub holds only the code:
+`.github/workflows/deploy-hetzner.yml` ships `dist/` to the Hetzner server, where Caddy
+serves https://sankhyadata.com (`deploy/`). That server also runs the private portal; never
+change its other Caddy sites.
 
 ## Budgets (the site must stay fast)
 
