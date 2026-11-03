@@ -27,9 +27,9 @@ All text and links are in [`src/content.ts`](src/content.ts).
 
 Every push to `main` runs [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
 One-time setup: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-The site is then served at `https://vamsi856.github.io/sankhyadata/`. To use
-`sankhyadata.com`, add it under Settings → Pages → Custom domain and point the DNS at
-GitHub Pages.
+The site is served at **https://sankhyadata.com** (custom domain; `public/CNAME`).
+DNS at Hostinger: four `A` records for `@` → 185.199.108.153, 185.199.109.153,
+185.199.110.153, 185.199.111.153, and `CNAME` `www` → `vamsi856.github.io`.
 
 ## How it is built (and why it is fast)
 
