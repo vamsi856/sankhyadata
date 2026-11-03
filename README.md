@@ -26,23 +26,28 @@ All text and links are in [`src/content.ts`](src/content.ts).
 ## Deploy (Hetzner)
 
 GitHub only holds the code. Every push to `main` runs
-[`.github/workflows/deploy-hetzner.yml`](.github/workflows/deploy-hetzner.yml): it builds the
-site and copies `dist/` to the Hetzner server (`178.105.159.139`) as a new release in
-`/var/www/sankhyadata/releases/`, then switches `/var/www/sankhyadata/current` to it
-(the last 5 releases are kept for rollback). The server's Caddy serves it at
-**https://sankhyadata.com** using [`deploy/sankhyadata.caddy`](deploy/sankhyadata.caddy),
-installed by [`deploy/install-site.sh`](deploy/install-site.sh); Caddy issues the HTTPS
-certificate automatically, and a rejected config is rolled back so other sites on the
-server keep running.
+[`.github/workflows/deploy-hetzner.yml`](.github/workflows/deploy-hetzner.yml), which builds
+the site and publishes it to the repo's `live` release. The Hetzner server
+(`178.105.159.139`) checks that release every 2 minutes
+([`deploy/pull.sh`](deploy/pull.sh), run by a systemd timer), verifies the checksums,
+unpacks a new build into `/var/www/sankhyadata/releases/<version>` and switches
+`/var/www/sankhyadata/current` to it (the last 5 are kept). Caddy serves it at
+**https://sankhyadata.com** with [`deploy/sankhyadata.caddy`](deploy/sankhyadata.caddy),
+installed by [`deploy/install-site.sh`](deploy/install-site.sh), which rolls back if Caddy
+rejects the config so the server's other sites keep running. No server credentials are
+stored in GitHub.
 
-One-time setup:
-- Repository secret `HETZNER_SSH_KEY`: the private key for `root@178.105.159.139`
-  (Settings → Secrets and variables → Actions).
-- DNS at Hostinger: `A` record `@` → `178.105.159.139` (replacing the parking record) and
-  `CNAME` `www` → `sankhyadata.com`.
-- GitHub Pages is not used; turn it off under Settings → Pages.
+One-time setup on the server, as root (for example from the Hetzner Cloud web console):
 
-Roll back: on the server, `ln -sfn /var/www/sankhyadata/releases/<older> /var/www/sankhyadata/current`.
+```bash
+curl -fsSL https://raw.githubusercontent.com/vamsi856/sankhyadata/main/deploy/setup-pull.sh | bash
+```
+
+DNS (Hostinger): `A` `@` → `178.105.159.139`; `CNAME` `www` → `sankhyadata.com`.
+
+Useful on the server: `systemctl list-timers sankhyadata-pull.timer`,
+`journalctl -u sankhyadata-pull -n 50`, roll back with
+`ln -sfn /var/www/sankhyadata/releases/<older> /var/www/sankhyadata/current`.
 
 ## How it is built (and why it is fast)
 

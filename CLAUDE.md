@@ -14,8 +14,8 @@ approved hours.
 - All copy and links: `src/content.ts`. Design tokens: `:root` in `src/index.css`.
 
 Commands: `npm run dev`, `npm run build` (output in `dist/`). GitHub holds only the code:
-`.github/workflows/deploy-hetzner.yml` ships `dist/` to the Hetzner server, where Caddy
-serves https://sankhyadata.com (`deploy/`). That server also runs the private portal; never
+`.github/workflows/deploy-hetzner.yml` publishes the built site to the `live` release and
+the Hetzner server pulls it every 2 minutes (`deploy/`); Caddy serves https://sankhyadata.com. That server also runs the private portal; never
 change its other Caddy sites.
 
 ## Budgets (the site must stay fast)

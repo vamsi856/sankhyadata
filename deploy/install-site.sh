@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# Runs on the server as root (called by the deploy workflow). Idempotent.
+# Runs on the server as root (called by sankhyadata-pull). Idempotent.
 # Activates an uploaded release and makes sure Caddy serves it, without touching other sites.
 set -euo pipefail
 RELEASE="$1"                      # e.g. /var/www/sankhyadata/releases/<sha>
+SITE_CADDY="${2:-/tmp/sankhyadata.caddy}"   # the site's Caddy config to install
 SITE_ROOT=/var/www/sankhyadata
 CADDYFILE=/etc/caddy/Caddyfile
 SITE_CONF=/etc/caddy/sites/sankhyadata.caddy
@@ -20,7 +21,7 @@ mkdir -p /etc/caddy/sites
 backup=$(mktemp -d)
 cp -a "$CADDYFILE" "$backup/Caddyfile"
 [ -f "$SITE_CONF" ] && cp -a "$SITE_CONF" "$backup/site.caddy"
-install -m 0644 /tmp/sankhyadata.caddy "$SITE_CONF"
+install -m 0644 "$SITE_CADDY" "$SITE_CONF"
 grep -qE '^\s*import\s+/etc/caddy/sites/\*' "$CADDYFILE" || printf '\nimport /etc/caddy/sites/*.caddy\n' >> "$CADDYFILE"
 
 if caddy validate --config "$CADDYFILE" --adapter caddyfile >/dev/null 2>&1; then
