@@ -1,4 +1,4 @@
-import { contact, credits, nav, site } from "@/content";
+import { contact, credits, footer, nav, site } from "@/content";
 import { Wordmark } from "./Header";
 
 export function Contact() {
@@ -11,7 +11,7 @@ export function Contact() {
         <p className="mb-0 mt-6 max-w-lg text-[1.125rem] text-ink-2">{contact.sentence}</p>
         <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
           <a className="btn btn-primary" href={`mailto:${site.email}?subject=Capture%20project`}>
-            Email {site.email}
+            {contact.button} {site.email}
           </a>
         </div>
       </div>
@@ -27,7 +27,7 @@ export function Footer() {
         <div>
           <Wordmark />
           <p className="mb-0 mt-4 max-w-sm text-[0.9375rem] text-ink-2">
-            Egocentric video, recorded, annotated and narrated by our own crew.
+            {footer.tagline}
           </p>
         </div>
         <nav aria-label="Footer">

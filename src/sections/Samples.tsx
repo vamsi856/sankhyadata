@@ -1,5 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
-import { samples, site } from "@/content";
+import { samples, samplesSection, site } from "@/content";
 
 export function Samples() {
   return (
@@ -7,10 +7,10 @@ export function Samples() {
       <div className="container-page py-20 md:py-28">
         <div className="grid gap-x-12 gap-y-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
           <h2 id="samples-title" className="m-0 max-w-md text-[clamp(2rem,4vw,3.25rem)]">
-            Watch an hour of every business type.
+            {samplesSection.title}
           </h2>
           <p className="m-0 max-w-lg self-end text-ink-2">
-            Raw first-person video from our library. The folder opens in Google Drive.
+            {samplesSection.sentence}
           </p>
         </div>
 

@@ -36,6 +36,16 @@
   --scrim: oklch(15% 0.01 250 / 0.62);
   --focus: oklch(19% 0.008 250);
 
+  /* The inverted band (.band-ink) */
+  --inv-paper: oklch(19% 0.008 250);
+  --inv-paper-2: oklch(22% 0.009 250);
+  --inv-paper-3: oklch(26% 0.01 250);
+  --inv-ink: oklch(96.2% 0.004 120);
+  --inv-ink-2: oklch(84% 0.008 120);
+  --inv-muted: oklch(70% 0.01 120);
+  --inv-rule: oklch(30% 0.01 250);
+  --inv-rule-2: oklch(42% 0.012 250);
+
   --font-sans: "Geologica", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -75,6 +85,21 @@
 @keyframes marquee-vertical {
   from { transform: translateY(0); }
   to { transform: translateY(calc(-100% - var(--gap))); }
+}
+
+/* One inverted band: the same tokens, redefined. Everything inside follows. */
+.band-ink {
+  --paper: var(--inv-paper);
+  --paper-2: var(--inv-paper-2);
+  --paper-3: var(--inv-paper-3);
+  --ink: var(--inv-ink);
+  --ink-2: var(--inv-ink-2);
+  --muted: var(--inv-muted);
+  --rule: var(--inv-rule);
+  --rule-2: var(--inv-rule-2);
+  --focus: var(--inv-ink);
+  background: var(--paper);
+  color: var(--ink);
 }
 
 /* ---- Base ---- */
@@ -244,7 +269,7 @@ html.lenis body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #billing li > span {
+  #invoicing li > span {
     transform: none !important;
   }
   *,

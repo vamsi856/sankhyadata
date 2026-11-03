@@ -93,7 +93,7 @@ export function CaptureFrame() {
       </div>
 
       <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-3 text-[0.875rem] text-muted">
-        <span>Example frame with each layer we add.</span>
+        <span>{hero.frame.caption}</span>
         <span className="flex gap-2" role="group" aria-label="Layers">
           <LayerToggle pressed={labels} onToggle={() => setLabels((v) => !v)}>
             Labels

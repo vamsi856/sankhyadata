@@ -3,7 +3,7 @@ import { Island } from "@/islands";
 
 export function Billing() {
   return (
-    <section id="billing" aria-labelledby="billing-title" className="border-t border-rule">
+    <section id="invoicing" aria-labelledby="billing-title" className="band-ink">
       <div className="container-page py-20 md:py-28">
         <div className="max-w-3xl">
           <h2 id="billing-title" className="m-0 text-[clamp(2.2rem,5vw,4rem)]">
