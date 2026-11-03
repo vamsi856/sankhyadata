@@ -5,7 +5,7 @@ export const site = {
   name: "SankhyaData",
   email: "hello@sankhyadata.com",
   description:
-    "SankhyaData records first-person video of real work for physical AI: 15,000+ hours across 70 business types. We supply the devices, recorders, annotators, narrators and IT support, and bill on approved hours.",
+    "SankhyaData records first-person video of real work for physical AI: 50,000+ hours of footage. We supply the devices, recorders, annotators, narrators and IT support, and bill on approved hours.",
 };
 
 export const nav = [
@@ -28,9 +28,9 @@ export const hero = {
 
 export const library = {
   title: "Seventy kinds of workplace, one camera angle: the worker’s own.",
-  figure: "15,000+",
+  figure: "50,000+",
   unit: "hours",
-  caption: "of first-person video from 70 business types, recorded on site where the work happens.",
+  caption: "of first-person video of real work, recorded on site where the work happens.",
   specs: [
     { term: "Video", detail: "1080p at 30 fps, HEVC originals" },
     { term: "Samples", detail: "One hour for every business type" },
