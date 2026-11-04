@@ -27,8 +27,8 @@ All text and links are in [`src/content.ts`](src/content.ts).
 
 GitHub only holds the code. Every push to `main` runs
 [`.github/workflows/deploy-hetzner.yml`](.github/workflows/deploy-hetzner.yml), which builds
-the site and publishes it to the repo's `live` release. The Hetzner server
-(`178.105.159.139`) checks that release every 2 minutes
+the site and publishes it to the repo's `live` release. The dedicated Hetzner server
+`sankhyadata-web` (Ashburn, US; `5.161.223.5`) checks that release every 2 minutes
 ([`deploy/pull.sh`](deploy/pull.sh), run by a systemd timer), verifies the checksums,
 unpacks a new build into `/var/www/sankhyadata/releases/<version>` and switches
 `/var/www/sankhyadata/current` to it (the last 5 are kept). Caddy serves it at
@@ -43,7 +43,8 @@ One-time setup on the server, as root (for example from the Hetzner Cloud web co
 curl -fsSL https://raw.githubusercontent.com/vamsi856/sankhyadata/main/deploy/setup-pull.sh | bash
 ```
 
-DNS (Hostinger): `A` `@` → `178.105.159.139`; `CNAME` `www` → `sankhyadata.com`.
+DNS (Hostinger): `A` `@` → `5.161.223.5`; `CNAME` `www` → `sankhyadata.com`. Hetzner firewall
+`sankhyadata-web`: inbound 80, 443 and ICMP only (SSH closed; use the Hetzner web console).
 
 New dedicated server (Hetzner project `sankhyadata`): with a project API token in
 `HCLOUD_TOKEN`, `python3 deploy/provision-hetzner.py` creates a firewall (80, 443, ICMP only)
