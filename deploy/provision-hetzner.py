@@ -46,9 +46,14 @@ def call(method, path, body=None):
 
 
 def pick_server_type(location):
+    # A price for a location does not mean the type can be ordered there: check the
+    # type's per-location availability.
     types = call("GET", "/server_types?per_page=50")["server_types"]
     options = []
     for t in types:
+        here = [l for l in t.get("locations", []) if l["name"] == location]
+        if not here or not here[0].get("available") or here[0].get("deprecation"):
+            continue
         if t.get("deprecated") or t.get("deprecation") or t["architecture"] != "x86" or t["memory"] < 2:
             continue
         for p in t["prices"]:
@@ -83,7 +88,7 @@ def ensure_firewall(dry):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--location", default="fsn1", help="fsn1 (Falkenstein), nbg1, hel1, ...")
+    ap.add_argument("--location", default="ash", help="ash (Ashburn, US East), hil (Hillsboro, US West), fsn1, nbg1, hel1, ...")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
 
