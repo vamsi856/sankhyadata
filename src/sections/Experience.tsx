@@ -18,27 +18,33 @@ export function Experience() {
               </span>
             </p>
             <p className="mb-0 mt-5 max-w-md text-[1.0625rem] text-ink-2">{experience.caption}</p>
+            <p className="mb-0 mt-3 text-[0.8125rem] text-muted">{experience.source}</p>
           </div>
         </div>
-
-        <dl className="m-0 mt-14 grid gap-y-6 border-t border-rule pt-8 sm:grid-cols-3 sm:gap-x-10">
-          {experience.specs.map((spec) => (
-            <div key={spec.term}>
-              <dt className="text-[0.875rem] text-muted">{spec.term}</dt>
-              <dd className="m-0 mt-1.5 text-[1.0625rem] text-ink">{spec.detail}</dd>
-            </div>
-          ))}
-        </dl>
       </div>
 
       <div className="border-t border-rule">
-        <ul aria-label={experience.listLabel} className="container-page my-0 flex list-none flex-wrap gap-x-10 gap-y-2 py-8">
-          {experience.types.map((type) => (
-            <li key={type} className="text-[clamp(1.125rem,1.8vw,1.5rem)] font-[300] tracking-[-0.02em] text-ink-2">
-              {type}
-            </li>
-          ))}
-        </ul>
+        <div className="container-page py-10">
+          <p id="environments-label" className="m-0 text-[0.875rem] text-muted">
+            {experience.listLabel}
+          </p>
+          <dl aria-labelledby="environments-label" className="m-0 mt-6 grid gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+            {experience.sectors.map((group) => (
+              <div key={group.sector}>
+                <dt className="text-[0.875rem] font-[420] text-ink">{group.sector}</dt>
+                <dd className="m-0 mt-2">
+                  <ul className="m-0 list-none p-0">
+                    {group.types.map((type) => (
+                      <li key={type} className="text-[1.125rem] font-[300] leading-relaxed tracking-[-0.015em] text-ink-2">
+                        {type}
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
     </section>
   );

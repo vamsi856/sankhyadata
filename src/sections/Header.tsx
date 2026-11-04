@@ -1,4 +1,4 @@
-import { nav, site } from "@/content";
+import { headerCta, nav, site } from "@/content";
 
 /**
  * The mark: a viewfinder's four corners around one chartreuse point, the colour our
@@ -30,7 +30,7 @@ export function Header() {
         <a href="#top" className="logo-link rounded-[4px] text-ink no-underline" aria-label={`${site.name}, back to top`}>
           <Wordmark animated />
         </a>
-        <nav aria-label="Sections" className="hidden md:block">
+        <nav aria-label="Sections" className="hidden lg:block">
           <ul className="m-0 flex list-none gap-1 p-0">
             {nav.map((item) => (
               <li key={item.href}>
@@ -44,8 +44,8 @@ export function Header() {
             ))}
           </ul>
         </nav>
-        <a href="#contact" className="btn btn-primary min-h-10 px-4 text-[0.9375rem]">
-          Talk to us
+        <a href={headerCta.href} className="btn btn-primary min-h-10 px-4 text-[0.9375rem]">
+          {headerCta.label}
         </a>
       </div>
     </header>

@@ -46,6 +46,11 @@ export function Samples() {
             .
           </p>
         )}
+        <p className="mb-0 mt-8 text-[0.9375rem] text-ink-2">
+          <a className="link" href={samplesSection.next.href}>
+            {samplesSection.next.label}
+          </a>
+        </p>
       </div>
     </section>
   );

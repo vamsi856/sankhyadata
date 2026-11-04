@@ -8,22 +8,10 @@
 	email hello@sankhyadata.com
 }
 
-sankhyadata.com {
-	root * /var/www/sankhyadata/current
-	encode zstd gzip
-	file_server
-
-	# Hashed build files never change; fonts and media may be replaced under the same name.
-	@hashed path /assets/*
-	header @hashed Cache-Control "public, max-age=31536000, immutable"
-	@static path /fonts/* /media/* /favicon.svg
-	header @static Cache-Control "public, max-age=604800"
-	@html path / /index.html /privacy/ /privacy/index.html
-	header @html Cache-Control "no-cache"
-
+(security_headers) {
 	header {
 		Strict-Transport-Security "max-age=31536000"
-		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
 		X-Frame-Options DENY
 		Cross-Origin-Opener-Policy same-origin
 		X-Content-Type-Options nosniff
@@ -33,6 +21,32 @@ sankhyadata.com {
 	}
 }
 
+sankhyadata.com {
+	root * /var/www/sankhyadata/current
+	encode zstd gzip
+	import security_headers
+	file_server
+
+	# Hashed build files never change; fonts, media and icons may be replaced under the same name.
+	@hashed path /assets/*
+	header @hashed Cache-Control "public, max-age=31536000, immutable"
+	@static path /fonts/* /media/* /brand/* /og/* /favicon.svg /favicon.ico /apple-touch-icon.png /icon-192.png /icon-512.png
+	header @static Cache-Control "public, max-age=604800"
+	@html path / /index.html /privacy/ /privacy/index.html
+	header @html Cache-Control "no-cache"
+
+	# Missing paths get the styled 404 page, with the same security headers.
+	handle_errors 404 {
+		root * /var/www/sankhyadata/current
+		import security_headers
+		rewrite * /404.html
+		file_server {
+			status 404
+		}
+	}
+}
+
 www.sankhyadata.com {
+	import security_headers
 	redir https://sankhyadata.com{uri} permanent
 }

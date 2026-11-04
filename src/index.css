@@ -27,13 +27,17 @@
   --paper-3: oklch(90% 0.008 120);
   --ink: oklch(19% 0.008 250);
   --ink-2: oklch(36% 0.01 250);
-  --muted: oklch(52% 0.012 250);
+  --muted: oklch(49% 0.012 250);
   --rule: oklch(86% 0.008 120);
   --rule-2: oklch(76% 0.01 120);
   --label: oklch(90% 0.2 125);
   --label-ink: oklch(22% 0.05 125);
   --on-image: oklch(98% 0.004 120);
-  --scrim: oklch(15% 0.01 250 / 0.62);
+  --scrim: oklch(15% 0.01 250 / 0.68);
+  /* Hairlines that carry meaning (tracks, control outlines, underlines): 3:1 or better. */
+  --line: oklch(61% 0.01 120);
+  /* Dark keyline that keeps chartreuse marks legible over bright photo areas. */
+  --label-keyline: oklch(22% 0.05 125 / 0.7);
   --focus: oklch(19% 0.008 250);
 
   /* The inverted band (.band-ink) */
@@ -45,6 +49,7 @@
   --inv-muted: oklch(70% 0.01 120);
   --inv-rule: oklch(30% 0.01 250);
   --inv-rule-2: oklch(42% 0.012 250);
+  --inv-line: oklch(52% 0.012 250);
 
   --font-sans: "Geologica", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
@@ -68,6 +73,7 @@
   --color-muted: var(--muted);
   --color-rule: var(--rule);
   --color-rule-2: var(--rule-2);
+  --color-line: var(--line);
   --color-label: var(--label);
   --color-label-ink: var(--label-ink);
   --color-on-image: var(--on-image);
@@ -97,6 +103,7 @@
   --muted: var(--inv-muted);
   --rule: var(--inv-rule);
   --rule-2: var(--inv-rule-2);
+  --line: var(--inv-line);
   --focus: var(--inv-ink);
   background: var(--paper);
   color: var(--ink);
@@ -140,14 +147,16 @@ h3 {
   color: var(--label-ink);
 }
 html {
-  scrollbar-color: var(--rule-2) var(--paper);
+  scrollbar-color: var(--line) var(--paper);
   caret-color: var(--ink);
 }
-:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 3px;
-  border-radius: 4px;
-  transition: none;
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 4px;
+    transition: none;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -239,7 +248,7 @@ html.lenis body {
   .btn-line {
     background: transparent;
     color: var(--ink);
-    box-shadow: inset 0 0 0 1px var(--rule-2);
+    box-shadow: inset 0 0 0 1px var(--line);
   }
   .btn-line:hover {
     box-shadow: inset 0 0 0 1px var(--ink);
@@ -248,7 +257,7 @@ html.lenis body {
   .link {
     color: var(--ink);
     text-decoration: underline;
-    text-decoration-color: var(--rule-2);
+    text-decoration-color: var(--line);
     text-decoration-thickness: 1px;
     text-underline-offset: 0.25em;
     transition: text-decoration-color var(--dur-short) var(--ease-out);
@@ -309,6 +318,11 @@ html.lenis body {
 @media (prefers-reduced-motion: reduce) {
   #invoicing li > span {
     transform: none !important;
+  }
+  .logo-corner,
+  .logo-dot,
+  .logo-word {
+    animation: none !important;
   }
   *,
   *::before,

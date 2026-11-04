@@ -2,7 +2,7 @@ import { itTeam } from "@/content";
 
 export function ITTeam() {
   return (
-    <section aria-labelledby="it-title" className="bg-paper-2">
+    <section id="it" aria-labelledby="it-title" className="bg-paper-2">
       <div className="container-page py-20 md:py-28">
         <div className="max-w-2xl">
           <h2 id="it-title" className="m-0 text-[clamp(2rem,4vw,3.25rem)]">

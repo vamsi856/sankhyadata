@@ -4,6 +4,8 @@ import { Experience } from "@/sections/Experience";
 import { HowItWorks } from "@/sections/HowItWorks";
 import { ITTeam } from "@/sections/ITTeam";
 import { Rigs } from "@/sections/Rigs";
+import { Deliverables } from "@/sections/Deliverables";
+import { Questions } from "@/sections/Questions";
 import { Billing } from "@/sections/Billing";
 import { Assurance } from "@/sections/Assurance";
 import { Samples } from "@/sections/Samples";
@@ -26,9 +28,11 @@ export default function App() {
         <HowItWorks />
         <ITTeam />
         <Rigs />
+        <Deliverables />
         <Billing />
         <Assurance />
         <Samples />
+        <Questions />
         <Contact />
       </main>
       <Footer />

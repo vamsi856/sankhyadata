@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
  * inside its box, the clay tag outside to the left, over the empty wheel.
  */
 const boxes = [
-  { id: "hands", label: "Hands, in contact", x: 38.5, y: 3, w: 28, h: 46, tag: "inside" as const },
+  { id: "hands", label: "Hands: in contact", x: 38.5, y: 3, w: 28, h: 46, tag: "inside" as const },
   { id: "clay", label: "Object: clay", x: 36.5, y: 39.5, w: 22, h: 34.5, tag: "left" as const },
 ];
 
@@ -57,7 +57,7 @@ export function CaptureFrame() {
           {boxes.map((b, i) => (
             <m.div
               key={b.id}
-              className="absolute rounded-[3px] border-[1.5px] border-label"
+              className="absolute rounded-[3px] border-[1.5px] border-label shadow-[0_0_0_1px_var(--label-keyline),inset_0_0_0_1px_var(--label-keyline)]"
               style={{ left: `${b.x}%`, top: `${b.y}%`, width: `${b.w}%`, height: `${b.h}%` }}
               initial={{ opacity: 0, scale: 1.06 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -87,16 +87,16 @@ export function CaptureFrame() {
           transition={{ duration: 0.35, ease: EASE_OUT }}
           data-layer="narration"
         >
-          <span className="text-on-image/70">Narrator: </span>
+          <span className="text-on-image/85">Narrator: </span>
           {hero.frame.narration}
         </m.p>
       </div>
 
       <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-3 text-[0.875rem] text-muted">
         <span>{hero.frame.caption}</span>
-        <span className="flex gap-2" role="group" aria-label="Layers">
+        <span className="flex gap-2" role="group" aria-label="Annotation and narration layers">
           <LayerToggle pressed={labels} onToggle={() => setLabels((v) => !v)}>
-            Labels
+            Annotation
           </LayerToggle>
           <LayerToggle pressed={narration} onToggle={() => setNarration((v) => !v)}>
             Narration
@@ -123,7 +123,7 @@ function LayerToggle({
       onClick={onToggle}
       className={cn(
         "inline-flex min-h-9 items-center gap-2 rounded-full px-3.5 text-[0.875rem] text-ink",
-        "shadow-[inset_0_0_0_1px_var(--rule-2)] transition-[box-shadow,background-color] duration-150 ease-out",
+        "shadow-[inset_0_0_0_1px_var(--line)] transition-[box-shadow,background-color] duration-150 ease-out",
         "hover:shadow-[inset_0_0_0_1px_var(--ink)]",
         pressed && "bg-paper-2",
       )}
@@ -131,8 +131,8 @@ function LayerToggle({
       <span
         aria-hidden
         className={cn(
-          "h-2.5 w-2.5 rounded-full shadow-[inset_0_0_0_1px_var(--rule-2)] transition-colors duration-150",
-          pressed ? "bg-label shadow-[inset_0_0_0_1px_var(--label-ink)]" : "bg-transparent",
+          "h-2.5 w-2.5 rounded-full transition-colors duration-150",
+          pressed ? "bg-label shadow-[inset_0_0_0_1px_var(--label-ink)]" : "bg-transparent shadow-[inset_0_0_0_1px_var(--line)]",
         )}
       />
       {children}

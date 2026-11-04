@@ -29,7 +29,7 @@ export function BillingTrack() {
           <li key={state} className="relative pb-9 pl-9 last:pb-0 sm:pb-0 sm:pl-0 sm:pr-3 sm:pt-9">
             {i < n - 1 && (
               <>
-                <span aria-hidden className={cn(segment, "bg-rule-2")} />
+                <span aria-hidden className={cn(segment, "bg-line")} />
                 <m.span
                   aria-hidden
                   className={cn(
@@ -47,7 +47,7 @@ export function BillingTrack() {
               aria-hidden
               className={cn(
                 "absolute left-0 top-[0.3rem] h-[13px] w-[13px] rounded-full border sm:top-0",
-                approved ? "border-label-ink" : "border-ink",
+                approved ? "border-label" : "border-ink",
               )}
               variants={{
                 idle: { backgroundColor: "var(--paper)", scale: 1 },
