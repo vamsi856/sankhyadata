@@ -1,5 +1,13 @@
-# SankhyaData marketing site, served by the portal server's Caddy.
-# Installed by .github/workflows/deploy.yml to /etc/caddy/sites/sankhyadata.caddy.
+# SankhyaData marketing site, on the dedicated Hetzner server (project "sankhyadata").
+# Pulled from the repo's "live" release and installed to /etc/caddy/sites/sankhyadata.caddy.
+# The server's main Caddyfile only imports this file, so the global options below come first.
+
+{
+	# Contact for certificate expiry notices; also enables ZeroSSL as the fallback CA
+	# when Let's Encrypt is unavailable.
+	email hello@sankhyadata.com
+}
+
 sankhyadata.com {
 	root * /var/www/sankhyadata/current
 	encode zstd gzip
