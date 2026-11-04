@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="192" height="192" fill="none" overflow="visible">
+  <title>SankhyaData</title>
+  <style>
+    .c { transform-box: fill-box; animation: lock 900ms cubic-bezier(.22,1,.36,1) both; }
+    .c1 { --x: -4px; --y: -4px; animation-delay: 100ms; }
+    .c2 { --x: 4px; --y: -4px; animation-delay: 180ms; }
+    .c3 { --x: 4px; --y: 4px; animation-delay: 260ms; }
+    .c4 { --x: -4px; --y: 4px; animation-delay: 340ms; }
+    .d { transform-box: fill-box; transform-origin: center; animation: land 520ms cubic-bezier(.22,1,.36,1) 880ms both; }
+    @keyframes lock { from { opacity: 0; transform: translate(var(--x), var(--y)); } to { opacity: 1; transform: none; } }
+    @keyframes land { 0% { transform: scale(0); } 65% { transform: scale(1.3); } 100% { transform: scale(1); } }
+    @media (prefers-reduced-motion: reduce) { .c, .d { animation: none; } }
+  </style>
+  <g stroke="#111417" stroke-width="1.6">
+    <path class="c c1" d="M3 8V3h5"/><path class="c c2" d="M16 3h5v5"/><path class="c c3" d="M21 16v5h-5"/><path class="c c4" d="M8 21H3v-5"/>
+  </g>
+  <circle class="d" cx="12" cy="12" r="3.2" fill="#c0f447" stroke="#151e03" stroke-width="1"/>
+</svg>

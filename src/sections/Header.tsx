@@ -1,13 +1,24 @@
 import { nav, site } from "@/content";
 
-export function Wordmark() {
+/**
+ * The mark: a viewfinder's four corners around one chartreuse point, the colour our
+ * annotators use for what they identify. With `animated`, the corners close in like a
+ * focus frame locking, then the point lands (CSS only, once, on first paint).
+ */
+export function Wordmark({ animated = false }: { animated?: boolean }) {
+  const a = (name: string) => (animated ? name : undefined);
   return (
     <span className="inline-flex items-center gap-2.5 text-[1.0625rem] font-[460] tracking-[-0.02em] [font-variation-settings:'SHRP'_100]">
-      <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5" fill="none">
-        <path d="M3 8V3h5M16 3h5v5M21 16v5h-5M8 21H3v-5" stroke="currentColor" strokeWidth="1.6" />
-        <circle cx="12" cy="12" r="3.2" fill="var(--label)" stroke="var(--label-ink)" strokeWidth="1" />
+      <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5 overflow-visible" fill="none">
+        <g stroke="currentColor" strokeWidth="1.6">
+          <path className={a("logo-corner lc-1")} d="M3 8V3h5" />
+          <path className={a("logo-corner lc-2")} d="M16 3h5v5" />
+          <path className={a("logo-corner lc-3")} d="M21 16v5h-5" />
+          <path className={a("logo-corner lc-4")} d="M8 21H3v-5" />
+        </g>
+        <circle className={a("logo-dot")} cx="12" cy="12" r="3.2" fill="var(--label)" stroke="var(--label-ink)" strokeWidth="1" />
       </svg>
-      {site.name}
+      <span className={a("logo-word")}>{site.name}</span>
     </span>
   );
 }
@@ -16,8 +27,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-rule bg-paper">
       <div className="container-page flex h-16 items-center justify-between gap-6">
-        <a href="#top" className="rounded-[4px] text-ink no-underline" aria-label={`${site.name}, back to top`}>
-          <Wordmark />
+        <a href="#top" className="logo-link rounded-[4px] text-ink no-underline" aria-label={`${site.name}, back to top`}>
+          <Wordmark animated />
         </a>
         <nav aria-label="Sections" className="hidden md:block">
           <ul className="m-0 flex list-none gap-1 p-0">
