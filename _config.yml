@@ -1,0 +1,5 @@
+# This repository is NOT hosted on GitHub Pages: the site is served from Hetzner at
+# https://sankhyadata.com. If GitHub Pages still builds this branch, publish nothing except
+# 404.html, which redirects visitors to the real site (and is never indexed).
+exclude: ["*"]
+include: ["404.html"]
