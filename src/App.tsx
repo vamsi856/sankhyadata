@@ -5,6 +5,7 @@ import { HowItWorks } from "@/sections/HowItWorks";
 import { ITTeam } from "@/sections/ITTeam";
 import { Rigs } from "@/sections/Rigs";
 import { Billing } from "@/sections/Billing";
+import { Assurance } from "@/sections/Assurance";
 import { Samples } from "@/sections/Samples";
 import { Contact, Footer } from "@/sections/Contact";
 
@@ -26,6 +27,7 @@ export default function App() {
         <ITTeam />
         <Rigs />
         <Billing />
+        <Assurance />
         <Samples />
         <Contact />
       </main>

@@ -44,6 +44,11 @@ export function Footer() {
                 Contact
               </a>
             </li>
+            <li>
+              <a className="link text-ink-2 no-underline hover:text-ink" href={footer.privacy.href}>
+                {footer.privacy.label}
+              </a>
+            </li>
           </ul>
         </nav>
         <div className="flex flex-col gap-2 border-t border-rule pt-6 text-[0.8125rem] text-muted md:col-span-2 md:flex-row md:justify-between">

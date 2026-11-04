@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { renderToString } from "react-dom/server";
 import App from "./App";
+import { PrivacyPage } from "./pages/Privacy";
 
 export function render() {
   return renderToString(
@@ -8,4 +9,8 @@ export function render() {
       <App />
     </StrictMode>,
   );
+}
+
+export function renderPrivacy() {
+  return renderToString(<PrivacyPage />);
 }

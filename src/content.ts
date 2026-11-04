@@ -85,8 +85,8 @@ export const itTeam = {
   items: [
     { title: "Device provisioning", text: "Configuration, software updates, charging regimes and spare inventory for every rig." },
     { title: "Site readiness", text: "Network, power and local storage commissioned before the first take." },
-    { title: "Data custody", text: "Secure ingestion into managed storage, with verified nightly backups and tamper-evident audit records." },
     { title: "Client portal", text: "Authenticated access to review queues and delivery batches." },
+    { title: "Field support", text: "Technical assistance for recorders throughout each engagement, on site or remotely." },
   ],
 };
 
@@ -127,6 +127,28 @@ export const billing = {
   } as Record<string, string>,
 };
 
+export const assurance = {
+  title: "Confidentiality and integrity are engineered in, not appended.",
+  items: [
+    {
+      title: "Confidential handling",
+      text: "Footage is treated as confidential client material and is accessible solely through authenticated portal accounts.",
+    },
+    {
+      title: "Verifiable delivery",
+      text: "Every batch ships with a manifest recording each file's duration, size and MD5 checksum, together with a verification script.",
+    },
+    {
+      title: "Durable custody",
+      text: "Secure ingestion into managed storage, with verified nightly backups and tamper-evident audit records.",
+    },
+    {
+      title: "Audited quality",
+      text: "Automated scoring of every submission, human adjudication of exceptions and a one-in-ten audit of approvals.",
+    },
+  ],
+};
+
 export const samplesSection = {
   title: "Representative recordings.",
   sentence: "A curated hour from each operational environment, illustrating our capture standard. Hosted on Google Drive.",
@@ -153,6 +175,30 @@ export const contact = {
 
 export const footer = {
   tagline: "Egocentric data acquisition, annotation and narration, delivered by in-house teams.",
+  privacy: { label: "Privacy notice", href: "privacy/" },
+};
+
+export const privacy = {
+  title: "Privacy notice",
+  updated: "4 November 2026",
+  sections: [
+    {
+      heading: "What this website collects",
+      body: "This website sets no cookies and uses no analytics, advertising or tracking technologies. It loads nothing from other domains: fonts and images are served from our own server, and our web server does not keep access logs.",
+    },
+    {
+      heading: "When you write to us",
+      body: "If you contact us at hello@sankhyadata.com, we use your message and contact details solely to respond to you and to discuss the engagement you enquire about.",
+    },
+    {
+      heading: "Hosting and email",
+      body: "The website runs on a dedicated server operated by Hetzner Online in the United States. Our email is provided by Hostinger. Links to representative recordings open Google Drive, which is governed by Google's own privacy policy.",
+    },
+    {
+      heading: "Your requests",
+      body: "To ask what information you have sent us, or to have it deleted, write to hello@sankhyadata.com.",
+    },
+  ],
 };
 
 export const credits = {
