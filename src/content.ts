@@ -5,7 +5,7 @@
 
 export const site = {
   name: "SankhyaData",
-  email: "hello@sankhyadata.com",
+  email: "contact@sankhyadata.com",
   url: "https://sankhyadata.com/",
   description:
     "Egocentric video acquisition for physical AI: capture rigs, trained recorders and in-house annotation, narration, QC and IT teams. Invoiced on approved hours.",
@@ -111,10 +111,10 @@ export const rigs = {
       notes: "Records from just above the recorder’s eyeline.",
     },
     {
-      name: "Pocket-held mobile",
-      mount: "Shirt pocket, lens exposed",
-      vantage: "Chest level",
-      notes: "Records a torso-level view of the work.",
+      name: "Cap camera, phone in pocket",
+      mount: "Camera on the cap; phone in the pocket",
+      vantage: "Brow level",
+      notes: "The cap-mounted camera is connected to a smartphone carried in the recorder’s pocket.",
     },
     {
       name: "Human rig",
@@ -202,7 +202,7 @@ export const questions = {
     },
     {
       q: "Which capture rigs do you deploy?",
-      a: "Head-mounted iPhones, cap-mounted mobiles, pocket-held mobiles and human rigs, our preferred configuration. All record 1080p at 30 fps, encoded in HEVC (H.265).",
+      a: "Head-mounted iPhones, cap-mounted mobiles, cap cameras connected to a phone carried in the pocket, and human rigs, our preferred configuration. All record 1080p at 30 fps, encoded in HEVC (H.265).",
     },
     {
       q: "Where is footage recorded?",
@@ -226,7 +226,7 @@ export const questions = {
     },
     {
       q: "How does an engagement begin?",
-      a: "Write to hello@sankhyadata.com with your task taxonomy, target operational environments and required hours. We respond with a scoped capture plan and representative samples.",
+      a: "Write to contact@sankhyadata.com with your task taxonomy, target operational environments and required hours. We respond with a scoped capture plan and representative samples.",
     },
   ],
 };
@@ -242,7 +242,7 @@ export const contact = {
     "Task taxonomy:",
     "Target operational environments:",
     "Required approved hours:",
-    "Preferred capture rig (head-mounted iPhone, cap-mounted mobile, pocket-held mobile, human rig):",
+    "Preferred capture rig (head-mounted iPhone, cap-mounted mobile, cap camera with phone in pocket, human rig):",
     "Layers required (scene descriptions, subtitles, voice-over):",
     "Annotation guidelines available (yes / no):",
   ],
@@ -267,7 +267,7 @@ export const privacy = {
     },
     {
       heading: "When you write to us",
-      body: "If you contact us at hello@sankhyadata.com, we use your message and contact details solely to respond to you and to discuss the engagement you enquire about.",
+      body: "If you contact us at contact@sankhyadata.com, we use your message and contact details solely to respond to you and to discuss the engagement you enquire about.",
     },
     {
       heading: "Hosting and email",
@@ -275,7 +275,7 @@ export const privacy = {
     },
     {
       heading: "Your requests",
-      body: "To ask what information you have sent us, or to have it deleted, write to hello@sankhyadata.com.",
+      body: "To ask what information you have sent us, or to have it deleted, write to contact@sankhyadata.com.",
     },
   ],
 };

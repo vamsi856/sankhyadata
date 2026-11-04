@@ -1,4 +1,6 @@
+# SankhyaData: all crawlers, including AI assistants, may read the public site.
 User-agent: *
 Allow: /
 
 Sitemap: https://sankhyadata.com/sitemap.xml
+# LLM-readable summary: https://sankhyadata.com/llms.txt

@@ -19,3 +19,4 @@ export function renderPrivacy() {
 export function renderNotFound() {
   return renderToString(<NotFoundPage />);
 }
+export * as content from "./content";

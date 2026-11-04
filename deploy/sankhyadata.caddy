@@ -5,7 +5,7 @@
 {
 	# Contact for certificate expiry notices; also enables ZeroSSL as the fallback CA
 	# when Let's Encrypt is unavailable.
-	email hello@sankhyadata.com
+	email contact@sankhyadata.com
 }
 
 (security_headers) {

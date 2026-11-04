@@ -6,12 +6,13 @@
 import { readFile, writeFile, rm, mkdir } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import path from "node:path";
+import { jsonLd, sitemap, llms, llmsFull } from "./seo.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(root, "dist");
 const indexPath = path.join(dist, "index.html");
 
-const { render, renderPrivacy, renderNotFound } = await import(
+const { render, renderPrivacy, renderNotFound, content } = await import(
   pathToFileURL(path.join(root, "dist-server", "entry-server.js")).href
 );
 
@@ -32,8 +33,15 @@ await writeFile(
   indexPath,
   template
     .replace(match[0], () => `<style>${css.replaceAll("url(../", "url(./")}</style>`)
-    .replace('<div id="root"></div>', () => `<div id="root">${appHtml}</div>`),
+    .replace('<div id="root"></div>', () => `<div id="root">${appHtml}</div>`)
+    .replace("</head>", () => `  <script type="application/ld+json">${JSON.stringify(jsonLd(content))}</script>\n  </head>`),
 );
+
+// SEO and machine-readable files, generated from the same content as the page.
+const today = new Date().toISOString().slice(0, 10);
+await writeFile(path.join(dist, "sitemap.xml"), sitemap(today));
+await writeFile(path.join(dist, "llms.txt"), llms(content));
+await writeFile(path.join(dist, "llms-full.txt"), llmsFull(content));
 
 // Secondary pages: same head and styles, no scripts, preloads, social tags or structured data,
 // and absolute asset paths (they live below the root or are served for any missing path).
