@@ -20,6 +20,10 @@ pulls it every 2 minutes (`deploy/pull.sh`); Caddy serves https://sankhyadata.co
 automatic certificates (Let's Encrypt, ZeroSSL fallback). Hetzner firewall: inbound 80, 443
 and ICMP only. DNS is at Hostinger (A record only; email records must be kept).
 
+GitHub Pages is not used, but the repo setting still builds `main` with Jekyll. The root
+`_config.yml` and `404.html` make that build publish only a redirect to sankhyadata.com:
+keep both files (they are not part of the Vite build).
+
 ## Budgets (the site must stay fast)
 
 - Lighthouse mobile 98+ in all four categories; CLS 0.
