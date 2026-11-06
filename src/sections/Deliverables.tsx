@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { deliverables } from "@/content";
 
 export function Deliverables() {
@@ -9,6 +10,15 @@ export function Deliverables() {
             {deliverables.title}
           </h2>
           <p className="mb-0 mt-5 max-w-sm text-ink-2">{deliverables.sentence}</p>
+          {/* A batch drawn as an exploded stack of plates, one per row; hovering a row lifts
+              its plate (CSS :has, no JavaScript). Decorative, so hidden from assistive tech. */}
+          <div aria-hidden className="batch-stack mt-10 hidden lg:block">
+            <div className="batch-iso">
+              {deliverables.rows.map((row, i) => (
+                <span key={row.term} className="plate" style={{ "--i": deliverables.rows.length - 1 - i } as CSSProperties} />
+              ))}
+            </div>
+          </div>
         </div>
         <dl className="m-0 border-t border-rule-2">
           {deliverables.rows.map((row) => (

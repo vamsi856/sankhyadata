@@ -374,6 +374,75 @@ html.lenis body {
   to { transform: translateY(100%); }
 }
 
+/* Capture frame depth: three planes (photograph, annotation, narration) in one 3D stage.
+   Each raised plane is scaled by (P - z) / P so that, flat, it projects exactly onto the
+   photograph; only a lean (set by the island for a fine pointer) reveals the separation. */
+.depth {
+  perspective: 1400px;
+}
+.depth-stage {
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 700ms var(--ease-out);
+}
+.depth-near {
+  transform: translateZ(44px) scale(0.968571);
+}
+.depth-nearer {
+  transform: translateZ(72px) scale(0.948571);
+}
+
+/* Deliverables: a batch as an isometric stack of plates (pure CSS 3D). */
+@property --gap {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 14px;
+}
+.batch-stack {
+  height: 19rem;
+  display: grid;
+  place-items: end center;
+  padding-bottom: 3.5rem; /* the base plate stays put; the stack opens upward */
+}
+.batch-iso {
+  --gap: 14px;
+  position: relative;
+  width: 12rem;
+  height: 8rem;
+  transform-style: preserve-3d;
+  transform: rotateX(58deg) rotateZ(-42deg);
+  transition: --gap 600ms var(--ease-out);
+}
+#deliverables:has(dl:hover) .batch-iso {
+  --gap: 26px;
+}
+.plate {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  background: color-mix(in oklch, var(--paper) 82%, transparent);
+  box-shadow: inset 0 0 0 1px var(--rule-2);
+  transform: translateZ(calc(var(--i) * var(--gap)));
+  transition: background-color var(--dur-short) var(--ease-out), translate 400ms var(--ease-out);
+}
+.plate:first-child {
+  background-image: linear-gradient(var(--rule-2) 1px, transparent 1px), linear-gradient(90deg, var(--rule-2) 1px, transparent 1px);
+  background-size: 1.5rem 1.5rem;
+  background-color: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+#deliverables:has(dl > div:nth-child(1):hover) .plate:nth-child(1),
+#deliverables:has(dl > div:nth-child(2):hover) .plate:nth-child(2),
+#deliverables:has(dl > div:nth-child(3):hover) .plate:nth-child(3),
+#deliverables:has(dl > div:nth-child(4):hover) .plate:nth-child(4),
+#deliverables:has(dl > div:nth-child(5):hover) .plate:nth-child(5),
+#deliverables:has(dl > div:nth-child(6):hover) .plate:nth-child(6),
+#deliverables:has(dl > div:nth-child(7):hover) .plate:nth-child(7) {
+  background: var(--label);
+  box-shadow: inset 0 0 0 1px var(--label-ink);
+  translate: 0 0 10px;
+}
+
 /* Rig table rows answer the pointer. */
 .rig-row {
   transition: background-color var(--dur-short) var(--ease-out);
@@ -415,6 +484,8 @@ html.lenis body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .depth-stage { transform: none; transition: none; }
+  .batch-iso, .plate { transition: none; }
   .word-in,
   .scan {
     animation: none !important;

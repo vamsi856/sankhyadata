@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { m, EASE_OUT } from "@/lib/motion";
 import { hero } from "@/content";
 import { cn } from "@/lib/utils";
@@ -18,10 +18,34 @@ const media = (name: string) => `media/${name}`;
 export function CaptureFrame() {
   const [labels, setLabels] = useState(true);
   const [narration, setNarration] = useState(true);
+  const stage = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState(false);
+
+  // Depth: the frame leans toward a fine pointer, so the annotation and narration planes
+  // separate from the photograph. Off for touch and for reduced motion; at rest it is flat.
+  useEffect(() => {
+    const ok = matchMedia("(hover: hover) and (pointer: fine)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setTilt(ok);
+  }, []);
+  const lean = (e: { clientX: number; clientY: number; currentTarget: HTMLElement }) => {
+    const el = stage.current;
+    if (!tilt || !el) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    el.style.setProperty("--ry", `${(x * 9).toFixed(2)}deg`);
+    el.style.setProperty("--rx", `${(-y * 7).toFixed(2)}deg`);
+  };
+  const rest = () => {
+    stage.current?.style.removeProperty("--ry");
+    stage.current?.style.removeProperty("--rx");
+  };
 
   return (
     <figure className="m-0">
-      <div className="ticks relative isolate aspect-[3/2] overflow-hidden rounded-[var(--radius-card)] bg-paper-3 p-px">
+      <div className="depth" onPointerMove={lean} onPointerLeave={rest}>
+      <div ref={stage} className="depth-stage relative aspect-[3/2]">
+      <div className="ticks absolute inset-0 isolate overflow-hidden rounded-[var(--radius-card)] bg-paper-3 p-px">
         <picture>
           <source
             type="image/avif"
@@ -46,9 +70,10 @@ export function CaptureFrame() {
 
         {/* One focus sweep across the frame on first paint (CSS only). */}
         <div aria-hidden className="scan pointer-events-none absolute inset-0" />
-
+      </div>
 
         {/* Annotator layer */}
+        <div className="depth-plane depth-near pointer-events-none absolute inset-0">
         <m.div
           aria-hidden
           className="pointer-events-none absolute inset-0"
@@ -80,9 +105,11 @@ export function CaptureFrame() {
             </m.div>
           ))}
         </m.div>
+        </div>
 
         {/* Narrator layer: a subtitle line. Visible from first paint (it is often the
             largest text on screen); only the toggle animates it. */}
+        <div className="depth-plane depth-nearer pointer-events-none absolute inset-0">
         <m.p
           className="pointer-events-none absolute inset-x-3 bottom-3 m-0 rounded-[4px] bg-scrim px-3 py-2 text-[0.9375rem] leading-snug text-on-image sm:inset-x-4 sm:bottom-4"
           initial={false}
@@ -93,6 +120,8 @@ export function CaptureFrame() {
           <span className="text-on-image/85">Narrator: </span>
           {hero.frame.narration}
         </m.p>
+        </div>
+      </div>
       </div>
 
       <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-3 text-[0.875rem] text-muted">
