@@ -41,7 +41,7 @@ export const experience = {
   caption: "of egocentric footage handled by our teams, recorded on site during day-to-day operations.",
   capacity: {
     figure: "2,000",
-    unit: "approved hours",
+    unit: "approved hours a week",
     caption: "deliverable through our field contributor network.",
   },
   source: "Figures from our own records.",
@@ -90,12 +90,12 @@ export const methodology = {
 
 export const itTeam = {
   title: "An in-house IT function underpins every engagement.",
-  sentence: "Our own IT engineers provision every device, prepare each capture site and support recorders in the field.",
+  sentence: "Our own IT engineers provision every device, prepare each capture site and stand by to assist field officers and recorders the moment an issue arises.",
   items: [
     { title: "Device provisioning", text: "Every rig is configured, updated and charged by our IT staff before deployment." },
     { title: "Site readiness", text: "Each capture site is prepared and checked by our IT staff before recording begins." },
     { title: "Client portal", text: "Authenticated access to review queues and delivery batches." },
-    { title: "Field support", text: "Technical assistance for recorders throughout each engagement, on site or remotely." },
+    { title: "Immediate field support", text: "Our IT team is on call to field officers throughout every capture session, resolving device and recording issues at once, on site or remotely." },
   ],
 };
 
@@ -117,9 +117,9 @@ export const rigs = {
     },
     {
       name: "Cap camera, phone in pocket",
-      mount: "Camera on the cap; phone in the pocket",
+      mount: "Camera on the cap, USB-C to the phone",
       vantage: "Brow level",
-      notes: "The cap-mounted camera is connected to a smartphone carried in the recorder’s pocket.",
+      notes: "The cap camera connects by USB-C to a smartphone in the recorder’s pocket, which records through the capture app.",
     },
     {
       name: "Human rig",
@@ -132,7 +132,7 @@ export const rigs = {
   options: [
     {
       title: "Client-supplied devices",
-      text: "Where a programme specifies its own capture hardware, such as smart glasses or a proprietary head rig, we take custody of the client’s devices. Our IT team provisions and maintains them for the duration of the engagement, and our recorders capture with them under the same methodology and quality control.",
+      text: "Where a programme specifies its own capture hardware, such as smart glasses or a proprietary head rig, we take custody of the client’s devices. Our IT team provisions and maintains them for the duration of the engagement, and our recorders capture with them under the same methodology and quality control. Our teams have worked with established capture and recording platforms.",
     },
     {
       title: "Directed tasks",
@@ -218,11 +218,19 @@ export const questions = {
     },
     {
       q: "Which capture rigs do you deploy?",
-      a: "Head-mounted iPhones, cap-mounted mobiles, cap cameras connected to a phone carried in the pocket, and human rigs, our preferred configuration. All record 1080p at 30 fps, encoded in HEVC (H.265).",
+      a: "Head-mounted iPhones, cap-mounted mobiles, cap cameras connected by USB-C to a phone in the pocket that records through the capture app, and human rigs, our preferred configuration. All record 1080p at 30 fps, encoded in HEVC (H.265).",
     },
     {
       q: "Can you capture with our own devices?",
       a: "Yes. We take custody of client-supplied devices; our IT team provisions and maintains them, and our recorders capture with them under the same methodology and quality control as our own rigs.",
+    },
+    {
+      q: "Can you work with our recording platform?",
+      a: "Yes. Our teams have experience with established capture and recording platforms, and our IT team prepares devices and recorders for the platform a programme specifies.",
+    },
+    {
+      q: "What happens if a device fails in the field?",
+      a: "Our IT team is on call to field officers throughout every capture session and resolves device and recording issues at once, on site or remotely.",
     },
     {
       q: "Can your recorders perform tasks we specify?",
@@ -230,7 +238,7 @@ export const questions = {
     },
     {
       q: "What volume can you deliver?",
-      a: "Through our field contributor network, we can deliver 2,000 approved hours. Only hours that pass quality control are counted, invoiced and delivered.",
+      a: "Through our field contributor network, we can deliver 2,000 approved hours a week. Only hours that pass quality control are counted, invoiced and delivered.",
     },
     {
       q: "Where is footage recorded?",
