@@ -177,19 +177,19 @@ export const assurance = {
 
 export const samplesSection = {
   title: "One representative hour from each operational environment.",
-  sentence: "Review our capture standard before commissioning: raw first-person recordings, shared through a Google Drive folder.",
+  sentence: "Review our capture standard before commissioning: raw first-person recordings with their metadata, viewable in the browser through our samples viewer.",
   next: { label: "Then send us your brief", href: "#contact" },
 };
 
 /**
- * Google Drive folders with sample recordings, shown as rows in the Samples section.
- * Each folder must be set to "Anyone with the link can view".
+ * Sample recordings, shown as rows in the Samples section. The link opens the samples
+ * viewer (served at samples.sankhyadata.com) and signs the visitor in to view-only access.
  */
 export const samples: { title: string; text: string; href: string }[] = [
   {
     title: "Sample folder",
     text: "163 recordings, approximately 66 hours, spanning 69 operational environments.",
-    href: "https://drive.google.com/drive/folders/1rkpSmdg9qPHSHGtRoVYuPVcDalpMD1Js",
+    href: "https://samples.sankhyadata.com/l/VmsbjbIHfe7fT6LKe_cTCkFyJBU8orNO",
   },
 ];
 
@@ -222,7 +222,7 @@ export const questions = {
     },
     {
       q: "Can we review footage before commissioning?",
-      a: "Yes. Our representative set holds approximately one hour from each of 69 operational environments, shared through a Google Drive folder.",
+      a: "Yes. Our representative set holds approximately one hour from each of 69 operational environments, viewable in the browser through our samples viewer.",
     },
     {
       q: "How does an engagement begin?",
@@ -271,7 +271,7 @@ export const privacy = {
     },
     {
       heading: "Hosting and email",
-      body: "The website is served from a cloud server, used solely for this website, operated by Hetzner Online in Ashburn, Virginia (United States). Email to sankhyadata.com addresses is hosted by Hostinger. Links to representative recordings open Google Drive, which is governed by Google’s own privacy policy.",
+      body: "The website is served from a cloud server, used solely for this website, operated by Hetzner Online in Ashburn, Virginia (United States). Email to sankhyadata.com addresses is hosted by Hostinger. The link to representative recordings opens our samples viewer at samples.sankhyadata.com, which sets a session cookie solely to grant view-only access.",
     },
     {
       heading: "Your requests",

@@ -29,9 +29,9 @@ export function Samples() {
                     {s.text}
                   </span>
                   <span className="col-start-2 row-span-2 row-start-1 inline-flex items-center gap-2 text-[0.9375rem] text-ink-2 transition-colors duration-150 group-hover:text-ink sm:col-start-3 sm:row-span-1">
-                    <span className="hidden sm:inline">Open in Drive</span>
+                    <span className="hidden sm:inline">Open the samples viewer</span>
                     <ArrowUpRight aria-hidden className="h-5 w-5 transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5" strokeWidth={1.5} />
-                    <span className="sr-only">(opens Google Drive in a new tab)</span>
+                    <span className="sr-only">(opens the samples viewer in a new tab)</span>
                   </span>
                 </a>
               </li>

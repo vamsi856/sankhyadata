@@ -52,3 +52,19 @@ www.sankhyadata.com {
 	import security_headers
 	redir https://sankhyadata.com{uri} permanent
 }
+
+# The portal and its samples viewer run on the portal server; these names put them under
+# sankhyadata.com. Caddy passes requests through with the upstream's own host name.
+samples.sankhyadata.com {
+	header Strict-Transport-Security "max-age=31536000"
+	reverse_proxy https://samples.egocentric.duckdns.org {
+		header_up Host {upstream_hostport}
+	}
+}
+
+portal.sankhyadata.com {
+	header Strict-Transport-Security "max-age=31536000"
+	reverse_proxy https://egocentric.duckdns.org {
+		header_up Host {upstream_hostport}
+	}
+}
