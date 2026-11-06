@@ -27,10 +27,10 @@ export function Hero() {
             {hero.sentence}
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
-            <a href={hero.primary.href} className="btn btn-primary">
+            <a href={hero.primary.href} className="btn btn-primary" data-magnet>
               {hero.primary.label}
             </a>
-            <a href={hero.secondary.href} className="btn btn-line">
+            <a href={hero.secondary.href} className="btn btn-line" data-magnet>
               {hero.secondary.label}
             </a>
           </div>

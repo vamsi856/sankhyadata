@@ -39,6 +39,11 @@ export const experience = {
   figure: "50,000+",
   unit: "hours",
   caption: "of egocentric footage handled by our teams, recorded on site during day-to-day operations.",
+  capacity: {
+    figure: "2,000",
+    unit: "approved hours",
+    caption: "deliverable through our field contributor network.",
+  },
   source: "Figures from our own records.",
   listLabel: "Examples from some seventy operational environments, by sector",
   sectors: [
@@ -222,6 +227,10 @@ export const questions = {
     {
       q: "Can your recorders perform tasks we specify?",
       a: "Yes. In addition to recording day-to-day work, our recorders perform the tasks you script, in the operational environments you specify.",
+    },
+    {
+      q: "What volume can you deliver?",
+      a: "Through our field contributor network, we can deliver 2,000 approved hours. Only hours that pass quality control are counted, invoiced and delivered.",
     },
     {
       q: "Where is footage recorded?",

@@ -17,7 +17,16 @@ export function Experience() {
               </span>
             </p>
             <p className="mb-0 mt-5 max-w-md text-[1.0625rem] text-ink-2">{experience.caption}</p>
-            <p className="mb-0 mt-3 text-[0.8125rem] text-muted">{experience.source}</p>
+            <div className="mt-8 border-t border-rule pt-6">
+              <p className="m-0 flex flex-wrap items-baseline gap-x-2.5">
+                <span className="num text-[clamp(1.75rem,3vw,2.5rem)] font-[340] tracking-[-0.03em] text-ink">
+                  {experience.capacity.figure}
+                </span>
+                <span className="text-[1.125rem] font-[300] tracking-[-0.015em] text-muted">{experience.capacity.unit}</span>
+              </p>
+              <p className="mb-0 mt-2 max-w-md text-[1.0625rem] text-ink-2">{experience.capacity.caption}</p>
+            </div>
+            <p className="mb-0 mt-6 text-[0.8125rem] text-muted">{experience.source}</p>
           </div>
         </div>
       </div>

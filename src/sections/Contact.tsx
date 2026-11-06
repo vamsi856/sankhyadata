@@ -14,7 +14,7 @@ export function Contact() {
         </h2>
         <p className="mb-0 mt-6 max-w-xl text-[1.125rem] text-ink-2">{contact.sentence}</p>
         <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
-          <a className="btn btn-primary" href={mailto}>
+          <a className="btn btn-primary" href={mailto} data-magnet>
             {contact.button} {site.email}
           </a>
           <span className="text-[0.875rem] text-muted">The email opens with the brief’s fields already listed.</span>

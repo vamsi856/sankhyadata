@@ -55,6 +55,7 @@ export function llms(c) {
 
 Key facts:
 - ${c.experience.figure} ${c.experience.unit} ${c.experience.caption}
+- ${c.experience.capacity.figure} ${c.experience.capacity.unit} ${c.experience.capacity.caption}
 - Recorded on site across some seventy operational environments.
 - Capture rigs: ${c.rigs.items.map((r) => r.name).join("; ")}. ${c.rigs.shared}
 - ${c.rigs.options.map((o) => o.title).join(" and ")} are also offered.
@@ -86,7 +87,7 @@ export function llmsFull(c) {
   const h = (t) => lines.push("", `## ${t}`, "");
   lines.push(`# ${c.site.name}`, "", `> ${c.hero.title}`, "", c.hero.sentence);
   h("Experience");
-  lines.push(c.experience.title, "", `${c.experience.figure} ${c.experience.unit} ${c.experience.caption} ${c.experience.source}`, "");
+  lines.push(c.experience.title, "", `${c.experience.figure} ${c.experience.unit} ${c.experience.caption} ${c.experience.capacity.figure} ${c.experience.capacity.unit} ${c.experience.capacity.caption} ${c.experience.source}`, "");
   for (const g of c.experience.sectors) lines.push(`- ${g.sector}: ${g.types.join(", ")}`);
   h("Methodology");
   lines.push(c.methodology.title, "");

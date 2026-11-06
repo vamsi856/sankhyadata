@@ -2,6 +2,7 @@ import "./index.css";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import { IslandContent, islands, type IslandName } from "./islands";
 import { startSmoothScroll } from "./lib/smooth-scroll";
+import { startMagnets } from "./lib/magnet";
 
 const root = document.getElementById("root")!;
 
@@ -17,3 +18,4 @@ if (root.hasChildNodes()) {
 }
 
 startSmoothScroll();
+startMagnets();
