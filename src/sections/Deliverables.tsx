@@ -14,7 +14,7 @@ export function Deliverables() {
           {deliverables.rows.map((row) => (
             <div
               key={row.term}
-              className="grid gap-x-8 gap-y-1 border-b border-rule-2 py-5 sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)]"
+              className="draw-rule relative grid gap-x-8 gap-y-1 border-b border-rule-2 py-5 sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)]"
             >
               <dt className="text-[1.0625rem] font-[420] tracking-[-0.01em] text-ink">{row.term}</dt>
               <dd className="num m-0 font-[340] text-ink-2">{row.detail}</dd>

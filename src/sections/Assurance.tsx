@@ -11,7 +11,7 @@ export function Assurance() {
           {assurance.items.map((item) => (
             <div
               key={item.title}
-              className="grid gap-x-8 gap-y-2 border-b border-rule py-7 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)]"
+              className="draw-rule relative grid gap-x-8 gap-y-2 border-b border-rule py-7 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)]"
             >
               <dt className="text-[1.1875rem] font-[420] tracking-[-0.015em] text-ink">{item.title}</dt>
               <dd className="m-0 text-ink-2">{item.text}</dd>

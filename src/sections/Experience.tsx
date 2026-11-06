@@ -1,4 +1,5 @@
 import { experience } from "@/content";
+import { Island } from "@/islands";
 
 export function Experience() {
   return (
@@ -10,9 +11,7 @@ export function Experience() {
           </h2>
           <div className="ticks rounded-[var(--radius-card)] p-7 sm:p-10">
             <p className="m-0 flex flex-wrap items-baseline gap-x-3">
-              <span className="num text-[clamp(4.25rem,11vw,8.5rem)] font-[200] leading-[0.9] tracking-[-0.045em] text-ink">
-                {experience.figure}
-              </span>
+              <Island name="figure" inline />
               <span className="text-[clamp(1.5rem,3vw,2.25rem)] font-[300] tracking-[-0.02em] text-muted">
                 {experience.unit}
               </span>

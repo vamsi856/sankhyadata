@@ -10,7 +10,7 @@ export function Questions() {
         </h2>
         <div className="border-t border-rule">
           {questions.items.map((item) => (
-            <details key={item.q} className="faq group border-b border-rule">
+            <details key={item.q} className="faq draw-rule group relative border-b border-rule">
               <summary className="flex cursor-pointer list-none items-start justify-between gap-6 rounded-[4px] py-5 text-[1.125rem] font-[400] tracking-[-0.01em] text-ink [&::-webkit-details-marker]:hidden">
                 <span>{item.q}</span>
                 <svg

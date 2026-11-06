@@ -23,7 +23,7 @@ export function Rigs() {
           </thead>
           <tbody>
             {rigs.items.map((r) => (
-              <tr key={r.name} className="border-b border-rule align-top">
+              <tr key={r.name} className="rig-row border-b border-rule align-top">
                 <th scope="row" className="py-5 pr-6 text-[1.1875rem] font-[420] tracking-[-0.015em] text-ink">
                   {r.name}
                 </th>

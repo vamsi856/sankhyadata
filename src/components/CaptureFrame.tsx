@@ -44,6 +44,9 @@ export function CaptureFrame() {
           />
         </picture>
 
+        {/* One focus sweep across the frame on first paint (CSS only). */}
+        <div aria-hidden className="scan pointer-events-none absolute inset-0" />
+
 
         {/* Annotator layer */}
         <m.div

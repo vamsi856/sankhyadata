@@ -333,3 +333,91 @@ html.lenis body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ---------- Motion, round 2 (owner: "best animated", still fast) ----------
+   Everything here is CSS. Scroll-linked effects use scroll-driven animations, which run
+   off the main thread; browsers without them simply show the final state. */
+
+/* Hero headline: words rise out of a mask on first paint. */
+.word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+.word-in {
+  display: inline-block;
+  animation: word-rise 900ms var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 70ms + 60ms);
+}
+@keyframes word-rise {
+  from { transform: translateY(105%); }
+  to { transform: none; }
+}
+
+/* Capture frame: one chartreuse focus sweep, top to bottom, then gone. */
+.scan {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 86%,
+    color-mix(in oklch, var(--label) 22%, transparent) 97%,
+    var(--label) 100%
+  );
+  /* Rests off-frame above (the frame clips it); sweeps down and out the bottom. */
+  transform: translateY(-100%);
+  animation: scan-sweep 1700ms var(--ease-in-out) 350ms 1 forwards;
+}
+@keyframes scan-sweep {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(100%); }
+}
+
+/* Rig table rows answer the pointer. */
+.rig-row {
+  transition: background-color var(--dur-short) var(--ease-out);
+}
+.rig-row:hover {
+  background-color: var(--paper-2);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Ruled rows draw their top rule in ink as they arrive. */
+    .draw-rule::before {
+      content: "";
+      position: absolute;
+      inset: -1px 0 auto 0;
+      height: 1px;
+      background: var(--ink);
+      transform-origin: left;
+      animation: rule-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 80%;
+    }
+    @keyframes rule-draw {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    /* Methodology: each step number lights up as its step arrives. */
+    .step .step-num {
+      animation: step-on linear both;
+      animation-timeline: view();
+      animation-range: entry 40% entry 100%;
+    }
+    @keyframes step-on {
+      from { opacity: 0.35; transform: translateX(-6px); }
+      to { opacity: 1; transform: none; }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word-in,
+  .scan {
+    animation: none !important;
+  }
+  .scan { display: none; }
+}
