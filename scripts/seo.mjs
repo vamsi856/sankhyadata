@@ -57,6 +57,7 @@ Key facts:
 - ${c.experience.figure} ${c.experience.unit} ${c.experience.caption}
 - Recorded on site across some seventy operational environments.
 - Capture rigs: ${c.rigs.items.map((r) => r.name).join("; ")}. ${c.rigs.shared}
+- ${c.rigs.options.map((o) => o.title).join(" and ")} are also offered.
 - Layers produced: scene descriptions, temporally aligned subtitles and voice-over, to the client's guidelines.
 - Quality control: AI-generated quality score on every submission; QC reviewers adjudicate low scores and audit one approval in ten.
 - Delivery: numbered batches with a manifest (duration, size, MD5 checksum per file) and a verification script, through an authenticated client portal.
@@ -96,7 +97,8 @@ export function llmsFull(c) {
   h("Capture rigs");
   lines.push(c.rigs.title, "");
   for (const r of c.rigs.items) lines.push(`- ${r.name} (mount: ${r.mount}; vantage: ${r.vantage}): ${r.notes}`);
-  lines.push("", c.rigs.shared);
+  lines.push("", c.rigs.shared, "");
+  for (const o of c.rigs.options) lines.push(`- ${o.title}: ${o.text}`);
   h("Deliverables");
   lines.push(c.deliverables.title, "", c.deliverables.sentence, "");
   for (const r of c.deliverables.rows) lines.push(`- ${r.term}: ${r.detail}`);

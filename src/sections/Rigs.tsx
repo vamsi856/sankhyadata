@@ -28,7 +28,7 @@ export function Rigs() {
                   {r.name}
                 </th>
                 <td className="py-5 pr-6 text-ink-2">{r.mount}</td>
-                <td className="py-5 pr-6 text-ink">{r.vantage}</td>
+                <td className="whitespace-nowrap py-5 pr-6 text-ink">{r.vantage}</td>
                 <td className="py-5 text-ink-2">{r.notes}</td>
               </tr>
             ))}
@@ -53,6 +53,16 @@ export function Rigs() {
         </div>
 
         <p className="mb-0 mt-6 max-w-2xl text-[0.9375rem] text-muted">{rigs.shared}</p>
+
+        <p className="mb-0 mt-16 text-[0.875rem] text-muted">{rigs.optionsLabel}</p>
+        <ul className="m-0 mt-4 grid list-none gap-4 p-0 md:grid-cols-2">
+          {rigs.options.map((o) => (
+            <li key={o.title} className="ticks rounded-[var(--radius-card)] p-7 sm:p-9">
+              <h3 className="m-0 text-[1.375rem] font-[420] tracking-[-0.015em] text-ink">{o.title}</h3>
+              <p className="mb-0 mt-3 max-w-xl text-ink-2">{o.text}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

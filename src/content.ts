@@ -24,7 +24,7 @@ export const headerCta = { label: "Make an enquiry", href: "#contact" };
 export const hero = {
   title: "Egocentric video data acquisition, executed end to end.",
   sentence:
-    "For physical-AI programmes, we deploy wearable capture rigs and trained recorders on site, supported by in-house IT, annotation, narration and quality-control teams. Engagements are invoiced solely on approved hours.",
+    "For physical-AI programmes, we deploy wearable capture rigs, our own or yours, and trained recorders on site, who capture day-to-day work or perform the tasks you specify, supported by in-house IT, annotation, narration and quality-control teams. Engagements are invoiced solely on approved hours.",
   primary: { label: "View representative samples", href: "#samples" },
   secondary: { label: "Discuss a capture programme", href: "#contact" },
   frame: {
@@ -58,11 +58,11 @@ export const methodology = {
     },
     {
       role: "Instrumentation",
-      text: "Capture rigs are provisioned by our in-house IT team before deployment, then fitted to each recorder and task.",
+      text: "Capture rigs, our own or client-supplied, are provisioned by our in-house IT team before deployment, then fitted to each recorder and task.",
     },
     {
       role: "Acquisition",
-      text: "Trained recorders capture first-person footage of real work in situ, across the operational environments the client specifies.",
+      text: "Trained recorders capture first-person footage of real work in situ, or perform the tasks the client scripts, across the operational environments the client specifies.",
     },
     {
       role: "Annotation",
@@ -121,6 +121,17 @@ export const rigs = {
       mount: "Wearable rig",
       vantage: "Per task",
       notes: "Our preferred configuration, deployed wherever the task permits.",
+    },
+  ],
+  optionsLabel: "Two further arrangements, available on request",
+  options: [
+    {
+      title: "Client-supplied devices",
+      text: "Where a programme specifies its own capture hardware, such as smart glasses or a proprietary head rig, we take custody of the client’s devices. Our IT team provisions and maintains them for the duration of the engagement, and our recorders capture with them under the same methodology and quality control.",
+    },
+    {
+      title: "Directed tasks",
+      text: "Beyond footage of day-to-day work, our recorders perform the specific tasks a client scripts, in the environments it specifies, so that every approved hour falls within the task taxonomy.",
     },
   ],
   shared: "All rigs record 1080p at 30 fps, encoded in HEVC (H.265), and are provisioned by our in-house IT team.",
@@ -198,11 +209,19 @@ export const questions = {
   items: [
     {
       q: "What does a capture programme include?",
-      a: "Wearable capture rigs, trained recorders, and our in-house annotation, narration, quality-control and IT teams, from scoping to delivery.",
+      a: "Wearable capture rigs (our own or client-supplied), trained recorders performing day-to-day work or directed tasks, and our in-house annotation, narration, quality-control and IT teams, from scoping to delivery.",
     },
     {
       q: "Which capture rigs do you deploy?",
       a: "Head-mounted iPhones, cap-mounted mobiles, cap cameras connected to a phone carried in the pocket, and human rigs, our preferred configuration. All record 1080p at 30 fps, encoded in HEVC (H.265).",
+    },
+    {
+      q: "Can you capture with our own devices?",
+      a: "Yes. We take custody of client-supplied devices; our IT team provisions and maintains them, and our recorders capture with them under the same methodology and quality control as our own rigs.",
+    },
+    {
+      q: "Can your recorders perform tasks we specify?",
+      a: "Yes. In addition to recording day-to-day work, our recorders perform the tasks you script, in the operational environments you specify.",
     },
     {
       q: "Where is footage recorded?",
@@ -242,7 +261,8 @@ export const contact = {
     "Task taxonomy:",
     "Target operational environments:",
     "Required approved hours:",
-    "Preferred capture rig (head-mounted iPhone, cap-mounted mobile, cap camera with phone in pocket, human rig):",
+    "Preferred capture rig (head-mounted iPhone, cap-mounted mobile, cap camera with phone in pocket, human rig, or client-supplied devices):",
+    "Capture mode (day-to-day work / directed tasks):",
     "Layers required (scene descriptions, subtitles, voice-over):",
     "Annotation guidelines available (yes / no):",
   ],
