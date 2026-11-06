@@ -110,8 +110,8 @@ export const rigs = {
       notes: "Records along the recorder’s line of sight.",
     },
     {
-      name: "Cap-mounted mobile",
-      mount: "Brim of a cap",
+      name: "Cap camera, power bank",
+      mount: "Camera on the cap, powered by a power bank",
       vantage: "Brow level",
       notes: "Records from just above the recorder’s eyeline.",
     },
@@ -218,7 +218,7 @@ export const questions = {
     },
     {
       q: "Which capture rigs do you deploy?",
-      a: "Head-mounted iPhones, cap-mounted mobiles, cap cameras connected by USB-C to a phone in the pocket that records through the capture app, and human rigs, our preferred configuration. All record 1080p at 30 fps, encoded in HEVC (H.265).",
+      a: "Head-mounted iPhones, cap-mounted cameras powered by a power bank, cap cameras connected by USB-C to a phone in the pocket that records through the capture app, and human rigs, our preferred configuration. All record 1080p at 30 fps, encoded in HEVC (H.265).",
     },
     {
       q: "Can you capture with our own devices?",
@@ -278,7 +278,7 @@ export const contact = {
     "Task taxonomy:",
     "Target operational environments:",
     "Required approved hours:",
-    "Preferred capture rig (head-mounted iPhone, cap-mounted mobile, cap camera with phone in pocket, human rig, or client-supplied devices):",
+    "Preferred capture rig (head-mounted iPhone, cap camera with power bank, cap camera with phone in pocket, human rig, or client-supplied devices):",
     "Capture mode (day-to-day work / directed tasks):",
     "Layers required (scene descriptions, subtitles, voice-over):",
     "Annotation guidelines available (yes / no):",
