@@ -53,13 +53,21 @@ www.sankhyadata.com {
 	redir https://sankhyadata.com{uri} permanent
 }
 
-# The portal and its samples viewer run on the portal server. These names redirect there
-# (not proxy): the portal rate-limits per client address, and proxying would make every
-# visitor look like this one server. Query strings and paths (e.g. /l/<share-token>) are kept.
+# The portal and its samples viewer run on the portal server, which trusts forwarded
+# client addresses from this server (5.161.223.5) for these names, so per-visitor rate
+# limits keep working. Caddy sends X-Forwarded-For/-Proto automatically.
+(portal_proxy) {
+	header Strict-Transport-Security "max-age=31536000"
+	reverse_proxy {args[0]} {
+		header_up Host {upstream_hostport}
+		header_up X-Forwarded-Host {host}
+	}
+}
+
 samples.sankhyadata.com {
-	redir https://samples.egocentric.duckdns.org{uri} 302
+	import portal_proxy https://samples.egocentric.duckdns.org
 }
 
 portal.sankhyadata.com {
-	redir https://egocentric.duckdns.org{uri} 302
+	import portal_proxy https://egocentric.duckdns.org
 }
