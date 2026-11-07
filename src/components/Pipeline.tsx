@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { methodology } from "@/content";
+import { prefersStill, whenNear } from "@/lib/when-near";
 
 /**
  * 3D methodology pipeline. Reading position in the step list (each `li.step`) drives a
@@ -14,7 +15,7 @@ export function Pipeline() {
     const el = canvas.current;
     const section = el?.closest("section");
     if (!el || !section) return;
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const still = prefersStill();
     const steps = [...section.querySelectorAll<HTMLElement>("li.step")];
     let stage = 0;
     let engine: { poke: () => void; stop: () => void } | null = null;
@@ -41,21 +42,11 @@ export function Pipeline() {
     measure();
     window.addEventListener("scroll", measure, { passive: true });
     window.addEventListener("resize", measure);
-    let dead = false;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        io.disconnect();
-        import("@/lib/pipeline-gl").then(({ start }) => {
-          if (!dead) engine = start(el, { stage: () => stage, still });
-        });
-      },
-      { rootMargin: "100% 0px" },
-    );
-    io.observe(el);
+    const off = whenNear(el, () => import("@/lib/pipeline-gl"), ({ start }) => {
+      engine = start(el, { stage: () => stage, still });
+    });
     return () => {
-      dead = true;
-      io.disconnect();
+      off();
       engine?.stop();
       window.removeEventListener("scroll", measure);
       window.removeEventListener("resize", measure);

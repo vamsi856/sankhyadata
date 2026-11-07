@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { prefersStill, whenNear } from "@/lib/when-near";
 
 /**
  * Canvas host for the point-cloud capture site. The WebGL code is its own chunk, fetched
@@ -12,7 +13,7 @@ export function SiteCloud() {
     const canvas = ref.current;
     const track = canvas?.closest("section");
     if (!canvas || !track) return;
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const still = prefersStill();
     const pointer: [number, number] = [0, 0];
     const onMove = (e: PointerEvent) => {
       if (e.pointerType !== "mouse") return;
@@ -25,24 +26,13 @@ export function SiteCloud() {
       return span > 0 ? -r.top / span : 0;
     };
     let stop: (() => void) | null = null;
-    let dead = false;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        io.disconnect();
-        import("@/lib/sitecloud-gl").then(({ start }) => {
-          if (dead) return;
-          stop = start(canvas, { progress, pointer: () => pointer, still });
-          if (stop) canvas.dataset.on = "";
-        });
-      },
-      { rootMargin: "100% 0px" },
-    );
-    io.observe(canvas);
+    const off = whenNear(canvas, () => import("@/lib/sitecloud-gl"), ({ start }) => {
+      stop = start(canvas, { progress, pointer: () => pointer, still });
+      if (stop) canvas.dataset.on = "";
+    });
     window.addEventListener("pointermove", onMove, { passive: true });
     return () => {
-      dead = true;
-      io.disconnect();
+      off();
       stop?.();
       window.removeEventListener("pointermove", onMove);
     };

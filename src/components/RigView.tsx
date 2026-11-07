@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { rigs } from "@/content";
+import { prefersStill, whenNear } from "@/lib/when-near";
 
 /**
  * 3D rig viewer. Hovering, focusing or tapping a rig in the table (rows carry `data-rig`)
@@ -16,7 +17,7 @@ export function RigView() {
     const el = canvas.current;
     const section = el?.closest("section");
     if (!el || !section) return;
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const still = prefersStill();
     const rows = [...section.querySelectorAll<HTMLElement>("[data-rig]")];
     let engine: { poke: () => void; stop: () => void } | null = null;
     let touched = 0;
@@ -47,22 +48,11 @@ export function RigView() {
       if (e.pointerType === "mouse") pointer[0] = (e.clientX / window.innerWidth) * 2 - 1;
     };
     window.addEventListener("pointermove", onMove, { passive: true });
-    let dead = false;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        io.disconnect();
-        import("@/lib/rigview-gl").then(({ start }) => {
-          if (dead) return;
-          engine = start(el, { index: () => current.current, pointer: () => pointer, still });
-        });
-      },
-      { rootMargin: "100% 0px" },
-    );
-    io.observe(el);
+    const offNear = whenNear(el, () => import("@/lib/rigview-gl"), ({ start }) => {
+      engine = start(el, { index: () => current.current, pointer: () => pointer, still });
+    });
     return () => {
-      dead = true;
-      io.disconnect();
+      offNear();
       clearInterval(cycle);
       off.forEach((f) => f());
       window.removeEventListener("pointermove", onMove);

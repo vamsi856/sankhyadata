@@ -486,6 +486,14 @@ html.lenis body {
   color: var(--ink);
 }
 
+/* Invoicing: the 3D approval line, full width of the band. */
+.approval {
+  height: clamp(17rem, 30vw, 24rem);
+}
+@media (max-width: 639px) {
+  .approval { height: 24rem; }
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;

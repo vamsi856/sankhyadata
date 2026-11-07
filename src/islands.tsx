@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import { CaptureFrame } from "@/components/CaptureFrame";
 import { BillingTrack } from "@/components/BillingTrack";
+import { ApprovalLine } from "@/components/ApprovalLine";
 import { CountUp } from "@/components/CountUp";
 import { SiteCloud } from "@/components/SiteCloud";
 import { RigView } from "@/components/RigView";
@@ -13,7 +14,14 @@ import { MotionProvider } from "@/lib/motion";
  */
 export const islands = {
   frame: CaptureFrame,
-  billing: BillingTrack,
+  billing: () => (
+    <>
+      <ApprovalLine />
+      <div className="mt-10 max-w-4xl">
+        <BillingTrack />
+      </div>
+    </>
+  ),
   figure: CountUp,
   cloud: SiteCloud,
   rig: RigView,

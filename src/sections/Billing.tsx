@@ -11,7 +11,7 @@ export function Billing() {
           </h2>
           <p className="mb-0 mt-6 max-w-xl text-[1.125rem] text-ink-2">{billing.sentence}</p>
         </div>
-        <div className="mt-16 max-w-4xl">
+        <div className="mt-12">
           <Island name="billing" />
         </div>
       </div>
