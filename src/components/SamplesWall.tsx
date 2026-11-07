@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { experience, samplesWallCaption } from "@/content";
-import { prefersStill, whenNear } from "@/lib/when-near";
+import { liveGL, prefersStill } from "@/lib/when-near";
 
 /** Tiles (of 69, row-major over three rows of 23) that carry the named examples. */
 const NAMED = [2, 30, 58, 17, 44, 49, 9, 37, 65];
@@ -12,7 +12,7 @@ const names = experience.sectors.flatMap((g) => g.types);
  * prerender shows the first example's name.
  */
 export function SamplesWall() {
-  const canvas = useRef<HTMLCanvasElement>(null);
+  const canvas = useRef<HTMLDivElement>(null);
   const [k, setK] = useState(0);
   const cur = useRef(0);
 
@@ -20,7 +20,7 @@ export function SamplesWall() {
     const el = canvas.current;
     if (!el) return;
     const still = prefersStill();
-    let engine: { poke: () => void; stop: () => void } | null = null;
+    let live: { poke: () => void; stop: () => void } | null = null;
     let px = 0;
     const move = (e: PointerEvent) => {
       if (e.pointerType === "mouse") px = (e.clientX / innerWidth) * 2 - 1;
@@ -31,15 +31,14 @@ export function SamplesWall() {
       : window.setInterval(() => {
           cur.current = (cur.current + 1) % Math.min(NAMED.length, names.length);
           setK(cur.current);
-          engine?.poke();
+          live?.poke();
         }, 3600);
-    const off = whenNear(el, () => import("@/lib/wall-gl"), ({ start }) => {
-      engine = start(el, { hot: () => NAMED[cur.current], pointer: () => px, still });
-    });
+    live = liveGL(el, () => import("@/lib/wall-gl"), ({ start }, c) =>
+      start(c, { hot: () => NAMED[cur.current], pointer: () => px, still }),
+    );
     return () => {
-      off();
       clearInterval(tick);
-      engine?.stop();
+      live?.stop();
       removeEventListener("pointermove", move);
     };
   }, []);
@@ -47,7 +46,7 @@ export function SamplesWall() {
   return (
     <figure className="m-0 mt-14">
       <div aria-hidden className="samples-wall relative">
-        <canvas ref={canvas} className="absolute inset-0 h-full w-full" />
+        <div ref={canvas} className="absolute inset-0" />
         <p className="absolute left-0 top-0 m-0 text-[0.875rem]">
           <span className="text-muted">Example · </span>
           <span className="font-[420] text-ink">{names[k]}</span>

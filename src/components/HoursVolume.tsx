@@ -1,40 +1,35 @@
 import { useEffect, useRef, useState } from "react";
 import { experience, hoursCaption } from "@/content";
-import { prefersStill, whenNear } from "@/lib/when-near";
+import { liveGL, prefersStill } from "@/lib/when-near";
 
 const labels = [`${experience.figure} ${experience.unit}`, `${experience.capacity.figure} ${experience.capacity.unit}`];
 
 /** The two experience figures as a 3D volume of points, ten hours each (WebGL, lazy). */
 export function HoursVolume() {
-  const canvas = useRef<HTMLCanvasElement>(null);
+  const canvas = useRef<HTMLDivElement>(null);
   const tags = useRef<HTMLSpanElement[]>([]);
   const [on, setOn] = useState(false);
   useEffect(() => {
     const el = canvas.current;
     if (!el) return;
-    let stop: (() => void) | null = null;
     let px = 0;
     const move = (e: PointerEvent) => {
       if (e.pointerType === "mouse") px = (e.clientX / innerWidth) * 2 - 1;
     };
     addEventListener("pointermove", move, { passive: true });
-    const off = whenNear(el, () => import("@/lib/hours-gl"), ({ start }) => {
+    const live = liveGL(el, () => import("@/lib/hours-gl"), ({ start }, c) => {
       setOn(true);
-      requestAnimationFrame(() => {
-        stop = start(el, { labels: tags.current, pointer: () => px, still: prefersStill() });
-        if (!stop) setOn(false);
-      });
+      return start(c, { labels: tags.current, pointer: () => px, still: prefersStill() });
     });
     return () => {
-      off();
-      stop?.();
+      live.stop();
       removeEventListener("pointermove", move);
     };
   }, []);
   return (
     <figure className="m-0 mt-8">
       <div aria-hidden className="hours relative">
-        <canvas ref={canvas} className="absolute inset-0 h-full w-full" />
+        <div ref={canvas} className="absolute inset-0" />
         {on &&
           labels.map((l, i) => (
             <span

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { prefersStill, whenNear } from "@/lib/when-near";
+import { liveGL, prefersStill } from "@/lib/when-near";
 
 /**
  * Canvas host for the point-cloud capture site. The WebGL code is its own chunk, fetched
@@ -7,7 +7,7 @@ import { prefersStill, whenNear } from "@/lib/when-near";
  * paint or the main bundle. Without WebGL the section's text simply stands alone.
  */
 export function SiteCloud() {
-  const ref = useRef<HTMLCanvasElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const canvas = ref.current;
@@ -25,18 +25,15 @@ export function SiteCloud() {
       const span = r.height - window.innerHeight;
       return span > 0 ? -r.top / span : 0;
     };
-    let stop: (() => void) | null = null;
-    const off = whenNear(canvas, () => import("@/lib/sitecloud-gl"), ({ start }) => {
-      stop = start(canvas, { progress, pointer: () => pointer, still });
-      if (stop) canvas.dataset.on = "";
-    });
+    const live = liveGL(canvas, () => import("@/lib/sitecloud-gl"), ({ start }, c) =>
+      start(c, { progress, pointer: () => pointer, still }),
+    );
     window.addEventListener("pointermove", onMove, { passive: true });
     return () => {
-      off();
-      stop?.();
+      live.stop();
       window.removeEventListener("pointermove", onMove);
     };
   }, []);
 
-  return <canvas ref={ref} aria-hidden className="sitecloud absolute inset-0 h-full w-full" />;
+  return <div ref={ref} aria-hidden className="absolute inset-0" />;
 }

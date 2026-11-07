@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { rigBrief, rigViewerCaption } from "@/content";
-import { prefersStill, whenNear } from "@/lib/when-near";
+import { liveGL, prefersStill } from "@/lib/when-near";
 
 /**
  * 3D rig viewer. Hovering, focusing or tapping a rig in the table (rows carry `data-rig`)
@@ -9,7 +9,7 @@ import { prefersStill, whenNear } from "@/lib/when-near";
  * shows the first rig's name, so the frame is never empty of meaning.
  */
 export function RigView() {
-  const canvas = useRef<HTMLCanvasElement>(null);
+  const canvas = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const current = useRef(0);
 
@@ -19,14 +19,14 @@ export function RigView() {
     if (!el || !section) return;
     const still = prefersStill();
     const rows = [...section.querySelectorAll<HTMLElement>("[data-rig]")];
-    let engine: { poke: () => void; stop: () => void } | null = null;
+    let live: { poke: () => void; stop: () => void } | null = null;
     let touched = 0;
     const select = (i: number, byPerson: boolean) => {
       if (byPerson) touched = performance.now();
       current.current = i;
       setActive(i);
       rows.forEach((r) => (r.dataset.active = String(Number(r.dataset.rig) === i)));
-      engine?.poke();
+      live?.poke();
     };
     select(0, false);
     const off: (() => void)[] = [];
@@ -48,15 +48,14 @@ export function RigView() {
       if (e.pointerType === "mouse") pointer[0] = (e.clientX / window.innerWidth) * 2 - 1;
     };
     window.addEventListener("pointermove", onMove, { passive: true });
-    const offNear = whenNear(el, () => import("@/lib/rigview-gl"), ({ start }) => {
-      engine = start(el, { index: () => current.current, pointer: () => pointer, still });
-    });
+    live = liveGL(el, () => import("@/lib/rigview-gl"), ({ start }, c) =>
+      start(c, { index: () => current.current, pointer: () => pointer, still }),
+    );
     return () => {
-      offNear();
       clearInterval(cycle);
       off.forEach((f) => f());
       window.removeEventListener("pointermove", onMove);
-      engine?.stop();
+      live?.stop();
     };
   }, []);
 
@@ -64,7 +63,7 @@ export function RigView() {
   return (
     <figure className="m-0">
       <div aria-hidden className="ticks relative aspect-[4/3] rounded-[var(--radius-card)] bg-paper-2">
-        <canvas ref={canvas} className="absolute inset-0 h-full w-full" />
+        <div ref={canvas} className="absolute inset-0" />
         <p className="absolute left-4 top-3 m-0 text-[0.875rem] text-ink sm:left-5 sm:top-4">
           <span className="font-[420]">{rig.name}</span>
           <span className="text-muted"> · {rig.vantage}</span>

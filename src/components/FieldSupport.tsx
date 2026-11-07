@@ -1,32 +1,30 @@
 import { useEffect, useRef } from "react";
 import { fieldCaption, fieldLegend } from "@/content";
-import { prefersStill, whenNear } from "@/lib/when-near";
+import { liveGL, prefersStill } from "@/lib/when-near";
 
 /** Schematic field-support network beside the IT section's heading (WebGL, lazy chunk). */
 export function FieldSupport() {
-  const canvas = useRef<HTMLCanvasElement>(null);
+  const canvas = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = canvas.current;
     if (!el) return;
-    let stop: (() => void) | null = null;
     let px = 0;
     const move = (e: PointerEvent) => {
       if (e.pointerType === "mouse") px = (e.clientX / innerWidth) * 2 - 1;
     };
     addEventListener("pointermove", move, { passive: true });
-    const off = whenNear(el, () => import("@/lib/field-gl"), ({ start }) => {
-      stop = start(el, { pointer: () => px, still: prefersStill() });
-    });
+    const live = liveGL(el, () => import("@/lib/field-gl"), ({ start }, c) =>
+      start(c, { pointer: () => px, still: prefersStill() }),
+    );
     return () => {
-      off();
-      stop?.();
+      live.stop();
       removeEventListener("pointermove", move);
     };
   }, []);
   return (
     <figure className="m-0">
       <div aria-hidden className="field relative">
-        <canvas ref={canvas} className="absolute inset-0 h-full w-full" />
+        <div ref={canvas} className="absolute inset-0" />
       </div>
       <figcaption className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[0.8125rem] text-muted">
         {fieldLegend.map((l, i) => (

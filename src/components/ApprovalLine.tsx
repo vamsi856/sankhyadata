@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { billing } from "@/content";
-import { prefersStill, whenNear } from "@/lib/when-near";
+import { liveGL, prefersStill } from "@/lib/when-near";
 
 /**
  * 3D approval line above the billing track: only approved hours reach the batch. The
@@ -8,36 +8,31 @@ import { prefersStill, whenNear } from "@/lib/when-near";
  * below carries the same four states as text for everyone.
  */
 export function ApprovalLine() {
-  const canvas = useRef<HTMLCanvasElement>(null);
+  const canvas = useRef<HTMLDivElement>(null);
   const labels = useRef<HTMLSpanElement[]>([]);
   const [on, setOn] = useState(false);
 
   useEffect(() => {
     const el = canvas.current;
     if (!el) return;
-    let stop: (() => void) | null = null;
     let px = 0;
     const move = (e: PointerEvent) => {
       if (e.pointerType === "mouse") px = (e.clientX / innerWidth) * 2 - 1;
     };
     addEventListener("pointermove", move, { passive: true });
-    const off = whenNear(el, () => import("@/lib/approval-gl"), ({ start }) => {
+    const live = liveGL(el, () => import("@/lib/approval-gl"), ({ start }, c) => {
       setOn(true);
-      requestAnimationFrame(() => {
-        stop = start(el, { labels: labels.current, pointer: () => px, still: prefersStill() });
-        if (!stop) setOn(false);
-      });
+      return start(c, { labels: labels.current, pointer: () => px, still: prefersStill() });
     });
     return () => {
-      off();
-      stop?.();
+      live.stop();
       removeEventListener("pointermove", move);
     };
   }, []);
 
   return (
     <div aria-hidden className="approval relative">
-      <canvas ref={canvas} className="absolute inset-0 h-full w-full" />
+      <div ref={canvas} className="absolute inset-0" />
       {on &&
         billing.states.map((s, i) => (
           <span

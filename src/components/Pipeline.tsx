@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { stepRoles } from "@/content";
-import { prefersStill, whenNear } from "@/lib/when-near";
+import { liveGL, prefersStill } from "@/lib/when-near";
 
 /**
  * 3D methodology pipeline. Reading position in the step list (each `li.step`) drives a
@@ -8,7 +8,7 @@ import { prefersStill, whenNear } from "@/lib/when-near";
  * chunk, fetched when the canvas nears the viewport. The prerender shows step 01's label.
  */
 export function Pipeline() {
-  const canvas = useRef<HTMLCanvasElement>(null);
+  const canvas = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export function Pipeline() {
     const still = prefersStill();
     const steps = [...section.querySelectorAll<HTMLElement>("li.step")];
     let stage = 0;
-    let engine: { poke: () => void; stop: () => void } | null = null;
+    let live: { poke: () => void; stop: () => void } | null = null;
     let shown = -1;
     const measure = () => {
       // The reading line: mid-screen on desktop; below the pinned strip on phones.
@@ -37,17 +37,14 @@ export function Pipeline() {
         setActive(now);
         steps.forEach((s, i) => (s.dataset.current = String(i === now)));
       }
-      engine?.poke();
+      live?.poke();
     };
     measure();
     window.addEventListener("scroll", measure, { passive: true });
     window.addEventListener("resize", measure);
-    const off = whenNear(el, () => import("@/lib/pipeline-gl"), ({ start }) => {
-      engine = start(el, { stage: () => stage, still });
-    });
+    live = liveGL(el, () => import("@/lib/pipeline-gl"), ({ start }, c) => start(c, { stage: () => stage, still }));
     return () => {
-      off();
-      engine?.stop();
+      live?.stop();
       window.removeEventListener("scroll", measure);
       window.removeEventListener("resize", measure);
     };
@@ -55,7 +52,7 @@ export function Pipeline() {
 
   return (
     <div aria-hidden className="pipeline relative">
-      <canvas ref={canvas} className="absolute inset-0 h-full w-full" />
+      <div ref={canvas} className="absolute inset-0" />
       <p className="num absolute left-4 top-3 m-0 text-[0.875rem] text-ink lg:left-5 lg:top-4">
         <span className="text-muted">{String(active + 1).padStart(2, "0")} · </span>
         <span className="font-[420]">{stepRoles[active]}</span>
