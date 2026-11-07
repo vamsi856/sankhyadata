@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { samples, samplesSection, site } from "@/content";
+import { Island } from "@/islands";
 
 export function Samples() {
   return (
@@ -13,6 +14,8 @@ export function Samples() {
             {samplesSection.sentence}
           </p>
         </div>
+
+        <Island name="wall" />
 
         {samples.length > 0 ? (
           <ul className="m-0 mt-14 list-none border-t border-rule-2 p-0">

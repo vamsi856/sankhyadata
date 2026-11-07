@@ -203,6 +203,8 @@ export const samplesSection = {
   title: "One representative hour from each operational environment.",
   sentence: "Review our capture standard before commissioning: raw first-person recordings with their metadata, viewable in the browser through our samples viewer.",
   next: { label: "Then send us your brief", href: "#contact" },
+  wallCaption:
+    "Schematic: the representative set, one tile per operational environment (69 in all). Named tiles are examples; interiors are abstract, not footage.",
 };
 
 /**

@@ -494,6 +494,11 @@ html.lenis body {
   .approval { height: 24rem; }
 }
 
+/* Samples: the 3D wall of environments. */
+.samples-wall {
+  height: clamp(16rem, 32vw, 25rem);
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;

@@ -6,6 +6,7 @@ import { CountUp } from "@/components/CountUp";
 import { SiteCloud } from "@/components/SiteCloud";
 import { RigView } from "@/components/RigView";
 import { Pipeline } from "@/components/Pipeline";
+import { SamplesWall } from "@/components/SamplesWall";
 import { MotionProvider } from "@/lib/motion";
 
 /**
@@ -26,6 +27,7 @@ export const islands = {
   cloud: SiteCloud,
   rig: RigView,
   pipeline: Pipeline,
+  wall: SamplesWall,
 } satisfies Record<string, ComponentType>;
 
 export type IslandName = keyof typeof islands;
