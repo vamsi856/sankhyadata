@@ -400,6 +400,70 @@ html.lenis body {
   .batch { aspect-ratio: auto; height: 17rem; }
 }
 
+/* Perspective band: the point-cloud scene stays pinned while the visitor scrolls through
+   a taller track; scrolling drives the camera from overview to first person. */
+.persp-track {
+  height: 260vh;
+}
+.persp-sticky {
+  height: 100vh;
+  height: 100svh;
+}
+.persp-scrim {
+  background: linear-gradient(100deg, var(--inv-paper) 0%, color-mix(in oklch, var(--inv-paper) 70%, transparent) 32%, transparent 62%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .persp-track { height: auto; }
+}
+
+/* Methodology pipeline: a pinned strip on phones, a framed panel in the sticky column from lg. */
+.pipeline {
+  height: 32vh;
+  height: 32svh;
+  border-radius: var(--radius-card);
+  background: var(--paper-2);
+}
+@media (min-width: 1024px) {
+  .pipeline {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+}
+.pipeline-pin {
+  /* Full-bleed strip on phones: cancel the container's side padding, then restore it. */
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  margin-inline: calc(var(--gutter) * -1);
+  padding-inline: var(--gutter);
+  box-shadow: 0 1px 0 var(--rule);
+}
+@media (min-width: 1024px) {
+  .pipeline-pin { margin-inline: 0; padding-inline: 0; box-shadow: none; }
+}
+.step[data-current="true"] .step-num {
+  color: var(--ink);
+}
+
+/* Invoicing: the 3D approval line, full width of the band. */
+.approval {
+  height: clamp(17rem, 30vw, 24rem);
+}
+@media (max-width: 639px) {
+  .approval { height: 24rem; }
+}
+
+/* Samples: the 3D wall of environments. */
+.samples-wall {
+  height: clamp(16rem, 32vw, 25rem);
+}
+
+/* IT section: the field-support network. */
+.field {
+  aspect-ratio: 16 / 10;
+}
+@media (max-width: 639px) {
+  .field { aspect-ratio: 1; }
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;
