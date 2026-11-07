@@ -168,17 +168,20 @@ export const rigs = {
   shared: "All rigs record 1080p at 30 fps, encoded in HEVC (H.265), and are provisioned by our in-house IT team.",
 };
 
+export const deliverableTerms = ["Video", "Scene descriptions", "Subtitles", "Voice-over", "Organisation", "Manifest", "Verification"];
+export const batchCaption = "Schematic: one delivery batch, assembled from its seven components. Hover a row to lift its layer.";
+
 export const deliverables = {
   title: "What each delivery batch contains.",
   sentence: "Batches are numbered and released through the authenticated client portal.",
   rows: [
-    { term: "Video", detail: "First-person footage, 1080p at 30 fps, HEVC (H.265)" },
-    { term: "Scene descriptions", detail: "Authored by our annotators in strict conformance with the client’s guidelines" },
-    { term: "Subtitles", detail: "Temporally aligned to the footage" },
-    { term: "Voice-over", detail: "Recorded by our narrators for every scene" },
-    { term: "Organisation", detail: "By operational environment, capture site and date" },
-    { term: "Manifest", detail: "Duration, size and MD5 checksum for every file" },
-    { term: "Verification", detail: "A verification script supplied with every batch" },
+    { term: deliverableTerms[0], detail: "First-person footage, 1080p at 30 fps, HEVC (H.265)" },
+    { term: deliverableTerms[1], detail: "Authored by our annotators in strict conformance with the client’s guidelines" },
+    { term: deliverableTerms[2], detail: "Temporally aligned to the footage" },
+    { term: deliverableTerms[3], detail: "Recorded by our narrators for every scene" },
+    { term: deliverableTerms[4], detail: "By operational environment, capture site and date" },
+    { term: deliverableTerms[5], detail: "Duration, size and MD5 checksum for every file" },
+    { term: deliverableTerms[6], detail: "A verification script supplied with every batch" },
   ],
 };
 

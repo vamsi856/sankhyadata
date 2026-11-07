@@ -1,24 +1,16 @@
-import type { CSSProperties } from "react";
 import { deliverables } from "@/content";
+import { Island } from "@/islands";
 
 export function Deliverables() {
   return (
     <section id="deliverables" aria-labelledby="deliverables-title" className="bg-paper-2">
       <div className="container-page grid gap-x-12 gap-y-10 py-20 md:py-28 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-        <div>
+        <div className="lg:sticky lg:top-24 lg:self-start">
           <h2 id="deliverables-title" className="m-0 max-w-md text-[clamp(2rem,4vw,3.25rem)]">
             {deliverables.title}
           </h2>
           <p className="mb-0 mt-5 max-w-sm text-ink-2">{deliverables.sentence}</p>
-          {/* A batch drawn as an exploded stack of plates, one per row; hovering a row lifts
-              its plate (CSS :has, no JavaScript). Decorative, so hidden from assistive tech. */}
-          <div aria-hidden className="batch-stack mt-10 hidden lg:block">
-            <div className="batch-iso">
-              {deliverables.rows.map((row, i) => (
-                <span key={row.term} className="plate" style={{ "--i": deliverables.rows.length - 1 - i } as CSSProperties} />
-              ))}
-            </div>
-          </div>
+          <Island name="batch" />
         </div>
         <dl className="m-0 border-t border-rule-2">
           {deliverables.rows.map((row) => (
