@@ -480,6 +480,22 @@ html.lenis body {
   .hours { aspect-ratio: auto; height: 17rem; }
 }
 
+/* Rig viewer inset: frames the rig-camera view the engine draws (same box as rigview-gl). */
+.rig-inset {
+  right: 12px;
+  bottom: 12px;
+  width: 36%;
+  aspect-ratio: 4 / 3;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px var(--ink);
+}
+.rig-inset > span {
+  color: var(--inv-ink-2);
+}
+@media (max-width: 639px) {
+  .rig-inset { width: 42%; }
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;

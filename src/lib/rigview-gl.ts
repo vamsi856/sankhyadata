@@ -77,7 +77,17 @@ function sampler(seed0: number) {
   const line = (a: V3, b2: V3, n: number, b: number) => {
     for (let i = 0; i < n; i++) put(mix(a, b2, i / (n - 1)), b);
   };
-  return { r, out, put, ellipsoid, box, tube, line };
+  const limb = (a: V3, b2: V3, rad: number, n: number, b: number) => {
+    const d = norm(sub(b2, a));
+    const e1 = norm(cross(d, Math.abs(d[1]) < 0.9 ? [0, 1, 0] : [1, 0, 0]));
+    const e2 = cross(d, e1);
+    for (let i = 0; i < n; i++) {
+      const t = rnd();
+      const ang = r(0, Math.PI * 2);
+      put(add(mix(a, b2, t), add(scale(e1, Math.cos(ang) * rad), scale(e2, Math.sin(ang) * rad))), b);
+    }
+  };
+  return { r, out, put, ellipsoid, box, tube, line, limb };
 }
 
 const HEAD: V3 = [0, 1.6, 0];
@@ -90,12 +100,27 @@ function buildBody() {
   s.tube(1.38, 1.5, () => 0.048, () => 0.045, 0, 220, 0.5); // neck
   s.tube(0.92, 1.38, (t) => 0.15 + 0.07 * Math.min(1, t * 2.2), (t) => 0.09 + 0.02 * t, 0, 2600, 0.35); // torso
   s.ellipsoid([0, 1.37, 0], [0.22, 0.04, 0.1], 500, 0.35); // shoulder line
-  for (const x of [-0.25, 0.25]) s.tube(0.98, 1.36, () => 0.042, () => 0.042, x, 500, 0.3); // upper arms
+  return new Float32Array(s.out);
+}
+
+/** What the rig camera sees: arms reaching to the bench, hands at work, the bench itself. */
+function buildWork() {
+  const s = sampler(13);
+  for (const side of [-1, 1]) {
+    const shoulder: V3 = [side * 0.22, 1.35, 0.02];
+    const elbow: V3 = [side * 0.27, 1.1, 0.22];
+    const wrist: V3 = [side * 0.16, 0.99, 0.5];
+    s.limb(shoulder, elbow, 0.042, 420, 0.4);
+    s.limb(elbow, wrist, 0.034, 380, 0.45);
+    s.ellipsoid([side * 0.14, 0.975, 0.58], [0.042, 0.018, 0.06], 260, 0.7); // hand
+    for (let f = 0; f < 4; f++) s.limb([side * (0.115 + f * 0.017), 0.97, 0.62], [side * (0.11 + f * 0.02), 0.945, 0.7], 0.007, 40, 0.7);
+  }
+  const limbs = s.out.length;
   // Workbench ahead of the recorder, and a few objects on it.
   for (let i = 0; i < 2600; i++) s.put([s.r(-0.55, 0.55), 0.92, s.r(0.35, 1.15)], 0.4);
   s.box([0.12, 0.97, 0.7], [0.08, 0.05, 0.06], 260, 0.6);
   s.box([-0.22, 0.94, 0.85], [0.12, 0.02, 0.07], 200, 0.6);
-  return new Float32Array(s.out);
+  return { data: new Float32Array(s.out), limbs: limbs / 4 };
 }
 
 /** Accessory points for each rig, and the camera each one carries. */
@@ -209,6 +234,8 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
   };
   const body = buildBody();
   const bodyBuf = upload(body, gl.STATIC_DRAW);
+  const { data: work, limbs } = buildWork();
+  const workBuf = upload(work, gl.STATIC_DRAW);
   const rigs = buildRigs();
   const rigBufs = rigs.map((r) => upload(r, gl.STATIC_DRAW));
   const cone = new Float32Array(16 * 4);
@@ -285,6 +312,8 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     gl.uniform1f(PU.mode, 0);
     bind(PU, bodyBuf);
     gl.drawArrays(gl.POINTS, 0, body.length / 4);
+    bind(PU, workBuf);
+    gl.drawArrays(gl.POINTS, 0, work.length / 4);
     gl.uniform1f(PU.mode, 1);
     gl.uniform1f(PU.ps, 1.6);
     for (let i = 0; i < rigs.length; i++) {
@@ -311,6 +340,32 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     bind(LU, coneBuf);
     gl.bufferSubData(gl.ARRAY_BUFFER, 0, cone);
     gl.drawArrays(gl.LINES, 0, 16);
+
+    // Inset: the same work seen through the rig's own camera. Its box matches .rig-inset
+    // in index.css (bottom-right, 12px in, 36% wide, or 42% under 640px; 4:3).
+    const iw = Math.round(canvas.width * (window.innerWidth < 640 ? 0.42 : 0.36));
+    const ih = Math.round((iw * 3) / 4);
+    const pad = Math.round(12 * dpr);
+    const ix = canvas.width - iw - pad;
+    gl.enable(gl.SCISSOR_TEST);
+    gl.scissor(ix, pad, iw, ih);
+    gl.viewport(ix, pad, iw, ih);
+    gl.clearColor(0.11, 0.12, 0.13, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.useProgram(pointProg);
+    const camView = mul(perspective((48 * Math.PI) / 180, iw / ih, 0.03, 10), lookAt(camO, add(camO, fwd)));
+    setCommon(PU, camView, camO, fwd, right, up);
+    // Bench in chartreuse, the recorder's own arms and hands in white.
+    gl.uniform1f(PU.mode, 1);
+    gl.uniform1f(PU.ps, 1.3);
+    bind(PU, workBuf);
+    gl.uniform4f(PU.lc, 0.72, 0.92, 0.25, 1);
+    gl.drawArrays(gl.POINTS, limbs, work.length / 4 - limbs);
+    gl.uniform4f(PU.lc, 0.96, 0.96, 0.93, 1);
+    gl.drawArrays(gl.POINTS, 0, limbs);
+    gl.disable(gl.SCISSOR_TEST);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.clearColor(0, 0, 0, 0);
   }
 
   let raf = 0;

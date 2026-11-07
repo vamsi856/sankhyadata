@@ -125,6 +125,7 @@ export const rigBrief = [
   { name: "Cap camera, phone in pocket", vantage: "Brow level" },
   { name: "Human rig", vantage: "Per task" },
 ];
+export const rigInsetLabel = "Rig camera";
 export const rigViewerCaption = "Schematic: where each rig sits and what its camera sees. Select a rig in the table to fit it.";
 
 export const rigs = {

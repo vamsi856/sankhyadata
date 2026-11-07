@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { rigBrief, rigViewerCaption } from "@/content";
+import { rigBrief, rigInsetLabel, rigViewerCaption } from "@/content";
 import { liveGL, prefersStill } from "@/lib/when-near";
 
 /**
@@ -64,6 +64,9 @@ export function RigView() {
     <figure className="m-0">
       <div aria-hidden className="ticks relative aspect-[4/3] rounded-[var(--radius-card)] bg-paper-2">
         <div ref={canvas} className="absolute inset-0" />
+        <div className="rig-inset pointer-events-none absolute">
+          <span className="absolute left-2 top-1.5 text-[0.6875rem]">{rigInsetLabel}</span>
+        </div>
         <p className="absolute left-4 top-3 m-0 text-[0.875rem] text-ink sm:left-5 sm:top-4">
           <span className="font-[420]">{rig.name}</span>
           <span className="text-muted"> · {rig.vantage}</span>
