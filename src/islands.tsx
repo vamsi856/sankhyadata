@@ -7,6 +7,7 @@ import { SiteCloud } from "@/components/SiteCloud";
 import { RigView } from "@/components/RigView";
 import { Pipeline } from "@/components/Pipeline";
 import { SamplesWall } from "@/components/SamplesWall";
+import { FieldSupport } from "@/components/FieldSupport";
 import { MotionProvider } from "@/lib/motion";
 
 /**
@@ -28,6 +29,7 @@ export const islands = {
   rig: RigView,
   pipeline: Pipeline,
   wall: SamplesWall,
+  field: FieldSupport,
 } satisfies Record<string, ComponentType>;
 
 export type IslandName = keyof typeof islands;

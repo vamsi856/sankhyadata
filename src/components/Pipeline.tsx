@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { methodology } from "@/content";
+import { stepRoles } from "@/content";
 import { prefersStill, whenNear } from "@/lib/when-near";
 
 /**
@@ -53,13 +53,12 @@ export function Pipeline() {
     };
   }, []);
 
-  const step = methodology.steps[active];
   return (
     <div aria-hidden className="pipeline relative">
       <canvas ref={canvas} className="absolute inset-0 h-full w-full" />
       <p className="num absolute left-4 top-3 m-0 text-[0.875rem] text-ink lg:left-5 lg:top-4">
         <span className="text-muted">{String(active + 1).padStart(2, "0")} · </span>
-        <span className="font-[420]">{step.role}</span>
+        <span className="font-[420]">{stepRoles[active]}</span>
       </p>
     </div>
   );

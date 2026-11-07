@@ -21,17 +21,20 @@ export const nav = [
 
 export const headerCta = { label: "Make an enquiry", href: "#contact" };
 
+/** Islands import these small pieces directly, so the rest of the copy stays out of the browser bundle. */
+export const heroFrame = {
+  alt: "Hands shaping clay on a potter’s wheel (illustrative stand-in image, not SankhyaData footage).",
+  narration: "Pressing in with both thumbs to narrow the neck.",
+  caption: "Illustrative stand-in image, not SankhyaData footage; annotation and narration shown schematically.",
+};
+
 export const hero = {
   title: "Egocentric video data acquisition, executed end to end.",
   sentence:
     "For physical-AI programmes, we deploy wearable capture rigs, our own or yours, and trained recorders on site, who capture day-to-day work or perform the tasks you specify, supported by in-house IT, annotation, narration and quality-control teams. Engagements are invoiced solely on approved hours.",
   primary: { label: "View representative samples", href: "#samples" },
   secondary: { label: "Discuss a capture programme", href: "#contact" },
-  frame: {
-    alt: "Hands shaping clay on a potter’s wheel (illustrative stand-in image, not SankhyaData footage).",
-    narration: "Pressing in with both thumbs to narrow the neck.",
-    caption: "Illustrative stand-in image, not SankhyaData footage; annotation and narration shown schematically.",
-  },
+  frame: heroFrame,
 };
 
 export const experience = {
@@ -61,42 +64,49 @@ export const perspective = {
   caption: "Schematic, not captured data: a recorder’s head trajectory and camera field of view in a workshop, drawn as a point cloud.",
 };
 
+export const stepRoles = ["Scoping", "Instrumentation", "Acquisition", "Annotation", "Narration", "Quality control", "Delivery"];
+
 export const methodology = {
   title: "One accountable team, from scoping to delivery.",
   steps: [
     {
-      role: "Scoping",
+      role: stepRoles[0],
       text: "We translate your task taxonomy, target operational environments and required hours into a scoped capture plan.",
     },
     {
-      role: "Instrumentation",
+      role: stepRoles[1],
       text: "Capture rigs, our own or client-supplied, are provisioned by our in-house IT team before deployment, then fitted to each recorder and task.",
     },
     {
-      role: "Acquisition",
+      role: stepRoles[2],
       text: "Trained recorders capture first-person footage of real work in situ, or perform the tasks the client scripts, across the operational environments the client specifies.",
     },
     {
-      role: "Annotation",
+      role: stepRoles[3],
       text: "Our annotators author scene descriptions and temporally aligned subtitles in strict conformance with the client’s guidelines.",
     },
     {
-      role: "Narration",
+      role: stepRoles[4],
       text: "Our narrators voice the scene descriptions and subtitles on active noise-cancelling (ANC) headphones, following a microphone and ambient-noise check.",
     },
     {
-      role: "Quality control",
+      role: stepRoles[5],
       text: "Each submission receives an AI-generated quality score; our quality-control (QC) reviewers adjudicate low-scoring items and audit one approval in ten.",
     },
     {
-      role: "Delivery",
+      role: stepRoles[6],
       text: "Approved hours are released in numbered batches through the authenticated client portal, each with a checksum manifest and a verification script.",
     },
   ],
 };
 
+export const fieldLegend = ["IT hub", "Capture site", "Request answered"];
+export const fieldCaption = "Schematic; sites and timings are illustrative.";
+
 export const itTeam = {
   title: "An in-house IT function underpins every engagement.",
+  legend: fieldLegend,
+  fieldCaption,
   sentence: "Our own IT engineers provision every device, prepare each capture site and stand by to assist field officers and recorders the moment an issue arises.",
   items: [
     { title: "Device provisioning", text: "Every rig is configured, updated and charged by our IT staff before deployment." },
@@ -106,33 +116,41 @@ export const itTeam = {
   ],
 };
 
+export const rigBrief = [
+  { name: "Head-mounted iPhone", vantage: "Eye level" },
+  { name: "Cap camera, power bank", vantage: "Brow level" },
+  { name: "Cap camera, phone in pocket", vantage: "Brow level" },
+  { name: "Human rig", vantage: "Per task" },
+];
+export const rigViewerCaption = "Schematic: where each rig sits and what its camera sees. Select a rig in the table to fit it.";
+
 export const rigs = {
   title: "Four capture rigs, each fitted to the recorder and the task.",
   columns: ["Rig", "Mount", "Vantage", "Notes"],
-  viewerCaption: "Schematic: where each rig sits and what its camera sees. Select a rig in the table to fit it.",
+  viewerCaption: rigViewerCaption,
   items: [
     {
-      name: "Head-mounted iPhone",
+      name: rigBrief[0].name,
       mount: "Head mount",
-      vantage: "Eye level",
+      vantage: rigBrief[0].vantage,
       notes: "Records along the recorder’s line of sight.",
     },
     {
-      name: "Cap camera, power bank",
+      name: rigBrief[1].name,
       mount: "Camera on the cap, powered by a power bank",
-      vantage: "Brow level",
+      vantage: rigBrief[1].vantage,
       notes: "Records from just above the recorder’s eyeline.",
     },
     {
-      name: "Cap camera, phone in pocket",
+      name: rigBrief[2].name,
       mount: "Camera on the cap, USB-C to the phone",
-      vantage: "Brow level",
+      vantage: rigBrief[2].vantage,
       notes: "The cap camera connects by USB-C to a smartphone in the recorder’s pocket, which records through the capture app.",
     },
     {
-      name: "Human rig",
+      name: rigBrief[3].name,
       mount: "Wearable rig",
-      vantage: "Per task",
+      vantage: rigBrief[3].vantage,
       notes: "Our preferred configuration, deployed wherever the task permits.",
     },
   ],
@@ -199,12 +217,14 @@ export const assurance = {
   ],
 };
 
+export const samplesWallCaption =
+  "Schematic: the representative set, one tile per operational environment (69 in all). Named tiles are examples; interiors are abstract, not footage.";
+
 export const samplesSection = {
   title: "One representative hour from each operational environment.",
   sentence: "Review our capture standard before commissioning: raw first-person recordings with their metadata, viewable in the browser through our samples viewer.",
   next: { label: "Then send us your brief", href: "#contact" },
-  wallCaption:
-    "Schematic: the representative set, one tile per operational environment (69 in all). Named tiles are examples; interiors are abstract, not footage.",
+  wallCaption: samplesWallCaption,
 };
 
 /**

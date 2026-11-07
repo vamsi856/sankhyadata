@@ -499,6 +499,14 @@ html.lenis body {
   height: clamp(16rem, 32vw, 25rem);
 }
 
+/* IT section: the field-support network. */
+.field {
+  aspect-ratio: 16 / 10;
+}
+@media (max-width: 639px) {
+  .field { aspect-ratio: 1; }
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { m, EASE_OUT } from "@/lib/motion";
-import { hero } from "@/content";
+import { heroFrame } from "@/content";
 import { cn } from "@/lib/utils";
 
 /**
@@ -61,7 +61,7 @@ export function CaptureFrame() {
             src={media("frame-1400.jpg")}
             width={1400}
             height={933}
-            alt={hero.frame.alt}
+            alt={heroFrame.alt}
             fetchPriority="high"
             decoding="async"
             className="absolute inset-0 h-full w-full rounded-[var(--radius-card)] object-cover"
@@ -118,14 +118,14 @@ export function CaptureFrame() {
           data-layer="narration"
         >
           <span className="text-on-image/85">Narrator: </span>
-          {hero.frame.narration}
+          {heroFrame.narration}
         </m.p>
         </div>
       </div>
       </div>
 
       <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-3 text-[0.875rem] text-muted">
-        <span>{hero.frame.caption}</span>
+        <span>{heroFrame.caption}</span>
         <span className="flex gap-2" role="group" aria-label="Annotation and narration layers">
           <LayerToggle pressed={labels} onToggle={() => setLabels((v) => !v)}>
             Annotation

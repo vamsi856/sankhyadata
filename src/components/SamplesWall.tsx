@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { experience, samplesSection } from "@/content";
+import { experience, samplesWallCaption } from "@/content";
 import { prefersStill, whenNear } from "@/lib/when-near";
 
 /** Tiles (of 69, row-major over three rows of 23) that carry the named examples. */
@@ -53,7 +53,7 @@ export function SamplesWall() {
           <span className="font-[420] text-ink">{names[k]}</span>
         </p>
       </div>
-      <figcaption className="mt-3 text-[0.8125rem] text-muted">{samplesSection.wallCaption}</figcaption>
+      <figcaption className="mt-3 text-[0.8125rem] text-muted">{samplesWallCaption}</figcaption>
     </figure>
   );
 }

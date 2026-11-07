@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { rigs } from "@/content";
+import { rigBrief, rigViewerCaption } from "@/content";
 import { prefersStill, whenNear } from "@/lib/when-near";
 
 /**
@@ -41,7 +41,7 @@ export function RigView() {
     const cycle = still
       ? 0
       : window.setInterval(() => {
-          if (performance.now() - touched > 9000) select((current.current + 1) % rigs.items.length, false);
+          if (performance.now() - touched > 9000) select((current.current + 1) % rigBrief.length, false);
         }, 3800);
     const pointer: [number, number] = [0, 0];
     const onMove = (e: PointerEvent) => {
@@ -60,7 +60,7 @@ export function RigView() {
     };
   }, []);
 
-  const rig = rigs.items[active];
+  const rig = rigBrief[active];
   return (
     <figure className="m-0">
       <div aria-hidden className="ticks relative aspect-[4/3] rounded-[var(--radius-card)] bg-paper-2">
@@ -70,7 +70,7 @@ export function RigView() {
           <span className="text-muted"> · {rig.vantage}</span>
         </p>
       </div>
-      <figcaption className="mt-3 text-[0.8125rem] text-muted">{rigs.viewerCaption}</figcaption>
+      <figcaption className="mt-3 text-[0.8125rem] text-muted">{rigViewerCaption}</figcaption>
     </figure>
   );
 }
