@@ -109,6 +109,7 @@ export const itTeam = {
 export const rigs = {
   title: "Four capture rigs, each fitted to the recorder and the task.",
   columns: ["Rig", "Mount", "Vantage", "Notes"],
+  viewerCaption: "Schematic: where each rig sits and what its camera sees. Select a rig in the table to fit it.",
   items: [
     {
       name: "Head-mounted iPhone",

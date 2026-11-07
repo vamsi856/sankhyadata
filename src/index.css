@@ -460,6 +460,19 @@ html.lenis body {
 }
 
 /* Rig table rows answer the pointer. */
+[data-rig] {
+  cursor: pointer;
+}
+tr[data-rig] > :first-child,
+dl[data-rig] {
+  padding-left: 0.875rem;
+  box-shadow: inset 3px 0 0 transparent;
+  transition: box-shadow var(--dur-short) var(--ease-out);
+}
+tr[data-rig][data-active="true"] > :first-child,
+dl[data-rig][data-active="true"] {
+  box-shadow: inset 3px 0 0 var(--label);
+}
 .rig-row {
   transition: background-color var(--dur-short) var(--ease-out);
 }

@@ -3,6 +3,7 @@ import { CaptureFrame } from "@/components/CaptureFrame";
 import { BillingTrack } from "@/components/BillingTrack";
 import { CountUp } from "@/components/CountUp";
 import { SiteCloud } from "@/components/SiteCloud";
+import { RigView } from "@/components/RigView";
 import { MotionProvider } from "@/lib/motion";
 
 /**
@@ -14,6 +15,7 @@ export const islands = {
   billing: BillingTrack,
   figure: CountUp,
   cloud: SiteCloud,
+  rig: RigView,
 } satisfies Record<string, ComponentType>;
 
 export type IslandName = keyof typeof islands;

@@ -1,4 +1,5 @@
 import { rigs } from "@/content";
+import { Island } from "@/islands";
 
 /** Rig specifications: a table from sm up, one definition block per rig on phones. */
 export function Rigs() {
@@ -6,9 +7,12 @@ export function Rigs() {
   return (
     <section id="rigs" aria-labelledby="rigs-title" className="border-t border-rule">
       <div className="container-page py-20 md:py-28">
-        <h2 id="rigs-title" className="m-0 max-w-2xl text-[clamp(2rem,4vw,3.25rem)]">
-          {rigs.title}
-        </h2>
+        <div className="grid items-end gap-x-12 gap-y-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+          <h2 id="rigs-title" className="m-0 max-w-md text-[clamp(2rem,4vw,3.25rem)]">
+            {rigs.title}
+          </h2>
+          <Island name="rig" />
+        </div>
 
         <table className="mt-14 hidden w-full border-collapse text-left sm:table">
           <caption className="sr-only">Capture rig specifications</caption>
@@ -22,8 +26,8 @@ export function Rigs() {
             </tr>
           </thead>
           <tbody>
-            {rigs.items.map((r) => (
-              <tr key={r.name} className="rig-row border-b border-rule align-top">
+            {rigs.items.map((r, i) => (
+              <tr key={r.name} data-rig={i} tabIndex={0} className="rig-row border-b border-rule align-top">
                 <th scope="row" className="py-5 pr-6 text-[1.1875rem] font-[420] tracking-[-0.015em] text-ink">
                   {r.name}
                 </th>
@@ -36,8 +40,8 @@ export function Rigs() {
         </table>
 
         <div className="mt-10 border-t border-rule sm:hidden">
-          {rigs.items.map((r) => (
-            <dl key={r.name} className="m-0 border-b border-rule py-6">
+          {rigs.items.map((r, i) => (
+            <dl key={r.name} data-rig={i} tabIndex={0} className="rig-row m-0 border-b border-rule py-6">
               <dt className="sr-only">{cRig}</dt>
               <dd className="m-0 text-[1.25rem] font-[420] tracking-[-0.015em] text-ink">{r.name}</dd>
               <div className="mt-3 grid grid-cols-[6rem_minmax(0,1fr)] gap-y-1.5 text-[0.9375rem]">
