@@ -1,13 +1,19 @@
 import { methodology } from "@/content";
+import { Island } from "@/islands";
 
 export function HowItWorks() {
   return (
     <section id="methodology" aria-labelledby="how-title" className="border-t border-rule">
       <div className="container-page grid gap-x-12 gap-y-10 py-20 md:py-28 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-        <div className="lg:sticky lg:top-28 lg:self-start">
+        {/* On phones this wrapper dissolves (display: contents) so the pipeline can pin
+            against the whole section; from lg it is the sticky left column. */}
+        <div className="contents lg:sticky lg:top-24 lg:block lg:self-start">
           <h2 id="how-title" className="m-0 max-w-md text-[clamp(2rem,4vw,3.25rem)]">
             {methodology.title}
           </h2>
+          <div className="pipeline-pin sticky top-16 z-10 bg-paper pb-3 pt-2 lg:static lg:mt-10 lg:bg-transparent lg:p-0">
+            <Island name="pipeline" />
+          </div>
         </div>
         <ol className="m-0 list-none border-t border-rule p-0">
           {methodology.steps.map((step, i) => (
