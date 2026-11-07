@@ -2,6 +2,7 @@ import type { ComponentType } from "react";
 import { CaptureFrame } from "@/components/CaptureFrame";
 import { BillingTrack } from "@/components/BillingTrack";
 import { CountUp } from "@/components/CountUp";
+import { SiteCloud } from "@/components/SiteCloud";
 import { MotionProvider } from "@/lib/motion";
 
 /**
@@ -12,6 +13,7 @@ export const islands = {
   frame: CaptureFrame,
   billing: BillingTrack,
   figure: CountUp,
+  cloud: SiteCloud,
 } satisfies Record<string, ComponentType>;
 
 export type IslandName = keyof typeof islands;
@@ -25,10 +27,10 @@ export function IslandContent({ name }: { name: IslandName }) {
   );
 }
 
-export function Island({ name, inline = false }: { name: IslandName; inline?: boolean }) {
+export function Island({ name, inline = false, className }: { name: IslandName; inline?: boolean; className?: string }) {
   const Tag = inline ? "span" : "div";
   return (
-    <Tag data-island={name}>
+    <Tag data-island={name} className={className}>
       <IslandContent name={name} />
     </Tag>
   );

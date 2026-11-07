@@ -443,6 +443,22 @@ html.lenis body {
   translate: 0 0 10px;
 }
 
+/* Perspective band: the point-cloud scene stays pinned while the visitor scrolls through
+   a taller track; scrolling drives the camera from overview to first person. */
+.persp-track {
+  height: 260vh;
+}
+.persp-sticky {
+  height: 100vh;
+  height: 100svh;
+}
+.persp-scrim {
+  background: linear-gradient(100deg, var(--inv-paper) 0%, color-mix(in oklch, var(--inv-paper) 70%, transparent) 32%, transparent 62%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .persp-track { height: auto; }
+}
+
 /* Rig table rows answer the pointer. */
 .rig-row {
   transition: background-color var(--dur-short) var(--ease-out);

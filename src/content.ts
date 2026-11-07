@@ -54,6 +54,13 @@ export const experience = {
   ],
 };
 
+export const perspective = {
+  title: "Every hour is a path through a real place.",
+  sentence:
+    "A recorder moves through the capture site, and whatever enters the camera’s field of view becomes footage. Scroll, and the view passes from the site into the recorder’s own eyes.",
+  caption: "Schematic, not captured data: a recorder’s head trajectory and camera field of view in a workshop, drawn as a point cloud.",
+};
+
 export const methodology = {
   title: "One accountable team, from scoping to delivery.",
   steps: [

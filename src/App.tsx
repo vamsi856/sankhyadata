@@ -1,6 +1,7 @@
 import { Header } from "@/sections/Header";
 import { Hero } from "@/sections/Hero";
 import { Experience } from "@/sections/Experience";
+import { Perspective } from "@/sections/Perspective";
 import { HowItWorks } from "@/sections/HowItWorks";
 import { ITTeam } from "@/sections/ITTeam";
 import { Rigs } from "@/sections/Rigs";
@@ -25,6 +26,7 @@ export default function App() {
       <main id="main">
         <Hero />
         <Experience />
+        <Perspective />
         <HowItWorks />
         <ITTeam />
         <Rigs />
