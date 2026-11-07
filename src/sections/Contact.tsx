@@ -1,5 +1,6 @@
 import { contact, credits, footer, nav, site } from "@/content";
 import { Wordmark } from "./Header";
+import { Island } from "@/islands";
 
 const mailto = `mailto:${site.email}?subject=${encodeURIComponent(contact.subject)}&body=${encodeURIComponent(
   contact.brief.join("\n\n") + "\n",
@@ -8,7 +9,8 @@ const mailto = `mailto:${site.email}?subject=${encodeURIComponent(contact.subjec
 export function Contact() {
   return (
     <section id="contact" aria-labelledby="contact-title" className="border-t border-rule">
-      <div className="container-page py-24 md:py-32">
+      <div className="container-page grid items-center gap-x-12 gap-y-10 py-24 md:py-32 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+        <div>
         <h2 id="contact-title" className="m-0 max-w-3xl text-[clamp(2.4rem,6vw,4.75rem)]">
           {contact.title}
         </h2>
@@ -19,6 +21,8 @@ export function Contact() {
           </a>
           <span className="text-[0.875rem] text-muted">The email opens with the brief’s fields already listed.</span>
         </div>
+        </div>
+        <Island name="mark" />
       </div>
     </section>
   );

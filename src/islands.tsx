@@ -9,6 +9,7 @@ import { Pipeline } from "@/components/Pipeline";
 import { SamplesWall } from "@/components/SamplesWall";
 import { FieldSupport } from "@/components/FieldSupport";
 import { BatchStack } from "@/components/BatchStack";
+import { ClosingMark } from "@/components/ClosingMark";
 import { MotionProvider } from "@/lib/motion";
 
 /**
@@ -32,6 +33,7 @@ export const islands = {
   wall: SamplesWall,
   field: FieldSupport,
   batch: BatchStack,
+  mark: ClosingMark,
 } satisfies Record<string, ComponentType>;
 
 export type IslandName = keyof typeof islands;
