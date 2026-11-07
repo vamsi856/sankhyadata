@@ -70,8 +70,6 @@ function buildScene() {
   for (let i = 0; i < 800; i++) put(-4, r(0, 2.8), r(-3, 3), 0.1);
   box(0, 0.86, 0, 1.3, 0.04, 0.62, 3200, 0.55); // bench top
   for (const [lx, lz] of [[-1.2, -0.52], [1.2, -0.52], [-1.2, 0.52], [1.2, 0.52]]) box(lx, 0.42, lz, 0.04, 0.42, 0.04, 140, 0.4);
-  lathe(-0.35, 0.9, 0, 0.04, () => r(0, 0.34), 900, 0.7); // wheel head
-  lathe(-0.35, 0.94, 0, 0.36, (t) => 0.05 + 0.1 * Math.pow(Math.sin(Math.PI * Math.min(1, t / 0.8)), 1.4) + (t > 0.85 ? (t - 0.85) * 0.35 : 0), 1400, 0.95); // pot: belly, neck, lip
   box(0.5, 0.94, 0.25, 0.2, 0.04, 0.12, 300, 0.7); // tray
   lathe(0.85, 0.9, -0.3, 0.32, () => 0.1, 450, 0.75); // water jar
   box(0.3, 0.92, -0.35, 0.12, 0.02, 0.03, 120, 0.7); // tool
@@ -82,12 +80,86 @@ function buildScene() {
   return new Float32Array(out);
 }
 
-/** The recorder's head at time t, and where it looks: walking round the bench, eyes on the work. */
-function recorder(t: number) {
+const WHEEL_X = -0.35;
+const potRadius = (t: number) => 0.05 + 0.1 * Math.pow(Math.sin(Math.PI * Math.min(1, t / 0.8)), 1.4) + (t > 0.85 ? (t - 0.85) * 0.35 : 0);
+
+function sampler(seed0: number) {
+  let seed = seed0;
+  const rnd = () => {
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const out: number[] = [];
+  return { rnd, out, put: (x: number, y: number, z: number, b: number) => out.push(x, y, z, b) };
+}
+
+/** Wheel head, pot and the spiral grooves thrown into it, around the wheel's axis (x = z = 0). */
+function buildPot() {
+  const { rnd, out, put } = sampler(17);
+  for (let i = 0; i < 900; i++) {
+    const a = rnd() * Math.PI * 2;
+    const rr = rnd() * 0.34;
+    put(Math.cos(a) * rr, 0.9 + rnd() * 0.04, Math.sin(a) * rr, 0.7);
+  }
+  for (let i = 0; i < 1400; i++) {
+    const t = rnd();
+    const a = rnd() * Math.PI * 2;
+    put(Math.cos(a) * potRadius(t), 0.94 + t * 0.36, Math.sin(a) * potRadius(t), 0.9);
+  }
+  for (let i = 0; i < 700; i++) {
+    const t = i / 700;
+    const a = t * Math.PI * 2 * 16;
+    const rr = potRadius(t) + 0.004;
+    put(Math.cos(a) * rr, 0.94 + t * 0.36, Math.sin(a) * rr, 1);
+  }
+  return new Float32Array(out);
+}
+
+/** Two hands cupping the pot from the recorder's side (+z), fingers wrapping round it. */
+function buildHands() {
+  const { rnd, out, put } = sampler(29);
+  for (const side of [-1, 1]) {
+    const px = side * 0.175;
+    // Palm, flattened against the pot's flank.
+    for (let i = 0; i < 260; i++) {
+      const u = rnd() * 2 - 1;
+      const v = rnd() * 2 - 1;
+      const w = rnd() * 2 - 1;
+      if (u * u + v * v + w * w > 1) continue;
+      put(px + u * 0.016, 1.07 + v * 0.045, 0.05 + w * 0.05, 0.85);
+    }
+    // Four fingers reaching round the far side, and a thumb over the top.
+    for (let f = 0; f < 4; f++) {
+      const fy = 1.03 + f * 0.024;
+      for (let i = 0; i < 60; i++) {
+        const t = rnd();
+        const a = 0.35 + t * 1.05; // angle swept round the pot, from the recorder's side
+        const rr = 0.165 - t * 0.02 + (rnd() - 0.5) * 0.012;
+        put(side * Math.sin(a) * rr, fy + (rnd() - 0.5) * 0.012, Math.cos(a) * rr, 0.85);
+      }
+    }
+    for (let i = 0; i < 60; i++) {
+      const t = rnd();
+      put(px - side * t * 0.06, 1.13 + t * 0.03 + (rnd() - 0.5) * 0.01, 0.07 - t * 0.02, 0.85);
+    }
+  }
+  return new Float32Array(out);
+}
+
+/**
+ * The recorder's head at time t, and where it looks: walking round the bench, eyes on the
+ * work; `seat` (0 to 1) brings them to the wheel, seated, looking down into the pot.
+ */
+function recorder(t: number, seat = 0) {
   const a = 0.17 * t + 0.6;
   const rad = 1.75 + 0.2 * Math.sin(0.45 * t);
-  const head: V3 = [rad * Math.sin(a), 1.58 + 0.025 * Math.sin(2.2 * t), rad * Math.cos(a) * 0.85];
-  const look: V3 = [-0.25 + 0.3 * Math.sin(0.37 * t), 0.98, 0.2 * Math.sin(0.29 * t)];
+  const walkHead: V3 = [rad * Math.sin(a), 1.58 + 0.025 * Math.sin(2.2 * t), rad * Math.cos(a) * 0.85];
+  const walkLook: V3 = [-0.25 + 0.3 * Math.sin(0.37 * t), 0.98, 0.2 * Math.sin(0.29 * t)];
+  const k = seat * seat * (3 - 2 * seat);
+  const head = mix(walkHead, [WHEEL_X, 1.56 + 0.008 * Math.sin(1.1 * t), 0.74], k);
+  const look = mix(walkLook, [WHEEL_X, 1.02, -0.02], k);
   const fwd = norm(sub(look, head));
   const right = norm(cross(fwd, [0, 1, 0]));
   const up = cross(right, fwd);
@@ -96,20 +168,22 @@ function recorder(t: number) {
 
 const VS = `
 attribute vec4 a;
-uniform mat4 mvp; uniform vec3 hd, fw, rt, up; uniform vec2 tf; uniform float px, mode; uniform vec4 lc;
+uniform mat4 mvp, mdl; uniform vec3 hd, fw, rt, up; uniform vec2 tf; uniform float px, mode, ga; uniform vec4 lc;
 varying vec4 c; varying float m;
 void main() {
   m = mode;
-  vec4 q = mvp * vec4(a.xyz, 1.0);
+  vec3 wp = (mdl * vec4(a.xyz, 1.0)).xyz;
+  vec4 q = mvp * vec4(wp, 1.0);
   gl_Position = q;
+  if (mode > 2.5) { c = vec4(lc.rgb, lc.a * a.w * ga); gl_PointSize = px * 1.6 * clamp(4.0 / q.w, 0.55, 1.7); return; }
   if (mode > 0.5) { c = vec4(lc.rgb, lc.a * a.w); gl_PointSize = px * 7.0; return; }
-  vec3 v = a.xyz - hd; float d = dot(v, fw); float on = 0.0;
+  vec3 v = wp - hd; float d = dot(v, fw); float on = 0.0;
   if (d > 0.05) {
     float k = max(abs(dot(v, rt)) / (d * tf.x), abs(dot(v, up)) / (d * tf.y));
     on = (1.0 - smoothstep(0.86, 1.0, k)) * (1.0 - smoothstep(2.4, 3.1, d));
   }
   gl_PointSize = px * (1.3 + 1.0 * on) * clamp(4.0 / q.w, 0.55, 1.7);
-  c = vec4(mix(vec3(0.86, 0.88, 0.86), vec3(0.84, 1.0, 0.3), on), mix(0.2 + 0.55 * a.w, 1.0, on));
+  c = vec4(mix(vec3(0.86, 0.88, 0.86), vec3(0.84, 1.0, 0.3), on), mix(0.2 + 0.55 * a.w, 1.0, on) * ga);
 }`;
 const FS = `
 precision mediump float; varying vec4 c; varying float m;
@@ -135,13 +209,22 @@ export function start(canvas: HTMLCanvasElement, opts: Opts): (() => void) | nul
   if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
   gl.useProgram(prog);
   const U = (n: string) => gl.getUniformLocation(prog, n);
-  const u = { mvp: U("mvp"), hd: U("hd"), fw: U("fw"), rt: U("rt"), up: U("up"), tf: U("tf"), px: U("px"), mode: U("mode"), lc: U("lc") };
+  const u = { mvp: U("mvp"), mdl: U("mdl"), ga: U("ga"), hd: U("hd"), fw: U("fw"), rt: U("rt"), up: U("up"), tf: U("tf"), px: U("px"), mode: U("mode"), lc: U("lc") };
   const loc = gl.getAttribLocation(prog, "a");
 
   const scene = buildScene();
   const sceneBuf = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, sceneBuf);
   gl.bufferData(gl.ARRAY_BUFFER, scene, gl.STATIC_DRAW);
+  const upload = (d: Float32Array) => {
+    const b = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, b);
+    gl.bufferData(gl.ARRAY_BUFFER, d, gl.STATIC_DRAW);
+    return { b, n: d.length / 4 };
+  };
+  const pot = upload(buildPot());
+  const hands = upload(buildHands());
+  const I = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
   const TRAIL = 180;
   const dyn = new Float32Array((TRAIL + 16 + 1) * 4);
   const dynBuf = gl.createBuffer();
@@ -178,16 +261,19 @@ export function start(canvas: HTMLCanvasElement, opts: Opts): (() => void) | nul
     const [px, py] = opts.pointer();
     sx += (px - sx) * 0.06;
     sy += (py - sy) * 0.06;
-    const rec = recorder(t);
+    // Over the last stretch of the scroll the recorder sits down at the wheel.
+    const seat = Math.min(1, Math.max(0, (p - 0.3) / 0.6));
+    const rec = recorder(t, seat);
     // Viewer: an orbit over the site, easing into the recorder's eye as the visitor scrolls.
     const aspect = canvas.width / canvas.height;
     const portrait = aspect < 1;
     const va = 0.9 + 0.035 * t + sx * 0.6;
     const dist = portrait ? 8.2 : 6.4;
     const orbitEye: V3 = [dist * Math.sin(va), 3.3 + sy * 1.2, dist * Math.cos(va)];
-    const eye = mix(orbitEye, add(rec.head, scale(rec.fwd, -0.02)), p);
+    const eye = mix(orbitEye, add(rec.head, scale(rec.fwd, portrait ? -0.55 : -0.12)), p);
     // On a portrait screen the text sits on top, so aim higher and the site sinks below it.
-    const target = mix([0, portrait ? 2.6 : 0.75, 0], add(rec.head, rec.fwd), p);
+    const aim = add(add(rec.head, rec.fwd), portrait ? scale(rec.up, 0.32) : scale(rec.right, -0.42));
+    const target = mix([0, portrait ? 2.6 : 0.75, 0], aim, p);
     const fov = ((42 + 20 * p) * Math.PI) / 180;
     const mvp = mul(perspective(fov, aspect, 0.03, 40), lookAt(eye, target));
 
@@ -201,17 +287,40 @@ export function start(canvas: HTMLCanvasElement, opts: Opts): (() => void) | nul
     gl.uniform1f(u.px, dpr * (aspect < 1 ? 1.15 : 1.4));
 
     gl.uniform1f(u.mode, 0);
+    gl.uniform1f(u.ga, 1);
+    gl.uniformMatrix4fv(u.mdl, false, I);
     gl.bindBuffer(gl.ARRAY_BUFFER, sceneBuf);
     gl.enableVertexAttribArray(loc);
     gl.vertexAttribPointer(loc, 4, gl.FLOAT, false, 0, 0);
     gl.drawArrays(gl.POINTS, 0, scene.length / 4);
+    // The pot turns on the wheel; the hands arrive as the recorder sits down.
+    const spin = t * 2.2;
+    const cs = Math.cos(spin);
+    const sn = Math.sin(spin);
+    gl.uniformMatrix4fv(u.mdl, false, [cs, 0, -sn, 0, 0, 1, 0, 0, sn, 0, cs, 0, WHEEL_X, 0, 0, 1]);
+    gl.bindBuffer(gl.ARRAY_BUFFER, pot.b);
+    gl.vertexAttribPointer(loc, 4, gl.FLOAT, false, 0, 0);
+    gl.drawArrays(gl.POINTS, 0, pot.n);
+    const handsIn = Math.min(1, Math.max(0, (seat - 0.55) / 0.4));
+    if (handsIn > 0.01) {
+      gl.uniform1f(u.ga, handsIn);
+      gl.uniform1f(u.mode, 3);
+      gl.uniform4f(u.lc, 0.97, 0.96, 0.92, 1);
+      gl.uniformMatrix4fv(u.mdl, false, [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, WHEEL_X, 0.025 * Math.sin(t * 0.9), 0, 1]);
+      gl.bindBuffer(gl.ARRAY_BUFFER, hands.b);
+      gl.vertexAttribPointer(loc, 4, gl.FLOAT, false, 0, 0);
+      gl.drawArrays(gl.POINTS, 0, hands.n);
+      gl.uniform1f(u.ga, 1);
+      gl.uniform1f(u.mode, 0);
+    }
+    gl.uniformMatrix4fv(u.mdl, false, I);
 
     // Trail, frustum and head marker fade out as the viewer becomes the recorder.
     const fade = 1 - p;
     if (fade > 0.01) {
       let o = 0;
       for (let k = 0; k < TRAIL; k++) {
-        const h = recorder(t - k * 0.06).head;
+        const h = recorder(t - k * 0.06, seat).head;
         dyn.set([h[0], h[1], h[2], (1 - k / TRAIL) * 0.9], o);
         o += 4;
       }
