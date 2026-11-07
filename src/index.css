@@ -472,6 +472,14 @@ html.lenis body {
   .mark-3d { aspect-ratio: auto; height: 18rem; }
 }
 
+/* Experience: the hours volume. */
+.hours {
+  aspect-ratio: 4 / 3;
+}
+@media (max-width: 1023px) {
+  .hours { aspect-ratio: auto; height: 17rem; }
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;

@@ -6,9 +6,12 @@ export function Experience() {
     <section id="experience" aria-labelledby="experience-title" className="border-t border-rule">
       <div className="container-page py-20 md:py-28">
         <div className="grid items-end gap-x-12 gap-y-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-          <h2 id="experience-title" className="m-0 max-w-md text-[clamp(2rem,4vw,3.25rem)]">
-            {experience.title}
-          </h2>
+          <div>
+            <h2 id="experience-title" className="m-0 max-w-md text-[clamp(2rem,4vw,3.25rem)]">
+              {experience.title}
+            </h2>
+            <Island name="hours" />
+          </div>
           <div className="ticks rounded-[var(--radius-card)] p-7 sm:p-10">
             <p className="m-0 flex flex-wrap items-baseline gap-x-3">
               <Island name="figure" inline />

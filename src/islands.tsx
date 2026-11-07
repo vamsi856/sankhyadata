@@ -10,6 +10,7 @@ import { SamplesWall } from "@/components/SamplesWall";
 import { FieldSupport } from "@/components/FieldSupport";
 import { BatchStack } from "@/components/BatchStack";
 import { ClosingMark } from "@/components/ClosingMark";
+import { HoursVolume } from "@/components/HoursVolume";
 import { MotionProvider } from "@/lib/motion";
 
 /**
@@ -34,6 +35,7 @@ export const islands = {
   field: FieldSupport,
   batch: BatchStack,
   mark: ClosingMark,
+  hours: HoursVolume,
 } satisfies Record<string, ComponentType>;
 
 export type IslandName = keyof typeof islands;
