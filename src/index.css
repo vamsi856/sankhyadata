@@ -567,6 +567,30 @@ html.lenis body {
   .hud-tc { animation: none; }
 }
 
+/* FAQ: an answer folds down out of its question on a hinge, and the plus turns through
+   depth into a cross. CSS only; the question row is the hinge (transform-origin top). */
+.faq {
+  perspective: 900px;
+}
+.faq[open] > p {
+  transform-origin: top center;
+  animation: faq-fold 560ms var(--ease-out) both;
+}
+@keyframes faq-fold {
+  from { opacity: 0; transform: rotateX(-78deg) translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+.faq summary svg {
+  transition-duration: 420ms;
+}
+.faq[open] summary svg {
+  transform: rotateY(180deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .faq[open] > p { animation: none; }
+  .faq summary svg { transition: none; }
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;
