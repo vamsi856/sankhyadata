@@ -392,80 +392,145 @@ html.lenis body {
   transform: translateZ(72px) scale(0.948571);
 }
 
-/* Deliverables flow chart: Video through Verification. Each step is a pill; a light runs
-   down the connectors and lights each step in turn (opacity and transform only). */
-.flow {
-  --step: 0.9s;
-  --cycle: calc(var(--step) * 7 + 1.2s);
+/* Deliverables flowchart: nodes on a central spine (left-hand spine on phones), Video to
+   Verification, then release. A light travels the spine over --run and lights each node as
+   it passes; transform and opacity only. */
+.flowx {
+  --run: 9s;
+  --pause: 2s;
+  --gap: 1.75rem;
+  position: relative;
   display: grid;
-  justify-items: start;
-  row-gap: 1.25rem;
+  row-gap: var(--gap);
+  max-width: 64rem;
+  margin-inline: auto;
 }
-.flow-node {
+.flowx::before,
+.flowx::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 1.25rem;
+  width: 2px;
+  margin-left: -1px;
+}
+.flowx::before {
+  background: var(--rule-2);
+}
+/* The travelling light: a bright segment 8% of the spine's length, moved by transform. */
+.flowx::after {
+  bottom: auto;
+  height: 8%;
+  background: linear-gradient(to bottom, transparent, var(--label) 70%, var(--label-ink));
+  border-radius: 2px;
+  animation: flowx-run calc(var(--run) + var(--pause)) linear infinite;
+}
+@keyframes flowx-run {
+  0% { transform: translateY(-100%); opacity: 0; }
+  3% { opacity: 1; }
+  80% { transform: translateY(1150%); opacity: 1; }
+  84%, 100% { transform: translateY(1150%); opacity: 0; }
+}
+.flowx-node {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  column-gap: 1.25rem;
+  align-items: start;
+}
+.flowx-dot {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-top: 1.1rem;
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--rule-2);
+  font-size: 0.8125rem;
+  color: var(--ink-2);
+}
+.flowx-card {
   position: relative;
   isolation: isolate;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 0.5rem 1rem 0.5rem 0.55rem;
-  border-radius: 999px;
+  padding: 1.35rem 1.5rem 1.5rem;
+  border-radius: var(--radius-card);
   background: var(--paper);
-  box-shadow: inset 0 0 0 1px var(--rule-2);
-  font-size: 0.9375rem;
-  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--rule);
 }
-.flow-num {
-  display: inline-grid;
-  place-items: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 50%;
-  font-size: 0.75rem;
-  color: var(--muted);
-  box-shadow: inset 0 0 0 1px var(--rule-2);
-  background: var(--paper);
-}
-/* The step's light: a chartreuse fill faded in and out on the step's turn. */
-.flow-node::after {
+/* The light reaching a node: the dot fills chartreuse, the card gets a chartreuse edge. */
+.flowx-dot::after,
+.flowx-card::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: var(--label);
   opacity: 0;
-  animation: flow-lit var(--cycle) var(--ease-out) infinite;
-  animation-delay: calc(var(--i) * var(--step));
+  animation: flowx-lit calc(var(--run) + var(--pause)) var(--ease-out) infinite;
+  animation-delay: calc((var(--i) + 0.5) / 8 * var(--run) * 0.8 / 0.8);
 }
-/* Connector from the previous step. */
-.flow-node + .flow-node::before {
-  content: "";
-  position: absolute;
-  left: calc(0.55rem + 0.875rem);
-  top: -1.25rem;
-  width: 1px;
-  height: 1.25rem;
-  background: var(--rule-2);
+.flowx-dot::after {
+  background: var(--label);
+  box-shadow: 0 0 0 6px color-mix(in oklch, var(--label) 30%, transparent);
 }
-@keyframes flow-lit {
+.flowx-card::after {
+  box-shadow: inset 0 0 0 1.5px var(--label-ink), 0 18px 40px -26px color-mix(in oklch, var(--ink) 40%, transparent);
+}
+@keyframes flowx-lit {
   0% { opacity: 0; }
-  6% { opacity: 1; }
-  14% { opacity: 1; }
-  24% { opacity: 0; }
-  100% { opacity: 0; }
+  4% { opacity: 1; }
+  16% { opacity: 1; }
+  30%, 100% { opacity: 0; }
 }
-#deliverables:has(dl > div:nth-child(1):hover) .flow-node:nth-child(1)::after,
-#deliverables:has(dl > div:nth-child(2):hover) .flow-node:nth-child(2)::after,
-#deliverables:has(dl > div:nth-child(3):hover) .flow-node:nth-child(3)::after,
-#deliverables:has(dl > div:nth-child(4):hover) .flow-node:nth-child(4)::after,
-#deliverables:has(dl > div:nth-child(5):hover) .flow-node:nth-child(5)::after,
-#deliverables:has(dl > div:nth-child(6):hover) .flow-node:nth-child(6)::after,
-#deliverables:has(dl > div:nth-child(7):hover) .flow-node:nth-child(7)::after {
+.flowx-node:hover .flowx-dot::after,
+.flowx-node:hover .flowx-card::after {
   animation: none;
   opacity: 1;
 }
+.flowx-end {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  column-gap: 1.25rem;
+}
+.flowx-end-pill {
+  grid-column: 2;
+  justify-self: start;
+  padding: 0.7rem 1.2rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.9375rem;
+}
+@media (min-width: 1024px) {
+  /* Centre spine; nodes alternate either side of it. */
+  .flowx::before,
+  .flowx::after { left: 50%; }
+  .flowx-node {
+    grid-template-columns: minmax(0, 1fr) 2.5rem minmax(0, 1fr);
+    column-gap: 2rem;
+  }
+  .flowx-dot { grid-column: 2; grid-row: 1; }
+  .flowx-node:nth-child(odd) .flowx-card { grid-column: 1; grid-row: 1; text-align: right; }
+  .flowx-node:nth-child(even) .flowx-card { grid-column: 3; grid-row: 1; }
+  .flowx-node + .flowx-node { margin-top: -2.75rem; }
+  .flowx-end {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    padding-top: 0.5rem;
+  }
+  .flowx-end-pill { grid-column: 1; justify-self: center; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .flow-node::after { animation: none; }
+  .flowx::after { display: none; }
+  .flowx-dot::after,
+  .flowx-card::after { animation: none; }
 }
 
 /* Perspective band: the point-cloud scene stays pinned while the visitor scrolls through

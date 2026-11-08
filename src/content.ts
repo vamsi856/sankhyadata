@@ -181,6 +181,7 @@ export const deliverableTerms = ["Video", "Scene descriptions", "Subtitles", "Vo
 export const deliverables = {
   title: "What each delivery batch contains.",
   sentence: "Batches are numbered and released through the authenticated client portal.",
+  end: "Released as a numbered batch through the client portal",
   rows: [
     { term: deliverableTerms[0], detail: "First-person footage, 1080p at 30 fps, HEVC (H.265)" },
     { term: deliverableTerms[1], detail: "Authored by our annotators in strict conformance with the client’s guidelines" },
