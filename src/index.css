@@ -392,12 +392,80 @@ html.lenis body {
   transform: translateZ(72px) scale(0.948571);
 }
 
-/* Deliverables: the 3D batch. */
-.batch {
-  aspect-ratio: 5 / 4;
+/* Deliverables flow chart: Video through Verification. Each step is a pill; a light runs
+   down the connectors and lights each step in turn (opacity and transform only). */
+.flow {
+  --step: 0.9s;
+  --cycle: calc(var(--step) * 7 + 1.2s);
+  display: grid;
+  justify-items: start;
+  row-gap: 1.25rem;
 }
-@media (max-width: 1023px) {
-  .batch { aspect-ratio: auto; height: 17rem; }
+.flow-node {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.5rem 1rem 0.5rem 0.55rem;
+  border-radius: 999px;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--rule-2);
+  font-size: 0.9375rem;
+  color: var(--ink);
+}
+.flow-num {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  color: var(--muted);
+  box-shadow: inset 0 0 0 1px var(--rule-2);
+  background: var(--paper);
+}
+/* The step's light: a chartreuse fill faded in and out on the step's turn. */
+.flow-node::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--label);
+  opacity: 0;
+  animation: flow-lit var(--cycle) var(--ease-out) infinite;
+  animation-delay: calc(var(--i) * var(--step));
+}
+/* Connector from the previous step. */
+.flow-node + .flow-node::before {
+  content: "";
+  position: absolute;
+  left: calc(0.55rem + 0.875rem);
+  top: -1.25rem;
+  width: 1px;
+  height: 1.25rem;
+  background: var(--rule-2);
+}
+@keyframes flow-lit {
+  0% { opacity: 0; }
+  6% { opacity: 1; }
+  14% { opacity: 1; }
+  24% { opacity: 0; }
+  100% { opacity: 0; }
+}
+#deliverables:has(dl > div:nth-child(1):hover) .flow-node:nth-child(1)::after,
+#deliverables:has(dl > div:nth-child(2):hover) .flow-node:nth-child(2)::after,
+#deliverables:has(dl > div:nth-child(3):hover) .flow-node:nth-child(3)::after,
+#deliverables:has(dl > div:nth-child(4):hover) .flow-node:nth-child(4)::after,
+#deliverables:has(dl > div:nth-child(5):hover) .flow-node:nth-child(5)::after,
+#deliverables:has(dl > div:nth-child(6):hover) .flow-node:nth-child(6)::after,
+#deliverables:has(dl > div:nth-child(7):hover) .flow-node:nth-child(7)::after {
+  animation: none;
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow-node::after { animation: none; }
 }
 
 /* Perspective band: the point-cloud scene stays pinned while the visitor scrolls through
@@ -694,10 +762,9 @@ html.lenis body {
   color: var(--muted);
 }
 
-/* Footer end card: the wordmark at full width, cropped along the bottom edge. */
+/* Footer end card: the wordmark at full width, shown whole. */
 .foot-mark {
-  overflow: hidden;
-  height: min(11.4vw, 8.9rem);
+  padding-bottom: clamp(1.5rem, 4vw, 3rem);
   user-select: none;
 }
 .foot-word {
@@ -709,7 +776,6 @@ html.lenis body {
   letter-spacing: -0.055em;
   white-space: nowrap;
   color: var(--ink);
-  transform: translateY(0.06em);
 }
 .foot-dot {
   display: inline-block;

@@ -159,9 +159,10 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     const aspect = canvas.width / canvas.height;
     const narrow = aspect < 1.1;
     const va = 0.6 + (opts.still ? 0 : t * 0.06) + sx * 0.4;
-    const R = narrow ? 6.9 : 6.1;
+    // The client portal floats above the hub: ease back and up while it is shown.
+    const R = (narrow ? 6.9 : 6.1) + weight[2] * 1.1;
     const eye: V3 = [Math.sin(va) * R, narrow ? 4.8 : 3.5, Math.cos(va) * R];
-    const vp = mul(perspective((34 * Math.PI) / 180, aspect, 0.1, 50), lookAt(eye, [0, 0.15, 0]));
+    const vp = mul(perspective((34 * Math.PI) / 180, aspect, 0.1, 50), lookAt(eye, [0, 0.15 + weight[2] * 0.45, 0]));
     gl.uniformMatrix4fv(uMvp, false, vp);
     gl.uniform1f(uPx, dpr * 2.1);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -224,7 +225,7 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     // 2. Client portal: batches rise from the hub into an authenticated portal above it.
     wt = weight[2];
     if (wt > 0.01) {
-      const PY = 1.95;
+      const PY = 1.5;
       for (let j = 0; j <= 30; j++) {
         const u = -0.55 + (1.1 * j) / 30;
         hot([u, PY, -0.35], 0.8);

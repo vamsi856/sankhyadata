@@ -22,7 +22,9 @@ export function Pipeline() {
     let shown = -1;
     const measure = () => {
       // The reading line: mid-screen on desktop; below the pinned strip on phones.
-      const line = window.innerHeight * (window.innerWidth >= 1024 ? 0.5 : 0.62);
+      // A step counts once it reaches the upper third (desktop), so the pipeline starts at 01
+      // when the section arrives, even on short laptop screens.
+      const line = window.innerHeight * (window.innerWidth >= 1024 ? 0.34 : 0.62);
       const tops = steps.map((s) => s.getBoundingClientRect().top);
       let v = 0;
       for (let i = 0; i < tops.length; i++) {

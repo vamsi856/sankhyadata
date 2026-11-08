@@ -40,8 +40,8 @@ const BY = 10;
 const SX = 20;
 const SZ = 10;
 const SLAB_Y = BY * SP + 0.55;
-const BLOCK_TIME = 2.6;
-const SLAB_AT = 3.0;
+const BLOCK_TIME = 4.2;
+const SLAB_AT = 4.8;
 
 function build() {
   const out: number[] = [];
@@ -206,7 +206,7 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
       visible = e.isIntersecting;
       run();
     },
-    { threshold: 0.3 },
+    { threshold: 0.75 },
   );
   io.observe(canvas);
   document.addEventListener("visibilitychange", run);

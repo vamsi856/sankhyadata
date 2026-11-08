@@ -242,7 +242,7 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
       visible = e.isIntersecting;
       run();
     },
-    { threshold: 0.3 },
+    { threshold: 0.6 },
   );
   io.observe(canvas);
   document.addEventListener("visibilitychange", run);

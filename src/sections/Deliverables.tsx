@@ -1,5 +1,5 @@
+import type { CSSProperties } from "react";
 import { deliverables } from "@/content";
-import { Island } from "@/islands";
 
 export function Deliverables() {
   return (
@@ -10,7 +10,16 @@ export function Deliverables() {
             {deliverables.title}
           </h2>
           <p className="mb-0 mt-5 max-w-sm text-ink-2">{deliverables.sentence}</p>
-          <Island name="batch" />
+          {/* The batch as a flow, Video through Verification. A light travels down it and
+              lights each step in turn; pointing at or tapping a row lights its step. CSS only. */}
+          <ol aria-hidden className="flow m-0 mt-10 list-none p-0">
+            {deliverables.rows.map((row, i) => (
+              <li key={row.term} className="flow-node" style={{ "--i": i } as CSSProperties}>
+                <span className="flow-num num">{String(i + 1).padStart(2, "0")}</span>
+                {row.term}
+              </li>
+            ))}
+          </ol>
         </div>
         <dl className="m-0 border-t border-rule-2">
           {deliverables.rows.map((row) => (

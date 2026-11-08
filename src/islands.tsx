@@ -8,7 +8,6 @@ import { RigView } from "@/components/RigView";
 import { Pipeline } from "@/components/Pipeline";
 import { SamplesWall } from "@/components/SamplesWall";
 import { FieldSupport } from "@/components/FieldSupport";
-import { BatchStack } from "@/components/BatchStack";
 import { ClosingMark } from "@/components/ClosingMark";
 import { HoursVolume } from "@/components/HoursVolume";
 import { MotionProvider } from "@/lib/motion";
@@ -33,7 +32,6 @@ export const islands = {
   pipeline: Pipeline,
   wall: SamplesWall,
   field: FieldSupport,
-  batch: BatchStack,
   mark: ClosingMark,
   hours: HoursVolume,
 } satisfies Record<string, ComponentType>;

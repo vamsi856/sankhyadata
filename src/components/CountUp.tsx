@@ -22,15 +22,16 @@ export function CountUp() {
         if (!entry.isIntersecting) return;
         io.disconnect();
         const start = performance.now();
-        const dur = 1600;
+        const dur = 3400;
         const tick = (now: number) => {
           const t = Math.min(1, (now - start) / dur);
-          setValue(Math.round(target * (1 - Math.pow(1 - t, 4))));
+          setValue(Math.round(target * (1 - Math.pow(1 - t, 3))));
           if (t < 1) requestAnimationFrame(tick);
         };
         requestAnimationFrame(tick);
       },
-      { threshold: 0.6 },
+      // Count only once the whole figure is in view and clear of the bottom edge.
+      { threshold: 1, rootMargin: "0px 0px -15% 0px" },
     );
     io.observe(el);
     return () => io.disconnect();
