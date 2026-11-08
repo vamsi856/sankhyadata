@@ -1,24 +1,3 @@
-/**
- * Runs `load` once `el` comes within a screen of the viewport, then hands the result to
- * `ready` (unless cleaned up first). Shared by the islands so each stays tiny.
- */
-export function whenNear<T>(el: Element, load: () => Promise<T>, ready: (mod: T) => void) {
-  let dead = false;
-  const io = new IntersectionObserver(
-    ([entry]) => {
-      if (!entry.isIntersecting) return;
-      io.disconnect();
-      load().then((mod) => !dead && ready(mod));
-    },
-    { rootMargin: "100% 0px" },
-  );
-  io.observe(el);
-  return () => {
-    dead = true;
-    io.disconnect();
-  };
-}
-
 export const prefersStill = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 type Engine = (() => void) | { stop: () => void; poke?: () => void } | null;
@@ -30,6 +9,8 @@ type Engine = (() => void) | { stop: () => void; poke?: () => void } | null;
  * its canvas removed, and a fresh canvas starts when it comes back. `begin` receives each
  * new canvas; `poke` forwards to the engine that is running, if any.
  */
+const EVENTS = ["scroll", "wheel", "pointerdown", "keydown", "touchstart"] as const;
+
 export function liveGL<M>(host: HTMLElement, load: () => Promise<M>, begin: (mod: M, canvas: HTMLCanvasElement) => Engine) {
   let mod: M | null = null;
   let canvas: HTMLCanvasElement | null = null;
@@ -64,11 +45,21 @@ export function liveGL<M>(host: HTMLElement, load: () => Promise<M>, begin: (mod
     },
     { rootMargin: "120% 0px" },
   );
-  io.observe(host);
+  // Nothing starts during page load unless it is actually on screen: scenes further down
+  // wait for the visitor's first scroll, tap or key before they arm, keeping WebGL set-up
+  // (context, shader compile, geometry) off the load path.
+  const arm = () => {
+    for (const t of EVENTS) removeEventListener(t, arm);
+    if (!dead) io.observe(host);
+  };
+  const r = host.getBoundingClientRect();
+  if (r.top < innerHeight && r.bottom > 0) arm();
+  else for (const t of EVENTS) addEventListener(t, arm, { passive: true });
   return {
     poke: () => (engine && typeof engine === "object" ? engine.poke?.() : undefined),
     stop: () => {
       dead = true;
+      arm();
       io.disconnect();
       down();
     },
