@@ -18,14 +18,8 @@ import { MotionProvider } from "@/lib/motion";
  */
 export const islands = {
   frame: CaptureFrame,
-  billing: () => (
-    <>
-      <ApprovalLine />
-      <div className="mt-10 max-w-4xl">
-        <BillingTrack />
-      </div>
-    </>
-  ),
+  billing: ApprovalLine,
+  track: BillingTrack,
   figure: CountUp,
   cloud: SiteCloud,
   rig: RigView,
