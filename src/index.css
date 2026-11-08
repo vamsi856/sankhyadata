@@ -591,6 +591,32 @@ html.lenis body {
   .faq summary svg { transition: none; }
 }
 
+/* Recording timeline: the header's bottom edge fills in chartreuse with scroll progress.
+   Scroll-driven and transform-only (compositor work, no script); absent where unsupported. */
+.rec-line {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .rec-line {
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      background: var(--label);
+      transform-origin: left center;
+      animation: rec-fill linear both;
+      animation-timeline: scroll(root block);
+    }
+    @keyframes rec-fill {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+  }
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;
@@ -631,16 +657,6 @@ dl[data-rig][data-active="true"] {
       to { transform: scaleX(1); }
     }
 
-    /* Methodology: each step number lights up as its step arrives. */
-    .step .step-num {
-      animation: step-on linear both;
-      animation-timeline: view();
-      animation-range: entry 40% entry 100%;
-    }
-    @keyframes step-on {
-      from { opacity: 0.35; transform: translateX(-6px); }
-      to { opacity: 1; transform: none; }
-    }
   }
 }
 
