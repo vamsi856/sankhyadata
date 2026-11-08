@@ -25,14 +25,27 @@ export function FieldSupport() {
     };
     show(3);
     const off: (() => void)[] = [];
+    // Pointing at, tapping or focusing an item shows it; a choice holds for 12 s before the
+    // scene resumes its tour.
+    let chosen = 0;
     cards.forEach((card, i) => {
-      const on = () => ((held = true), show(i));
+      const on = (e: Event) => {
+        if (e.type === "pointerenter" && (e as PointerEvent).pointerType !== "mouse") return;
+        held = e.type === "pointerenter";
+        chosen = performance.now();
+        show(i);
+      };
       const out = () => (held = false);
-      card.addEventListener("pointerenter", on);
+      for (const t of ["pointerenter", "click", "focusin"]) card.addEventListener(t, on);
       card.addEventListener("pointerleave", out);
-      off.push(() => (card.removeEventListener("pointerenter", on), card.removeEventListener("pointerleave", out)));
+      off.push(() => {
+        for (const t of ["pointerenter", "click", "focusin"]) card.removeEventListener(t, on);
+        card.removeEventListener("pointerleave", out);
+      });
     });
-    const tick = still ? 0 : window.setInterval(() => !held && show((cur.current + 1) % itTitles.length), 4500);
+    const tick = still
+      ? 0
+      : window.setInterval(() => !held && performance.now() - chosen > 12000 && show((cur.current + 1) % itTitles.length), 4500);
     let px = 0;
     const move = (e: PointerEvent) => {
       if (e.pointerType === "mouse") px = (e.clientX / innerWidth) * 2 - 1;

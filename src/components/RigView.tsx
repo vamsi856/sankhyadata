@@ -3,8 +3,8 @@ import { rigBrief, rigInsetLabel, rigViewerCaption } from "@/content";
 import { liveGL, prefersStill } from "@/lib/when-near";
 
 /**
- * 3D rig viewer. Hovering, focusing or tapping a rig in the table (rows carry `data-rig`)
- * fits that rig to the point-cloud recorder; left alone, it cycles through the rigs.
+ * 3D rig viewer. Scrolling through the rig list (blocks carry `data-rig`) fits each rig to
+ * the point-cloud recorder in turn; tapping or focusing a block fits it at once.
  * WebGL lives in its own chunk, fetched when the viewer nears the viewport. The prerender
  * shows the first rig's name, so the frame is never empty of meaning.
  */
@@ -20,29 +20,37 @@ export function RigView() {
     const still = prefersStill();
     const rows = [...section.querySelectorAll<HTMLElement>("[data-rig]")];
     let live: { poke: () => void; stop: () => void } | null = null;
-    let touched = 0;
-    const select = (i: number, byPerson: boolean) => {
-      if (byPerson) touched = performance.now();
+    const select = (i: number) => {
+      if (i === current.current && rows[0]?.dataset.active) return;
       current.current = i;
       setActive(i);
       rows.forEach((r) => (r.dataset.active = String(Number(r.dataset.rig) === i)));
       live?.poke();
     };
-    select(0, false);
-    const off: (() => void)[] = [];
+    // Scrolling drives the rig: the active one is the last block to have reached the reading
+    // line (mid-screen beside the sticky viewer; just under the pinned viewer on phones).
+    const pin = el.closest(".rig-scene") as HTMLElement | null;
+    const measure = () => {
+      const wide = innerWidth >= 1024;
+      const line = wide ? innerHeight * 0.5 : (pin?.getBoundingClientRect().bottom ?? 0) + 32;
+      let k = 0;
+      rows.forEach((r, i) => r.getBoundingClientRect().top <= line && (k = i));
+      select(k);
+    };
+    measure();
+    addEventListener("scroll", measure, { passive: true });
+    addEventListener("resize", measure);
+    const off: (() => void)[] = [
+      () => removeEventListener("scroll", measure),
+      () => removeEventListener("resize", measure),
+    ];
     for (const row of rows) {
-      const i = Number(row.dataset.rig);
-      const on = () => select(i, true);
-      for (const type of ["pointerenter", "focusin", "click"] as const) {
+      const on = () => select(Number(row.dataset.rig));
+      for (const type of ["focusin", "click"] as const) {
         row.addEventListener(type, on);
         off.push(() => row.removeEventListener(type, on));
       }
     }
-    const cycle = still
-      ? 0
-      : window.setInterval(() => {
-          if (performance.now() - touched > 9000) select((current.current + 1) % rigBrief.length, false);
-        }, 3800);
     const pointer: [number, number] = [0, 0];
     const onMove = (e: PointerEvent) => {
       if (e.pointerType === "mouse") pointer[0] = (e.clientX / window.innerWidth) * 2 - 1;
@@ -52,7 +60,6 @@ export function RigView() {
       start(c, { index: () => current.current, pointer: () => pointer, still }),
     );
     return () => {
-      clearInterval(cycle);
       off.forEach((f) => f());
       window.removeEventListener("pointermove", onMove);
       live?.stop();

@@ -21,19 +21,20 @@ export function Pipeline() {
     let live: { poke: () => void; stop: () => void } | null = null;
     let shown = -1;
     const measure = () => {
-      // The reading line: mid-screen on desktop; below the pinned strip on phones.
-      // A step counts once it reaches the upper third (desktop), so the pipeline starts at 01
-      // when the section arrives, even on short laptop screens.
-      const line = window.innerHeight * (window.innerWidth >= 1024 ? 0.34 : 0.62);
+      // The reading line sits near the top on desktop (below the pinned strip on phones). On
+      // arrival the clip waits just before gate 01; each step scrolled carries it through the
+      // next gate, so the visitor drives it from Scoping to Delivery.
+      const line = window.innerHeight * (window.innerWidth >= 1024 ? 0.16 : 0.62);
       const tops = steps.map((s) => s.getBoundingClientRect().top);
       let v = 0;
       for (let i = 0; i < tops.length; i++) {
         if (tops[i] > line) break;
         const next = tops[i + 1] ?? tops[i] + steps[i].offsetHeight;
-        v = i + Math.min(1, (line - tops[i]) / Math.max(1, next - tops[i])) * (i < tops.length - 1 ? 1 : 0);
+        v = i + Math.min(1, (line - tops[i]) / Math.max(1, next - tops[i]));
       }
-      stage = still ? Math.round(v) : v;
-      const now = Math.min(steps.length - 1, Math.round(v));
+      const s = Math.min(steps.length - 1, v * 1.1 - 0.9);
+      stage = still ? Math.max(0, Math.round(s)) : s;
+      const now = Math.max(0, Math.min(steps.length - 1, Math.round(s)));
       if (now !== shown) {
         shown = now;
         setActive(now);

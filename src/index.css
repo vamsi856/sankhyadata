@@ -582,7 +582,7 @@ html.lenis body {
   .rig-inset { width: 42%; }
   /* Phones: a taller stage, recorder and cone in the upper part, the rig-camera view in
      the clear lower-right corner (the engine draws the inset to the same box). */
-  .rig-stage { aspect-ratio: 4 / 5; }
+  /* (stage height on phones is set with the pinned scene) */
 }
 
 /* Samples wall: drag to spin (horizontal; vertical swipes keep scrolling the page). */
@@ -596,11 +596,12 @@ html.lenis body {
 
 /* IT cards: the one the field scene is acting out carries a chartreuse rule. */
 .it-item {
-  box-shadow: inset 0 2px 0 transparent;
+  cursor: pointer;
+  box-shadow: inset 3px 0 0 transparent;
   transition: box-shadow var(--dur-short) var(--ease-out);
 }
 .it-item[data-active="true"] {
-  box-shadow: inset 0 2px 0 var(--label);
+  box-shadow: inset 3px 0 0 var(--label);
 }
 
 /* Hero recorder HUD: a pulsing REC and a running timecode (mm:ss:ff), counted by CSS alone
@@ -792,17 +793,68 @@ html.lenis body {
   .foot-dot { animation: none; }
 }
 
+/* IT and Rigs: options listed beside a scene that stays in view. Phones: heading, then the
+   scene pinned under the header, then the options scrolling beneath it. */
+.it-grid,
+.rig-grid {
+  display: grid;
+  grid-template-areas: "head" "scene" "list";
+  row-gap: 2.5rem;
+}
+.it-head, .rig-head { grid-area: head; }
+.it-scene, .rig-scene { grid-area: scene; }
+.it-list, .rig-list { grid-area: list; }
+.it-scene,
+.rig-scene {
+  position: sticky;
+  top: 4rem;
+  z-index: 10;
+  padding-block: 0.5rem 0.75rem;
+  box-shadow: 0 1px 0 var(--rule);
+}
+.it-scene { background: var(--paper-2); }
+.rig-scene { background: var(--paper); }
+@media (max-width: 1023px) {
+  .it-scene .field { aspect-ratio: auto; height: 34svh; }
+  .it-scene figcaption { display: none; }
+  .rig-scene .rig-stage { aspect-ratio: auto; height: 38svh; }
+  .rig-scene figcaption { display: none; }
+}
+@media (min-width: 1024px) {
+  .it-grid,
+  .rig-grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "head scene" "list scene";
+    column-gap: 3rem;
+  }
+  .it-scene,
+  .rig-scene {
+    top: 6rem;
+    align-self: start;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+  }
+}
+
+/* The page scrolls without a visible scrollbar (the header's recording line shows progress). */
+html {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;
 }
-tr[data-rig] > :first-child,
 dl[data-rig] {
   padding-left: 0.875rem;
   box-shadow: inset 3px 0 0 transparent;
   transition: box-shadow var(--dur-short) var(--ease-out);
 }
-tr[data-rig][data-active="true"] > :first-child,
 dl[data-rig][data-active="true"] {
   box-shadow: inset 3px 0 0 var(--label);
 }

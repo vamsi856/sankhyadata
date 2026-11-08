@@ -230,7 +230,7 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
   let s = opts.stage();
   let t = 0;
   const draw = () => {
-    const target = clamp(opts.stage(), 0, STEPS - 1);
+    const target = clamp(opts.stage(), -0.9, STEPS - 1);
     s += (target - s) * (opts.still ? 1 : 0.08);
     const aspect = canvas.width / canvas.height;
     const at = track(s);
