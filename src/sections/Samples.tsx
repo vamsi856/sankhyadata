@@ -6,19 +6,20 @@ export function Samples() {
   return (
     <section id="samples" aria-labelledby="samples-title" className="bg-paper-2">
       <div className="container-page py-20 md:py-28">
-        <div className="grid gap-x-12 gap-y-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-          <h2 id="samples-title" className="m-0 max-w-md text-[clamp(2rem,4vw,3.25rem)]">
-            {samplesSection.title}
-          </h2>
-          <p className="m-0 max-w-lg self-end text-ink-2">
-            {samplesSection.sentence}
-          </p>
+        {/* Heading and description beside the wall, so the wall is seen whole with its
+            context on a laptop screen; the folder link follows directly below. */}
+        <div className="grid items-center gap-x-12 gap-y-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+          <div>
+            <h2 id="samples-title" className="m-0 max-w-md text-[clamp(2rem,4vw,3.25rem)]">
+              {samplesSection.title}
+            </h2>
+            <p className="mb-0 mt-5 max-w-lg text-ink-2">{samplesSection.sentence}</p>
+          </div>
+          <Island name="wall" />
         </div>
 
-        <Island name="wall" />
-
         {samples.length > 0 ? (
-          <ul className="m-0 mt-14 list-none border-t border-rule-2 p-0">
+          <ul className="m-0 mt-12 list-none border-t border-rule-2 p-0">
             {samples.map((s) => (
               <li key={s.href} className="border-b border-rule-2">
                 <a

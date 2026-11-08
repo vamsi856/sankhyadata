@@ -603,6 +603,10 @@ html.lenis body {
 .samples-wall {
   height: clamp(16rem, 32vw, 25rem);
 }
+@media (min-width: 1024px) {
+  /* Beside the heading: sized to the column so the whole wall fits a laptop screen. */
+  .samples-wall { height: clamp(16rem, 24vw, 22rem); }
+}
 
 /* IT section: the field-support network. */
 .field {

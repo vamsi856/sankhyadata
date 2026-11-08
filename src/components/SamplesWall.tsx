@@ -68,7 +68,7 @@ export function SamplesWall() {
   }, []);
 
   return (
-    <figure className="m-0 mt-14">
+    <figure className="m-0">
       <div aria-hidden className="samples-wall relative">
         <div ref={canvas} className="wall-grab absolute inset-0" />
         <p className="absolute left-0 top-0 m-0 text-[0.875rem]">
