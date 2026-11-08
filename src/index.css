@@ -412,6 +412,21 @@ html.lenis body {
 .persp-scrim {
   background: linear-gradient(100deg, var(--inv-paper) 0%, color-mix(in oklch, var(--inv-paper) 70%, transparent) 32%, transparent 62%);
 }
+@media (max-width: 1023px) {
+  /* Narrow screens stack the text over the scene: give the heading and the caption their
+     own dark ground at top and bottom, and leave the middle band clear for the flight. */
+  .persp-scrim {
+    background: linear-gradient(
+      to bottom,
+      var(--inv-paper) 0%,
+      color-mix(in oklch, var(--inv-paper) 82%, transparent) 30%,
+      transparent 46%,
+      transparent 68%,
+      color-mix(in oklch, var(--inv-paper) 92%, transparent) 80%,
+      var(--inv-paper) 88%
+    );
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .persp-track { height: auto; }
 }
