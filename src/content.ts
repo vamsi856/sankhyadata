@@ -362,6 +362,7 @@ export const notFound = {
   title: "This page does not exist.",
   sentence: "The address may be mistyped, or the page may have moved.",
   link: { label: "Return to the SankhyaData home page", href: "/" },
+  frame: { status: "No signal", timecode: "--:--:--" },
 };
 
 export const credits = {

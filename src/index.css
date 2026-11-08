@@ -617,6 +617,65 @@ html.lenis body {
   }
 }
 
+/* 404: an empty viewfinder, the brand's brackets round nothing, a paused HUD and a slow
+   scan passing through static. Transform and opacity only; still for reduced motion. */
+.nf-frame {
+  background: var(--inv-paper);
+}
+.nf-noise {
+  opacity: 0.5;
+  background-image: radial-gradient(color-mix(in oklch, var(--inv-ink) 22%, transparent) 0.6px, transparent 0.8px);
+  background-size: 5px 5px;
+}
+.nf-scan {
+  height: 22%;
+  background: linear-gradient(to bottom, transparent, color-mix(in oklch, var(--label) 20%, transparent) 85%, var(--label) 100%);
+  transform: translateY(-100%);
+  animation: nf-scan 4.2s var(--ease-in-out) infinite;
+}
+@keyframes nf-scan {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(560%); }
+}
+.nf-brackets {
+  inset: 32% 40%;
+  background:
+    linear-gradient(var(--inv-ink-2), var(--inv-ink-2)) top left / 22% 2px no-repeat,
+    linear-gradient(var(--inv-ink-2), var(--inv-ink-2)) top left / 2px 22% no-repeat,
+    linear-gradient(var(--inv-ink-2), var(--inv-ink-2)) top right / 22% 2px no-repeat,
+    linear-gradient(var(--inv-ink-2), var(--inv-ink-2)) top right / 2px 22% no-repeat,
+    linear-gradient(var(--inv-ink-2), var(--inv-ink-2)) bottom left / 22% 2px no-repeat,
+    linear-gradient(var(--inv-ink-2), var(--inv-ink-2)) bottom left / 2px 22% no-repeat,
+    linear-gradient(var(--inv-ink-2), var(--inv-ink-2)) bottom right / 22% 2px no-repeat,
+    linear-gradient(var(--inv-ink-2), var(--inv-ink-2)) bottom right / 2px 22% no-repeat;
+}
+.nf-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--on-image);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nf-scan { animation: none; }
+}
+
+/* Privacy notice: its sections numbered in the home page's 01, 02 manner (CSS counters). */
+.pv-sections {
+  counter-reset: pv;
+}
+.pv-sections > section {
+  counter-increment: pv;
+}
+.pv-sections > section > h2::before {
+  content: counter(pv, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;

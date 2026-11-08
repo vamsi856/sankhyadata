@@ -5,7 +5,8 @@ import { Wordmark } from "@/sections/Header";
 export function PrivacyPage() {
   return (
     <>
-      <header className="border-b border-rule bg-paper">
+      <header className="sticky top-0 z-40 border-b border-rule bg-paper">
+        <span aria-hidden className="rec-line" />
         <div className="container-page flex h-16 items-center justify-between gap-6">
           <a href="/" className="rounded-[4px] text-ink no-underline" aria-label={`${site.name}, home`}>
             <Wordmark />
@@ -18,7 +19,7 @@ export function PrivacyPage() {
       <main id="main" className="container-page py-20 md:py-28">
         <h1 className="m-0 text-[clamp(2.4rem,5vw,4rem)]">{privacy.title}</h1>
         <p className="mb-0 mt-5 text-[0.9375rem] text-muted">Last updated {privacy.updated}</p>
-        <div className="mt-14 max-w-2xl border-t border-rule">
+        <div className="pv-sections mt-14 max-w-2xl border-t border-rule">
           {privacy.sections.map((s) => (
             <section key={s.heading} className="border-b border-rule py-8">
               <h2 className="m-0 text-[1.5rem] leading-tight">{s.heading}</h2>
