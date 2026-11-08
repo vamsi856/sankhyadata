@@ -17,22 +17,23 @@ export function Pipeline() {
     if (!el || !section) return;
     const still = prefersStill();
     const steps = [...section.querySelectorAll<HTMLElement>("li.step")];
+    const panel = el.closest(".pipeline") as HTMLElement;
     let stage = 0;
     let live: { poke: () => void; stop: () => void } | null = null;
     let shown = -1;
     const measure = () => {
-      // The reading line sits near the top on desktop (below the pinned strip on phones). On
-      // arrival the clip waits just before gate 01; each step scrolled carries it through the
-      // next gate, so the visitor drives it from Scoping to Delivery.
-      const line = window.innerHeight * (window.innerWidth >= 1024 ? 0.16 : 0.62);
-      const tops = steps.map((s) => s.getBoundingClientRect().top);
-      let v = 0;
-      for (let i = 0; i < tops.length; i++) {
-        if (tops[i] > line) break;
-        const next = tops[i + 1] ?? tops[i] + steps[i].offsetHeight;
-        v = i + Math.min(1, (line - tops[i]) / Math.max(1, next - tops[i]));
-      }
-      const s = Math.min(steps.length - 1, v * 1.1 - 0.9);
+      // Progress runs over the whole step list: the clip waits before gate 01 until the list
+      // reaches the reading line, and arrives at Delivery while the panel is still pinned
+      // (desktop: before the list's end meets the panel's bottom, where it starts to scroll
+      // away; phones: before the list leaves the lower part of the screen).
+      const wide = window.innerWidth >= 1024;
+      const vh = window.innerHeight;
+      const r = steps[0].parentElement!.getBoundingClientRect();
+      const start = vh * (wide ? 0.16 : 0.62);
+      const end = wide ? panel.getBoundingClientRect().bottom + vh * 0.12 : vh * 0.85;
+      const travel = Math.max(1, start - (end - r.height));
+      const t = Math.min(1, Math.max(0, (start - r.top) / travel));
+      const s = r.top > start ? -0.9 : -0.5 + t * (steps.length - 0.5);
       stage = still ? Math.max(0, Math.round(s)) : s;
       const now = Math.max(0, Math.min(steps.length - 1, Math.round(s)));
       if (now !== shown) {

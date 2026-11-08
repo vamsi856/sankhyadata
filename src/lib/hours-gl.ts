@@ -37,8 +37,6 @@ const SP = 0.1;
 const BX = 25;
 const BZ = 20;
 const BY = 10;
-const SX = 20;
-const SZ = 10;
 const SLAB_Y = BY * SP + 0.55;
 const BLOCK_TIME = 4.2;
 const SLAB_AT = 4.8;
@@ -54,10 +52,7 @@ function build() {
         const order = (y * BX * BZ + z * BX + x) / (BX * BY * BZ);
         out.push(x * SP - ox, y * SP, z * SP - oz, Math.min(0.999, order + ((x * 7 + z * 13) % 10) * 0.004));
       }
-  const sx = ((SX - 1) * SP) / 2;
-  const sz = ((SZ - 1) * SP) / 2;
-  for (let z = 0; z < SZ; z++)
-    for (let x = 0; x < SX; x++) out.push(x * SP - sx, SLAB_Y, z * SP - sz, 2 + ((x + z * SX) / (SX * SZ)) * 0.999);
+  // (The weekly-capacity slab was removed at the owner's request; that figure is in the text.)
   return new Float32Array(out);
 }
 
@@ -157,7 +152,7 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     gl.uniform1f(u.px, dpr * 1.7);
     gl.uniform1f(u.built, built);
     gl.uniform1f(u.time, opts.still ? 0 : time);
-    spread += ((opts.hover.on && built > SLAB_AT ? 1 : 0) - spread) * (opts.still ? 1 : 0.08);
+    spread += ((opts.hover.on && built > BLOCK_TIME ? 1 : 0) - spread) * (opts.still ? 1 : 0.08);
     gl.uniform1f(u.spread, spread);
     gl.uniform3fv(u.hi, HI);
     const f = 1 + spread * 0.55;

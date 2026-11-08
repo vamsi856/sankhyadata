@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { experience, hoursCaption, hoursUnitLabel } from "@/content";
 import { liveGL, prefersStill } from "@/lib/when-near";
 
-const labels = [`${experience.figure} ${experience.unit}`, `${experience.capacity.figure} ${experience.capacity.unit}`, hoursUnitLabel];
+// Index 1 (the weekly slab) is no longer drawn; its label slot stays empty.
+const labels = [`${experience.figure} ${experience.unit}`, "", hoursUnitLabel];
 
 /** The two experience figures as a 3D volume of points, ten hours each (WebGL, lazy). */
 export function HoursVolume() {
