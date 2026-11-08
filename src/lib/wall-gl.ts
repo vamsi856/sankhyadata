@@ -6,7 +6,8 @@
  */
 
 type V3 = [number, number, number];
-type Opts = { hot: () => number; pointer: () => number; still: boolean };
+type Drag = { x: number; down: boolean; t: number };
+type Opts = { hot: () => number; pointer: () => number; drag: Drag; still: boolean };
 
 const sub = (a: V3, b: V3): V3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 const scale = (a: V3, s: number): V3 => [a[0] * s, a[1] * s, a[2] * s];
@@ -49,14 +50,10 @@ function build() {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
   const out: number[] = [];
+  // Each point is stored in its tile's own frame (u across, v up); the shader places the
+  // tile on the cylinder and pans the interior, so every tile plays like a live feed.
   for (let i = 0; i < COLS * ROWS; i++) {
-    const { c, r } = cell(i);
-    const phi = c * STEP;
-    const y = (1 - r) * ROW_GAP;
-    const right: V3 = [Math.cos(phi), 0, -Math.sin(phi)];
-    const centre: V3 = [R * Math.sin(phi), y, R * Math.cos(phi)];
-    const put = (u: number, v: number, b: number) =>
-      out.push(centre[0] + right[0] * u, centre[1] + v, centre[2] + right[2] * u, i + Math.min(0.99, b) * 0.9);
+    const put = (u: number, v: number, b: number) => out.push(u, v, i, b);
     // Frame.
     for (let k = 0; k <= 24; k++) {
       const u = -TW / 2 + (TW * k) / 24;
@@ -88,12 +85,21 @@ function build() {
 
 const VS = `
 attribute vec4 a;
-uniform mat4 vp; uniform float yaw, hot, lift, px; uniform vec3 eye;
+uniform mat4 vp; uniform float yaw, hot, lift, px, time; uniform vec3 eye;
 varying vec4 c;
 void main() {
-  float idx = floor(a.w); float b = fract(a.w) / 0.9;
+  float idx = a.z; float b = a.w;
+  float col = mod(idx, ${COLS.toFixed(1)}); float row = floor(idx / ${COLS.toFixed(1)});
+  float phi = col * ${STEP.toFixed(6)};
+  float u = a.x;
+  if (b < 0.95) {
+    // Interior drifts across its frame, each tile at its own pace and direction.
+    float spd = (fract(sin(idx * 12.9898) * 43758.5453) - 0.5) * 0.16;
+    u = mod(u + ${(TW / 2).toFixed(6)} + time * spd, ${TW.toFixed(6)}) - ${(TW / 2).toFixed(6)};
+  }
+  vec3 w = vec3(${R.toFixed(3)} * sin(phi) + cos(phi) * u, (1.0 - row) * ${ROW_GAP.toFixed(6)} + a.y, ${R.toFixed(3)} * cos(phi) - sin(phi) * u);
   float cy = cos(yaw), sy = sin(yaw);
-  vec3 p = vec3(cy * a.x + sy * a.z, a.y, -sy * a.x + cy * a.z);
+  vec3 p = vec3(cy * w.x + sy * w.z, w.y, -sy * w.x + cy * w.z);
   vec3 n = normalize(vec3(p.x, 0.0, p.z));
   float on = 1.0 - step(0.5, abs(idx - hot));
   p += n * on * lift;
@@ -102,8 +108,8 @@ void main() {
   float facing = dot(n, normalize(eye - p));
   float vis = smoothstep(-0.15, 0.55, facing);
   gl_PointSize = px * (1.0 + 0.5 * on) * clamp(9.0 / q.w, 0.6, 1.6);
-  vec3 col = mix(vec3(0.17, 0.19, 0.21), vec3(0.38, 0.58, 0.0), on * lift * 3.0);
-  c = vec4(col, (0.2 + 0.6 * b) * mix(0.12, 1.0, vis) + on * 0.3);
+  vec3 tint = mix(vec3(0.17, 0.19, 0.21), vec3(0.38, 0.58, 0.0), on * lift * 3.0);
+  c = vec4(tint, (0.2 + 0.6 * b) * mix(0.12, 1.0, vis) + on * 0.3);
 }`;
 const FS = `
 precision mediump float; varying vec4 c;
@@ -127,7 +133,7 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
   if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
   gl.useProgram(prog);
   const U = (n: string) => gl.getUniformLocation(prog, n);
-  const u = { vp: U("vp"), yaw: U("yaw"), hot: U("hot"), lift: U("lift"), px: U("px"), eye: U("eye") };
+  const u = { vp: U("vp"), yaw: U("yaw"), hot: U("hot"), lift: U("lift"), px: U("px"), eye: U("eye"), time: U("time") };
   const data = build();
   gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
   gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
@@ -158,6 +164,11 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
   let lift = opts.still ? 0.28 : 0;
   let sx = 0;
   let t = 0;
+  // Drag: the visitor spins the wall; it coasts, then after a few idle seconds eases back
+  // so the current example faces front again.
+  let spin = 0;
+  let vel = 0;
+  let lastX = opts.drag.x;
 
   function draw() {
     const want = opts.hot();
@@ -169,6 +180,16 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     let d = targetYaw(shown) - yaw;
     d = Math.atan2(Math.sin(d), Math.cos(d));
     yaw += opts.still ? d : d * 0.06;
+    const dx = opts.drag.x - lastX;
+    lastX = opts.drag.x;
+    if (opts.drag.down) {
+      vel = dx * 0.006;
+      spin += vel;
+    } else {
+      spin += vel;
+      vel *= 0.93;
+      if (performance.now() - opts.drag.t > 4000) spin = Math.atan2(Math.sin(spin), Math.cos(spin)) * 0.95;
+    }
     if (!opts.still && Math.abs(d) < 0.05) lift += (0.28 - lift) * 0.08;
     sx += (opts.pointer() - sx) * 0.05;
     const aspect = canvas.width / canvas.height;
@@ -178,7 +199,8 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniformMatrix4fv(u.vp, false, vp);
     gl.uniform3fv(u.eye, eye);
-    gl.uniform1f(u.yaw, yaw);
+    gl.uniform1f(u.yaw, yaw + spin);
+    gl.uniform1f(u.time, opts.still ? 0 : t);
     gl.uniform1f(u.hot, shown);
     gl.uniform1f(u.lift, lift);
     gl.uniform1f(u.px, dpr * 1.5);

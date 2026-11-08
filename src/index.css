@@ -499,6 +499,15 @@ html.lenis body {
   .rig-inset { width: 42%; }
 }
 
+/* Samples wall: drag to spin (horizontal; vertical swipes keep scrolling the page). */
+.wall-grab {
+  cursor: grab;
+  touch-action: pan-y;
+}
+.wall-grab:active {
+  cursor: grabbing;
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;
