@@ -517,6 +517,52 @@ html.lenis body {
   box-shadow: inset 0 2px 0 var(--label);
 }
 
+/* Hero recorder HUD: a pulsing REC and a running timecode (mm:ss:ff), counted by CSS alone
+   through animated integer custom properties. Nearest depth plane, so it parts first. */
+.depth-hud {
+  transform: translateZ(90px) scale(0.935714);
+}
+.hud {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.125rem 0.45rem;
+  border-radius: 3px;
+  background: var(--scrim);
+  color: var(--on-image);
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+}
+.hud-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--label);
+  animation: hud-blink 1.2s steps(2, jump-none) infinite;
+}
+@keyframes hud-blink {
+  from { opacity: 1; }
+  to { opacity: 0.25; }
+}
+@property --tc-m { syntax: "<integer>"; inherits: false; initial-value: 0; }
+@property --tc-s { syntax: "<integer>"; inherits: false; initial-value: 0; }
+@property --tc-f { syntax: "<integer>"; inherits: false; initial-value: 0; }
+.hud-tc {
+  animation: tc-m 3600s steps(60) infinite, tc-s 60s steps(60) infinite, tc-f 1s steps(30) infinite;
+  counter-reset: m var(--tc-m) s var(--tc-s) f var(--tc-f);
+}
+.hud-tc::after {
+  content: counter(m, decimal-leading-zero) ":" counter(s, decimal-leading-zero) ":" counter(f, decimal-leading-zero);
+}
+@keyframes tc-m { to { --tc-m: 60; } }
+@keyframes tc-s { to { --tc-s: 60; } }
+@keyframes tc-f { to { --tc-f: 30; } }
+@media (prefers-reduced-motion: reduce) {
+  .hud-dot,
+  .hud-tc { animation: none; }
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;

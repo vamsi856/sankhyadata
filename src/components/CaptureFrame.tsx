@@ -121,6 +121,15 @@ export function CaptureFrame() {
           {heroFrame.narration}
         </m.p>
         </div>
+        {/* Recorder HUD (nearest plane): REC and the rigs' format; a CSS-only running timecode. */}
+        <div aria-hidden className="depth-plane depth-hud pointer-events-none absolute inset-0">
+          <span className="hud absolute left-2.5 top-2.5 sm:left-3 sm:top-3">
+            <span className="hud-dot" />
+            {heroFrame.hud.rec}
+            <span className="hidden sm:inline"> · {heroFrame.hud.spec}</span>
+          </span>
+          <span className="hud hud-tc num absolute right-2.5 top-2.5 sm:right-3 sm:top-3" />
+        </div>
       </div>
       </div>
 

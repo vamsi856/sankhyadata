@@ -25,7 +25,8 @@ export const headerCta = { label: "Make an enquiry", href: "#contact" };
 export const heroFrame = {
   alt: "Hands shaping clay on a potter’s wheel (illustrative stand-in image, not SankhyaData footage).",
   narration: "Pressing in with both thumbs to narrow the neck.",
-  caption: "Illustrative stand-in image, not SankhyaData footage; annotation and narration shown schematically.",
+  caption: "Illustrative stand-in image, not SankhyaData footage; annotation, narration and recorder HUD shown schematically.",
+  hud: { rec: "REC", spec: "1080p · 30 fps · HEVC" },
 };
 
 export const hero = {
