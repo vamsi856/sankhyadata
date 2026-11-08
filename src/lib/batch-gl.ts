@@ -174,6 +174,33 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
   let t = 0;
   let sx = 0;
   const lift = new Array(LAYERS).fill(0);
+  // The batch's life once assembled: hold, a verification scan down through every layer,
+  // then release (the batch lifts away) and the next batch begins.
+  const HOLD = 1.0;
+  const VERIFY = 2.0;
+  const SHIP_AT = HOLD + VERIFY + 0.5;
+  const SHIP = 1.3;
+  let phase = 0;
+  const checked = new Array(LAYERS).fill(0);
+  const scanPlane = (() => {
+    const out: number[] = [];
+    const w = W + 0.12;
+    const d = D + 0.1;
+    for (let k = 0; k <= 40; k++) {
+      const x = -w + (2 * w * k) / 40;
+      out.push(x, 0, -d, 1, x, 0, d, 1);
+    }
+    for (let k = 0; k <= 24; k++) {
+      const z = -d + (2 * d * k) / 24;
+      out.push(-w, 0, z, 1, w, 0, z, 1);
+    }
+    for (let k = 0; k < 420; k++) out.push((((k * 37) % 41) / 41) * 2 * w - w, 0, (((k * 53) % 29) / 29) * 2 * d - d, 0.5);
+    const data = new Float32Array(out);
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+    return { buf, n: data.length / 4 };
+  })();
 
   function draw() {
     const cur = opts.current();
@@ -186,22 +213,36 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     const vp = mul(perspective((34 * Math.PI) / 180, aspect, 0.1, 30), lookAt(eye, [0, 0.8, 0]));
     gl.uniform1f(uPx, dpr * 1.7);
     gl.clear(gl.COLOR_BUFFER_BIT);
+    const top = (LAYERS - 1) * GAP + 0.35;
+    const vt = clamp((phase - HOLD) / VERIFY);
+    const scanY = top - vt * (top + 0.15);
+    const ship = opts.still ? 0 : ease(clamp((phase - SHIP_AT) / SHIP));
+    for (let i = 0; i < LAYERS; i++) if (vt > 0 && scanY < i * GAP) checked[i] = Math.min(1, checked[i] + 0.12);
     for (let i = 0; i < LAYERS; i++) {
       const a = ease(clamp(built - i));
       if (a <= 0.001) continue;
       const on = i === focus ? 1 : 0;
       lift[i] += (on - lift[i]) * (opts.still ? 1 : 0.12);
-      const y = i * GAP + lift[i] * 0.22 + (1 - a) * 1.4;
-      const x = (1 - a) * 2.2;
-      const yaw = (1 - a) * 0.9;
-      const k = lift[i];
+      const y = i * GAP + lift[i] * 0.22 + (1 - a) * 1.4 + ship * (1.6 + i * 0.08);
+      const x = (1 - a) * 2.2 - ship * 2.4;
+      const yaw = (1 - a) * 0.9 - ship * 0.5;
+      const k = Math.max(lift[i], checked[i] * 0.85);
       const col: V3 = [INK[0] + (HOT[0] - INK[0]) * k, INK[1] + (HOT[1] - INK[1]) * k, INK[2] * (1 - k)];
-      const alpha = a * (0.55 + 0.45 * Math.max(k, i === LAYERS - 1 ? 0.6 : 0));
+      const alpha = a * (1 - ship) * (0.55 + 0.45 * Math.max(k, i === LAYERS - 1 ? 0.6 : 0));
       gl.uniformMatrix4fv(uMvp, false, mul(vp, model([x, y, 0], yaw)));
       gl.uniform4f(uLc, col[0] * alpha, col[1] * alpha, col[2] * alpha, alpha);
       gl.bindBuffer(gl.ARRAY_BUFFER, plates[i].buf);
       gl.vertexAttribPointer(loc, 4, gl.FLOAT, false, 0, 0);
       gl.drawArrays(gl.POINTS, 0, plates[i].n);
+    }
+    // The verification scan: a plane passing down through the batch.
+    if (vt > 0 && vt < 1) {
+      const sa = Math.sin(Math.PI * vt) * 0.95;
+      gl.uniformMatrix4fv(uMvp, false, mul(vp, model([0, scanY, 0], 0)));
+      gl.uniform4f(uLc, HOT[0] * sa, HOT[1] * sa, HOT[2] * sa, sa);
+      gl.bindBuffer(gl.ARRAY_BUFFER, scanPlane.buf);
+      gl.vertexAttribPointer(loc, 4, gl.FLOAT, false, 0, 0);
+      gl.drawArrays(gl.POINTS, 0, scanPlane.n);
     }
   }
 
@@ -214,6 +255,14 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     last = now;
     t += dt;
     if (visible) built = Math.min(LAYERS, built + dt * 2.2);
+    // Cycle once the batch is whole; a visitor pointing at a row holds it still (unless
+    // the batch is already on its way out).
+    if (built >= LAYERS && (opts.current() < 0 || phase > SHIP_AT)) phase += dt;
+    if (phase > SHIP_AT + SHIP + 0.2) {
+      phase = 0;
+      built = 0;
+      checked.fill(0);
+    }
     draw();
     if (visible && !document.hidden) raf = requestAnimationFrame(loop);
   };
