@@ -177,7 +177,7 @@ export const rigs = {
 };
 
 export const deliverableTerms = ["Video", "Scene descriptions", "Subtitles", "Voice-over", "Organisation", "Manifest", "Verification"];
-export const batchCaption = "Schematic: one delivery batch, assembled from its seven components. Hover a row to lift its layer.";
+export const batchCaption = "Schematic: one delivery batch, assembled from its seven components. Point at or tap a row to lift its layer.";
 
 export const deliverables = {
   title: "What each delivery batch contains.",

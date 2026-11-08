@@ -20,11 +20,14 @@ export function BatchStack() {
     };
     const off: (() => void)[] = [];
     rows.forEach((row, i) => {
-      const on = () => set(i);
-      const out = () => set(-1);
+      // Mouse: hover lifts a layer. Touch: a tap lifts it and holds it until another tap.
+      const on = (e: PointerEvent) => e.pointerType === "mouse" && set(i);
+      const out = (e: PointerEvent) => e.pointerType === "mouse" && set(-1);
+      const tap = (e: PointerEvent) => e.pointerType !== "mouse" && set(curRef.current === i ? -1 : i);
       row.addEventListener("pointerenter", on);
       row.addEventListener("pointerleave", out);
-      off.push(() => (row.removeEventListener("pointerenter", on), row.removeEventListener("pointerleave", out)));
+      row.addEventListener("pointerdown", tap);
+      off.push(() => (row.removeEventListener("pointerenter", on), row.removeEventListener("pointerleave", out), row.removeEventListener("pointerdown", tap)));
     });
     const move = (e: PointerEvent) => {
       if (e.pointerType === "mouse") px = (e.clientX / innerWidth) * 2 - 1;
