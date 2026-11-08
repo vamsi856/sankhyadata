@@ -302,9 +302,9 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     sx += (px - sx) * 0.06;
     const aspect = canvas.width / canvas.height;
     const va = 0.85 + 0.2 * Math.sin(t * 0.18) + sx * 0.45;
-    const R = aspect < 1 ? 3.6 : 2.7;
+    const R = aspect < 1 ? 3.3 : 2.7;
     const eye: V3 = [R * Math.sin(va), 2.05, R * Math.cos(va) * 0.9 + 0.45];
-    const mvp = mul(perspective((36 * Math.PI) / 180, aspect, 0.05, 20), lookAt(eye, [0, 1.2, 0.55]));
+    const mvp = mul(perspective((36 * Math.PI) / 180, aspect, 0.05, 20), lookAt(eye, [0, aspect < 1 ? 0.92 : 1.2, aspect < 1 ? 0.5 : 0.55]));
 
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.useProgram(pointProg);

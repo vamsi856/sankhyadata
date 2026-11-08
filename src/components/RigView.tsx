@@ -62,7 +62,7 @@ export function RigView() {
   const rig = rigBrief[active];
   return (
     <figure className="m-0">
-      <div aria-hidden className="ticks relative aspect-[4/3] rounded-[var(--radius-card)] bg-paper-2">
+      <div aria-hidden className="rig-stage ticks relative aspect-[4/3] rounded-[var(--radius-card)] bg-paper-2">
         <div ref={canvas} className="absolute inset-0" />
         <div className="rig-inset pointer-events-none absolute">
           <span className="absolute left-2 top-1.5 text-[0.6875rem]">{rigInsetLabel}</span>

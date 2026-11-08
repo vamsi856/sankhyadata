@@ -512,6 +512,9 @@ html.lenis body {
 }
 @media (max-width: 639px) {
   .rig-inset { width: 42%; }
+  /* Phones: a taller stage, recorder and cone in the upper part, the rig-camera view in
+     the clear lower-right corner (the engine draws the inset to the same box). */
+  .rig-stage { aspect-ratio: 4 / 5; }
 }
 
 /* Samples wall: drag to spin (horizontal; vertical swipes keep scrolling the page). */
