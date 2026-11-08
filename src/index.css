@@ -508,6 +508,15 @@ html.lenis body {
   cursor: grabbing;
 }
 
+/* IT cards: the one the field scene is acting out carries a chartreuse rule. */
+.it-item {
+  box-shadow: inset 0 2px 0 transparent;
+  transition: box-shadow var(--dur-short) var(--ease-out);
+}
+.it-item[data-active="true"] {
+  box-shadow: inset 0 2px 0 var(--label);
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;

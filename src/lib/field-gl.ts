@@ -7,7 +7,8 @@
  */
 
 type V3 = [number, number, number];
-type Opts = { pointer: () => number; still: boolean };
+/** mode: 0 device provisioning, 1 site readiness, 2 client portal, 3 field support. */
+type Opts = { pointer: () => number; mode: () => number; still: boolean };
 
 const sub = (a: V3, b: V3): V3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 const scale = (a: V3, s: number): V3 => [a[0] * s, a[1] * s, a[2] * s];
@@ -144,6 +145,14 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
 
   let t = opts.still ? 3 * EVERY + 0.55 : 0.8;
   let sx = 0;
+  const weight = [0, 0, 0, 0];
+  weight[opts.mode()] = 1;
+  const cubeOffsets: V3[] = [];
+  for (let i = 0; i < 40; i++) {
+    const q: V3 = [((i * 37) % 17) / 8.5 - 1, ((i * 53) % 13) / 6.5 - 1, ((i * 71) % 11) / 5.5 - 1];
+    q[i % 3] = i % 2 ? 1 : -1;
+    cubeOffsets.push(scale(q, 0.06));
+  }
 
   function draw() {
     sx += (opts.pointer() - sx) * 0.05;
@@ -172,7 +181,74 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
       }
     });
     const inkCount = n;
-    for (let k = Math.max(0, Math.floor((t - LIFE) / EVERY)); k <= Math.floor(t / EVERY); k++) {
+    const mode = opts.mode();
+    for (let m = 0; m < 4; m++) weight[m] += ((m === mode ? 1 : 0) - weight[m]) * (opts.still ? 1 : 0.08);
+    let wt = 1;
+    const hot = (q: V3, a: number) => put(q, a * wt);
+
+    // 0. Device provisioning: devices glide out from the hub along the ground to each site.
+    wt = weight[0];
+    if (wt > 0.01)
+      sites.forEach((site, i) => {
+        const ph = (t * 0.35 + i / SITES) % 1;
+        const e = ph * ph * (3 - 2 * ph);
+        const at: V3 = [site[0] * e, 0.08, site[2] * e];
+        for (const o of cubeOffsets) hot([at[0] + o[0], at[1] + o[1], at[2] + o[2]], ph < 0.9 ? 1 : (1 - ph) * 10);
+        for (let j = 0; j < 30; j++) {
+          const u = (j / 30) * e;
+          hot([site[0] * u, 0.01, site[2] * u], 0.35);
+        }
+        if (ph > 0.85) square(site, (1 - ph) * 6, hot, 0.02);
+      });
+
+    // 1. Site readiness: a scanning plane descends over each site in turn.
+    wt = weight[1];
+    if (wt > 0.01) {
+      const k = Math.floor(t / 1.1);
+      const ph = (t / 1.1) % 1;
+      const cur = k % SITES;
+      const site = sites[cur];
+      const y = 0.75 * (1 - ph);
+      square(site, 1, hot, y);
+      for (let j = 0; j < 4; j++) {
+        const cx = site[0] + (j % 2 ? S : -S);
+        const cz = site[2] + (j < 2 ? S : -S);
+        for (let h = 0; h < 12; h++) hot([cx, (h / 12) * y, cz], 0.5);
+      }
+      if (ph > 0.75) square(site, (ph - 0.75) * 4, hot, 0.02);
+      sites.forEach((c, i) => {
+        if (i < cur) square(c, 0.45, hot, 0.02);
+      });
+    }
+
+    // 2. Client portal: batches rise from the hub into an authenticated portal above it.
+    wt = weight[2];
+    if (wt > 0.01) {
+      const PY = 1.95;
+      for (let j = 0; j <= 30; j++) {
+        const u = -0.55 + (1.1 * j) / 30;
+        hot([u, PY, -0.35], 0.8);
+        hot([u, PY, 0.35], 0.8);
+      }
+      for (let j = 0; j <= 18; j++) {
+        const v = -0.35 + (0.7 * j) / 18;
+        hot([-0.55, PY, v], 0.8);
+        hot([0.55, PY, v], 0.8);
+      }
+      for (let j = 0; j < 3; j++) {
+        const ph = (t * 0.45 + j / 3) % 1;
+        const y = HUB_TOP[1] + (PY - HUB_TOP[1]) * ph;
+        for (let a = 0; a <= 10; a++) {
+          const u = -0.16 + (0.32 * a) / 10;
+          hot([u, y, -0.1], 1 - ph * 0.5);
+          hot([u, y, 0.1], 1 - ph * 0.5);
+        }
+      }
+    }
+
+    // 3. Field support: requests answered at once.
+    wt = weight[3];
+    for (let k = Math.max(0, Math.floor((t - LIFE) / EVERY)); wt > 0.01 && k <= Math.floor(t / EVERY); k++) {
       const ph = t - k * EVERY;
       if (ph < 0 || ph > LIFE) continue;
       const site = sites[(k * 3) % SITES];
@@ -182,9 +258,9 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
         const a = 1 - ph / 0.6;
         for (let j = 0; j < 40; j++) {
           const ang = (j / 40) * Math.PI * 2;
-          put([site[0] + Math.cos(ang) * r, 0.01, site[2] + Math.sin(ang) * r], a);
+          hot([site[0] + Math.cos(ang) * r, 0.01, site[2] + Math.sin(ang) * r], a);
         }
-        for (let j = 0; j < 20; j++) put([site[0], j * 0.04, site[2]], a * 0.9);
+        for (let j = 0; j < 20; j++) hot([site[0], j * 0.04, site[2]], a * 0.9);
       }
       // 2. The hub answers at once: an arc drawn out to the site, with a packet at its head.
       const p = clamp((ph - 0.25) / 0.45);
@@ -196,25 +272,25 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
           const x = HUB_TOP[0] + (site[0] - HUB_TOP[0]) * u;
           const z = HUB_TOP[2] + (site[2] - HUB_TOP[2]) * u;
           const y = HUB_TOP[1] * (1 - u) + 0.08 * u + Math.sin(Math.PI * u) * 0.9;
-          for (const o of [-0.012, 0, 0.012]) put([x, y + o, z], fade * (0.5 + 0.5 * u));
+          for (const o of [-0.012, 0, 0.012]) hot([x, y + o, z], fade * (0.5 + 0.5 * u));
         }
         if (p < 1) {
           const u = p;
           const head: V3 = [site[0] * u, HUB_TOP[1] * (1 - u) + 0.08 * u + Math.sin(Math.PI * u) * 0.9, site[2] * u];
           for (let j = 0; j < 30; j++) {
             const ang = (j / 30) * Math.PI * 2;
-            put([head[0] + Math.cos(ang) * 0.05, head[1] + Math.sin(ang) * 0.05, head[2]], 1);
+            hot([head[0] + Math.cos(ang) * 0.05, head[1] + Math.sin(ang) * 0.05, head[2]], 1);
           }
         }
         // Hub ring pulses as the answer leaves.
         const hr = 0.14 + p * 0.5;
         for (let j = 0; j < 48; j++) {
           const ang = (j / 48) * Math.PI * 2;
-          put([Math.cos(ang) * hr, HUB_TOP[1], Math.sin(ang) * hr], (1 - p) * 0.9);
+          hot([Math.cos(ang) * hr, HUB_TOP[1], Math.sin(ang) * hr], (1 - p) * 0.9);
         }
       }
       // 3. Resolved: the site outline lights and settles.
-      if (ph > 0.7) square(site, clamp(1 - (ph - 0.7) / 1.2), put, 0.02);
+      if (ph > 0.7) square(site, clamp(1 - (ph - 0.7) / 1.2), hot, 0.02);
     }
     const draws: [number, number, V3, number][] = [
       [0, inkCount, INK, 0.9],
@@ -257,10 +333,13 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
   document.addEventListener("visibilitychange", run);
   draw();
   run();
-  return () => {
-    cancelAnimationFrame(raf);
-    io.disconnect();
-    ro.disconnect();
-    document.removeEventListener("visibilitychange", run);
+  return {
+    poke: () => (opts.still ? draw() : run()),
+    stop: () => {
+      cancelAnimationFrame(raf);
+      io.disconnect();
+      ro.disconnect();
+      document.removeEventListener("visibilitychange", run);
+    },
   };
 }

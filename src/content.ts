@@ -103,8 +103,10 @@ export const methodology = {
   ],
 };
 
-export const fieldLegend = ["IT hub", "Capture site", "Request answered"];
+export const fieldLegend = ["IT hub", "Capture site", "IT at work"];
 export const fieldCaption = "Schematic; sites and timings are illustrative.";
+
+export const itTitles = ["Device provisioning", "Site readiness", "Client portal", "Immediate field support"];
 
 export const itTeam = {
   title: "An in-house IT function underpins every engagement.",
@@ -112,10 +114,10 @@ export const itTeam = {
   fieldCaption,
   sentence: "Our own IT engineers provision every device, prepare each capture site and stand by to assist field officers and recorders the moment an issue arises.",
   items: [
-    { title: "Device provisioning", text: "Every rig is configured, updated and charged by our IT staff before deployment." },
-    { title: "Site readiness", text: "Each capture site is prepared and checked by our IT staff before recording begins." },
-    { title: "Client portal", text: "Authenticated access to review queues and delivery batches." },
-    { title: "Immediate field support", text: "Our IT team is on call to field officers throughout every capture session, resolving device and recording issues at once, on site or remotely." },
+    { title: itTitles[0], text: "Every rig is configured, updated and charged by our IT staff before deployment." },
+    { title: itTitles[1], text: "Each capture site is prepared and checked by our IT staff before recording begins." },
+    { title: itTitles[2], text: "Authenticated access to review queues and delivery batches." },
+    { title: itTitles[3], text: "Our IT team is on call to field officers throughout every capture session, resolving device and recording issues at once, on site or remotely." },
   ],
 };
 
