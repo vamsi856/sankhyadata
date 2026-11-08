@@ -14,8 +14,21 @@ export function ClosingMark() {
       pt[1] = (e.clientY / innerHeight) * 2 - 1;
     };
     addEventListener("pointermove", move, { passive: true });
+    // Pointer over the mark parts its points; a press sends a ripple through it.
+    const local = { x: 0, y: 0, inside: false, press: 0 };
+    const at = (e: PointerEvent) => {
+      const r = el.getBoundingClientRect();
+      local.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+      local.y = ((e.clientY - r.top) / r.height) * 2 - 1;
+    };
+    const over = (e: PointerEvent) => ((local.inside = true), at(e));
+    const leave = () => (local.inside = false);
+    const press = (e: PointerEvent) => (at(e), local.press++);
+    el.addEventListener("pointermove", over);
+    el.addEventListener("pointerleave", leave);
+    el.addEventListener("pointerdown", press);
     const live = liveGL(el, () => import("@/lib/mark-gl"), ({ start }, c) =>
-      start(c, { pointer: () => pt, still: prefersStill() }),
+      start(c, { pointer: () => pt, local, still: prefersStill() }),
     );
     return () => {
       live.stop();

@@ -7,7 +7,9 @@
  */
 
 type V3 = [number, number, number];
-type Opts = { pointer: () => [number, number]; still: boolean };
+/** local: the pointer over the canvas (-1..1), whether it is inside, and a press count. */
+type Local = { x: number; y: number; inside: boolean; press: number };
+type Opts = { pointer: () => [number, number]; local: Local; still: boolean };
 
 const sub = (a: V3, b: V3): V3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 const scale = (a: V3, s: number): V3 => [a[0] * s, a[1] * s, a[2] * s];
@@ -93,7 +95,7 @@ function build() {
 
 const VS = `
 attribute vec4 a; attribute vec4 b;
-uniform mat4 mvp; uniform float px, time, built;
+uniform mat4 mvp; uniform float px, time, built, force, shock, shockR; uniform vec3 cur, shockC;
 varying vec4 c;
 void main() {
   float k = clamp((built - b.w * 0.6) / 1.1, 0.0, 1.0);
@@ -103,6 +105,15 @@ void main() {
   vec3 s = vec3(cos(ang) * b.x + sin(ang) * b.z, b.y, -sin(ang) * b.x + cos(ang) * b.z);
   vec3 p = mix(s, a.xyz, e);
   p.z += 0.025 * sin(time * 1.3 + b.w * 40.0) * e;
+  // The pointer parts the points like a field; they settle back when it leaves.
+  vec3 d = p - cur;
+  float f = force * exp(-(dot(d.xy, d.xy) + d.z * d.z * 0.3) / 0.11) * e;
+  p += normalize(d + vec3(0.0, 0.0, 0.002)) * f * 0.42;
+  // A press sends a ring outward: points it crosses jump in depth, then fall back.
+  vec2 o = p.xy - shockC.xy;
+  float ring = exp(-pow(length(o) - shockR, 2.0) / 0.025) * shock * e;
+  p.z += ring * 0.7 * (fract(b.w * 7.0) - 0.35);
+  p.xy += normalize(o + vec2(0.0001)) * ring * 0.12;
   vec4 q = mvp * vec4(p, 1.0);
   gl_Position = q;
   gl_PointSize = px * mix(1.6, 1.0, e);
@@ -132,7 +143,7 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
   if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
   gl.useProgram(prog);
   const U = (n: string) => gl.getUniformLocation(prog, n);
-  const u = { mvp: U("mvp"), px: U("px"), time: U("time"), built: U("built") };
+  const u = { mvp: U("mvp"), px: U("px"), time: U("time"), built: U("built"), force: U("force"), shock: U("shock"), shockR: U("shockR"), cur: U("cur"), shockC: U("shockC") };
   const { target, start: from } = build();
   const attr = (name: string, data: Float32Array) => {
     const loc = gl.getAttribLocation(prog, name);
@@ -165,6 +176,11 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
   let time = 0;
   let yaw = 0;
   let pitch = 0;
+  let force = 0;
+  let shock = 0;
+  let shockR = 0;
+  let shockC: V3 = [0, 0, 0];
+  let presses = opts.local.press;
 
   function draw() {
     const [px, py] = opts.pointer();
@@ -172,8 +188,31 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     yaw += (px * 0.55 + idle - yaw) * 0.06;
     pitch += (py * 0.35 - pitch) * 0.06;
     const aspect = canvas.width / canvas.height;
-    const vp = mul(perspective((32 * Math.PI) / 180, aspect, 0.1, 30), lookAt([0, 0, aspect < 1 ? 5.6 : 5.0], [0, 0, 0]));
-    gl.uniformMatrix4fv(u.mvp, false, mul(vp, rot(yaw, pitch)));
+    const dist = aspect < 1 ? 5.6 : 5.0;
+    const R = rot(yaw, pitch);
+    const vp = mul(perspective((32 * Math.PI) / 180, aspect, 0.1, 30), lookAt([0, 0, dist], [0, 0, 0]));
+    gl.uniformMatrix4fv(u.mvp, false, mul(vp, R));
+    // The pointer, cast onto the mark's plane and taken into the mark's own (rotating) space.
+    const L = opts.local;
+    const th = Math.tan((16 * Math.PI) / 180) * dist;
+    const W: V3 = [L.x * th * aspect, -L.y * th, 0];
+    const cur: V3 = [0, 1, 2].map((i) => R[i * 4] * W[0] + R[i * 4 + 1] * W[1] + R[i * 4 + 2] * W[2]) as V3;
+    force += ((L.inside && !opts.still ? 1 : 0) - force) * 0.12;
+    if (L.press !== presses) {
+      presses = L.press;
+      if (!opts.still) {
+        shock = 1;
+        shockR = 0;
+        shockC = cur;
+      }
+    }
+    shockR += 0.035;
+    shock *= 0.965;
+    gl.uniform3fv(u.cur, cur);
+    gl.uniform1f(u.force, force);
+    gl.uniform3fv(u.shockC, shockC);
+    gl.uniform1f(u.shock, shock);
+    gl.uniform1f(u.shockR, shockR);
     gl.uniform1f(u.px, dpr * 1.8);
     gl.uniform1f(u.time, time);
     gl.uniform1f(u.built, built);
