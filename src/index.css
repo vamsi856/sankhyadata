@@ -549,8 +549,12 @@ html.lenis body {
 @property --tc-s { syntax: "<integer>"; inherits: false; initial-value: 0; }
 @property --tc-f { syntax: "<integer>"; inherits: false; initial-value: 0; }
 .hud-tc {
-  animation: tc-m 3600s steps(60) infinite, tc-s 60s steps(60) infinite, tc-f 1s steps(30) infinite;
+  /* Starts after load, and contained, so its per-frame style work stays tiny and late. */
+  animation: tc-m 3600s steps(60) 2s infinite, tc-s 60s steps(60) 2s infinite, tc-f 1s steps(30) 2s infinite;
   counter-reset: m var(--tc-m) s var(--tc-s) f var(--tc-f);
+  contain: layout paint style;
+  min-width: 4.6rem;
+  justify-content: center;
 }
 .hud-tc::after {
   content: counter(m, decimal-leading-zero) ":" counter(s, decimal-leading-zero) ":" counter(f, decimal-leading-zero);
