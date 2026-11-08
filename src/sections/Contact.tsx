@@ -90,6 +90,14 @@ export function Footer() {
           </span>
         </div>
       </div>
+      {/* End card: the name set large and cropped by the page's edge, like a frame running
+          off the viewfinder, with the mark's chartreuse dot. Decorative. */}
+      <div aria-hidden className="foot-mark container-page">
+        <span className="foot-word">
+          {site.name}
+          <span className="foot-dot" />
+        </span>
+      </div>
     </footer>
   );
 }

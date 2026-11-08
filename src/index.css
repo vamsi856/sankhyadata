@@ -691,6 +691,38 @@ html.lenis body {
   color: var(--muted);
 }
 
+/* Footer end card: the wordmark at full width, cropped along the bottom edge. */
+.foot-mark {
+  overflow: hidden;
+  height: min(11.4vw, 8.9rem);
+  user-select: none;
+}
+.foot-word {
+  display: block;
+  /* The word and its dot run about 5.7em: sized so they fit the container exactly. */
+  font-size: min(15.6vw, 12rem);
+  font-weight: 340;
+  line-height: 0.86;
+  letter-spacing: -0.055em;
+  white-space: nowrap;
+  color: var(--ink);
+  transform: translateY(0.06em);
+}
+.foot-dot {
+  display: inline-block;
+  width: 0.13em;
+  height: 0.13em;
+  margin-left: 0.05em;
+  vertical-align: 0.36em;
+  border-radius: 50%;
+  background: var(--label);
+  box-shadow: 0 0 0 0.012em var(--label-ink);
+  animation: hud-blink 2.4s steps(2, jump-none) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .foot-dot { animation: none; }
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;
