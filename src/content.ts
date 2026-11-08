@@ -37,6 +37,7 @@ export const hero = {
   frame: heroFrame,
 };
 
+export const hoursUnitLabel = "One point · ten hours";
 export const hoursCaption =
   "Schematic: each point stands for ten hours. Ink, the 50,000 hours handled; chartreuse, one week’s capacity of 2,000 approved hours.";
 

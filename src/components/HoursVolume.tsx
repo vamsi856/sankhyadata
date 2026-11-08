@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { experience, hoursCaption } from "@/content";
+import { experience, hoursCaption, hoursUnitLabel } from "@/content";
 import { liveGL, prefersStill } from "@/lib/when-near";
 
-const labels = [`${experience.figure} ${experience.unit}`, `${experience.capacity.figure} ${experience.capacity.unit}`];
+const labels = [`${experience.figure} ${experience.unit}`, `${experience.capacity.figure} ${experience.capacity.unit}`, hoursUnitLabel];
 
 /** The two experience figures as a 3D volume of points, ten hours each (WebGL, lazy). */
 export function HoursVolume() {
@@ -17,9 +17,14 @@ export function HoursVolume() {
       if (e.pointerType === "mouse") px = (e.clientX / innerWidth) * 2 - 1;
     };
     addEventListener("pointermove", move, { passive: true });
+    // Pointing at the volume (or tapping it) opens it into its ten-hour units.
+    const hover = { on: false };
+    el.onpointerenter = (e) => e.pointerType === "mouse" && (hover.on = true);
+    el.onpointerleave = (e) => e.pointerType === "mouse" && (hover.on = false);
+    el.onpointerdown = (e) => e.pointerType !== "mouse" && (hover.on = !hover.on);
     const live = liveGL(el, () => import("@/lib/hours-gl"), ({ start }, c) => {
       setOn(true);
-      return start(c, { labels: tags.current, pointer: () => px, still: prefersStill() });
+      return start(c, { labels: tags.current, pointer: () => px, hover, still: prefersStill() });
     });
     return () => {
       live.stop();
@@ -37,7 +42,7 @@ export function HoursVolume() {
               ref={(n) => {
                 if (n) tags.current[i] = n;
               }}
-              className={`num absolute left-0 top-0 whitespace-nowrap text-[0.8125rem] ${i === 1 ? "font-[440] text-ink" : "text-ink-2"}`}
+              className={`num absolute left-0 top-0 whitespace-nowrap text-[0.8125rem] ${i ? "font-[440] text-ink" : "text-ink-2"}`}
             >
               {l}
             </span>
