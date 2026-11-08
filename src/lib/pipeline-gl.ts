@@ -259,9 +259,29 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
       const col: V3 = [INK[0] + (HOT[0] - INK[0]) * Math.max(on, done * 0.5), INK[1] + (HOT[1] - INK[1]) * Math.max(on, done * 0.5), INK[2] * (1 - on)];
       drawMesh(gateMesh, model(p, yaw), col, 0.55 + 0.45 * on);
       const bob = opts.still ? 0 : 0.03 * Math.sin(t * 1.4 + i);
-      drawMesh(glyphs[i], model(add(p, [0, 1.05 + 0.12 * on + bob, 0]), 0), col, 0.5 + 0.5 * on);
+      // The stage being read turns slowly and breathes, so its symbol reads in depth.
+      const turn = opts.still ? 0 : on * Math.sin(t * 0.9 + i) * 0.9;
+      const pulse = 1 + (opts.still ? 0 : on * 0.07 * Math.sin(t * 3.2));
+      const G = mul(model(add(p, [0, 1.05 + 0.12 * on + bob, 0]), turn), [pulse, 0, 0, 0, 0, pulse, 0, 0, 0, 0, pulse, 0, 0, 0, 0, 1]);
+      drawMesh(glyphs[i], G, col, 0.5 + 0.5 * on);
     }
     drawMesh(stack, model(track(STEPS - 1), Math.atan2(-tangent(STEPS - 1)[2], tangent(STEPS - 1)[0])), INK, 0.7);
+    // A production line: faint clips flow along the track all the time, each gathering the
+    // layers of the stages it has passed, so the pipeline reads as continuous work.
+    if (!opts.still)
+      for (let g = 0; g < 6; g++) {
+        const gs = ((t * 0.22 + g / 6) % 1) * (STEPS - 1.2) + 0.1;
+        if (Math.abs(gs - s) < 0.45) continue; // keep clear of the visitor's clip
+        const gt = tangent(gs);
+        const GM = mul(model(track(gs), Math.atan2(-gt[2], gt[0])), model([0, 0, 0], 0));
+        const fadeIn = clamp(gs / 0.4) * clamp((STEPS - 1.1 - gs) / 0.4);
+        const gl2 = (k: number) => clamp((gs - k + 0.45) / 0.35) * fadeIn;
+        drawMesh(clip[0], GM, INK, 0.35 * fadeIn);
+        drawMesh(clip[1], GM, INK, 0.3 * gl2(2));
+        drawMesh(clip[2], GM, HOT, 0.4 * gl2(3));
+        drawMesh(clip[3], GM, HOT, 0.4 * gl2(4));
+        drawMesh(clip[4], GM, HOT, 0.4 * gl2(5));
+      }
     // The clip: rides the track, gathering layers; at Delivery it settles onto the stack.
     const tg = tangent(s);
     const yaw = Math.atan2(-tg[2], tg[0]);
