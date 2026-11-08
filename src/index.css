@@ -915,6 +915,29 @@ html::-webkit-scrollbar {
   display: none;
 }
 
+/* Hero layout: phones get the frame straight after the title; from lg the frame sits right. */
+.hero-grid {
+  display: grid;
+  grid-template-areas: "title" "frame" "body";
+  row-gap: 1.75rem;
+}
+.hero-title { grid-area: title; }
+.hero-frame { grid-area: frame; }
+.hero-body { grid-area: body; }
+.hero-body > p:first-child { margin-top: 0; }
+@media (min-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    grid-template-rows: auto auto;
+    grid-template-areas: "title frame" "body frame";
+    column-gap: 3rem;
+    row-gap: 1.5rem;
+    align-items: end;
+  }
+  .hero-body { align-self: start; }
+  .hero-frame { align-self: center; }
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;

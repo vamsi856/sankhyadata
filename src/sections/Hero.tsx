@@ -5,8 +5,10 @@ import { Island } from "@/islands";
 export function Hero() {
   return (
     <section id="top" aria-labelledby="hero-title" className="container-page pb-20 pt-12 md:pb-28 md:pt-20">
-      <div className="grid items-center gap-x-12 gap-y-12 lg:grid-cols-[minmax(0,6fr)_minmax(0,6fr)]">
-        <div className="max-w-2xl">
+      {/* Phones: title, then the frame, then the copy, so the first screen has the picture.
+          From lg: title and copy on the left, the frame on the right (as before). */}
+      <div className="hero-grid">
+        <div className="hero-title max-w-2xl">
           <h1
             id="hero-title"
             className="m-0 text-[clamp(2.5rem,5.2vw,4.25rem)]"
@@ -21,6 +23,8 @@ export function Hero() {
               </Fragment>
             ))}
           </h1>
+        </div>
+        <div className="hero-body max-w-2xl">
           <p
             className="mb-0 mt-6 max-w-md text-[1.1875rem] leading-relaxed text-ink-2"
           >
@@ -36,7 +40,7 @@ export function Hero() {
           </div>
         </div>
         {/* Not faded in: the photo paints at once, so it can be the page's largest paint. */}
-        <div>
+        <div className="hero-frame">
           <Island name="frame" />
         </div>
       </div>
