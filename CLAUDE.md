@@ -14,7 +14,8 @@ approved hours.
 - All copy and links: `src/content.ts`. Design tokens: `:root` in `src/index.css`.
 
 Commands: `npm run dev`, `npm run build` (output in `dist/`). GitHub holds only the code:
-`.github/workflows/deploy-hetzner.yml` publishes the built site to the `live` release, and the
+`.github/workflows/deploy-hetzner.yml` publishes the built site to the `live` release (and, once the secret `LIVE_REPO_TOKEN` is set, to
+the public output-only repo `vamsi856/sankhyadata-live`, so this source repo can be private), and the
 dedicated Hetzner server `sankhyadata-web` (project "sankhyadata", Ashburn US, 5.161.223.5)
 pulls it every 2 minutes (`deploy/pull.sh`); Caddy serves https://sankhyadata.com with
 automatic certificates (Let's Encrypt, ZeroSSL fallback). Hetzner firewall: inbound 80, 443

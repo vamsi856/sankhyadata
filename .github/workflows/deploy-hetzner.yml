@@ -48,6 +48,25 @@ jobs:
           # version.txt goes last, so the server never sees a version before its files.
           gh release upload live out/version.txt --clobber
 
+      # The source repo can be private: the same built files are also published to the public
+      # repo vamsi856/sankhyadata-live (output only, no source), which the server pulls from once
+      # SANKHYADATA_BASE points at it. Needs the secret LIVE_REPO_TOKEN: a fine-grained token
+      # with Contents read and write on that one repo. Skipped while the secret is not set.
+      - name: Publish to the public output repo
+        env:
+          GH_TOKEN: ${{ secrets.LIVE_REPO_TOKEN }}
+          LIVE_REPO: vamsi856/sankhyadata-live
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::notice::LIVE_REPO_TOKEN is not set; skipped publishing to $LIVE_REPO"
+            exit 0
+          fi
+          gh release view live --repo "$LIVE_REPO" >/dev/null 2>&1 || gh release create live \
+            --repo "$LIVE_REPO" --title "Live site" --latest=false \
+            --notes "Built site that the Hetzner server pulls. Replaced on every push to main."
+          gh release upload live --repo "$LIVE_REPO" out/site.tar.gz out/sankhyadata.caddy out/sha256sums.txt --clobber
+          gh release upload live --repo "$LIVE_REPO" out/version.txt --clobber
+
       - name: Check the live site
         run: |
           if curl -fsS -o /dev/null --max-time 20 https://sankhyadata.com/; then
