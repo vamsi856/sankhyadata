@@ -267,13 +267,16 @@ export function start(canvas: HTMLCanvasElement, opts: Opts): (() => void) | nul
     // Viewer: an orbit over the site, easing into the recorder's eye as the visitor scrolls.
     const aspect = canvas.width / canvas.height;
     const portrait = aspect < 1;
+    // Wider portrait screens (tablets) have room for a closer, higher view: ease from the
+    // phone framing (aspect ~0.46) towards the landscape one as the screen widens.
+    const wide = Math.min(1, Math.max(0, (aspect - 0.46) / 0.3));
     const va = 0.9 + 0.035 * t + sx * 0.6;
-    const dist = portrait ? 8.2 : 6.4;
+    const dist = portrait ? 8.2 - 1.6 * wide : 6.4;
     const orbitEye: V3 = [dist * Math.sin(va), 3.3 + sy * 1.2, dist * Math.cos(va)];
     const eye = mix(orbitEye, add(rec.head, scale(rec.fwd, portrait ? -0.55 : -0.12)), p);
     // On a portrait screen the text sits on top, so aim higher and the site sinks below it.
     const aim = add(add(rec.head, rec.fwd), portrait ? scale(rec.up, 0.32) : scale(rec.right, -0.42));
-    const target = mix([0, portrait ? 2.6 : 0.75, 0], aim, p);
+    const target = mix([0, portrait ? 2.6 - 0.9 * wide : 0.75, 0], aim, p);
     const fov = ((42 + 20 * p) * Math.PI) / 180;
     const mvp = mul(perspective(fov, aspect, 0.03, 40), lookAt(eye, target));
 
