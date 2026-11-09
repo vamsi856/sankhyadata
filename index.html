@@ -27,7 +27,8 @@
     <link rel="preload" href="/fonts/geologica-latin-shrp.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" as="image" type="image/avif" imagesrcset="/media/frame-560.avif 560w, /media/frame-800.avif 800w, /media/frame-1400.avif 1400w" imagesizes="(min-width: 1024px) 44rem, calc(100vw - 2rem)" fetchpriority="high" />
     <style>/* Hallmark · full stamp in src/index.css */ html,body{overflow-x:clip}</style>
-    <noscript><style>[data-reveal]{opacity:1!important;transform:none!important}</style></noscript>
+    <!-- Without JavaScript nothing draws the scenes: close them up as html[data-nogl] does. -->
+    <noscript><style>[data-reveal]{opacity:1!important;transform:none!important}.gl-scene,.persp-scrim{display:none!important}.persp-track{height:auto!important}.persp-sticky{position:static!important;height:auto!important}.it-grid,.rig-grid{grid-template-columns:minmax(0,1fr)!important;grid-template-areas:"head" "list"!important}</style></noscript>
   </head>
   <body>
     <div id="root"></div>
