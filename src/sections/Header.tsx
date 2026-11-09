@@ -28,7 +28,7 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-rule bg-paper">
       {/* The page as one recording: a line along the header's edge fills as the visitor scrolls. */}
       <span aria-hidden className="rec-line" />
-      <div className="container-page flex h-16 items-center justify-between gap-6">
+      <div className="container-page flex h-16 items-center justify-between gap-6 max-[359px]:gap-3">
         <a href="#top" className="logo-link rounded-[4px] text-ink no-underline" aria-label={`${site.name}, back to top`}>
           <Wordmark animated />
         </a>
@@ -46,7 +46,7 @@ export function Header() {
             ))}
           </ul>
         </nav>
-        <a href={headerCta.href} className="btn btn-primary min-h-10 px-4 text-[0.9375rem]">
+        <a href={headerCta.href} className="btn btn-primary min-h-10 px-4 text-[0.9375rem] max-[359px]:px-3 max-[359px]:text-[0.875rem]">
           {headerCta.label}
         </a>
       </div>
