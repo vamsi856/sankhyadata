@@ -38,9 +38,11 @@ export function CountUp() {
   }, [target]);
 
   return (
-    <span ref={ref} className="num text-[clamp(4.25rem,11vw,8.5rem)] font-[200] leading-[0.9] tracking-[-0.045em] text-ink">
-      {value.toLocaleString("en-GB")}
-      {suffix}
+    <span ref={ref} data-final={experience.figure} className="num text-[clamp(4.25rem,11vw,8.5rem)] font-[200] leading-[0.9] tracking-[-0.045em] text-ink">
+      <span className="fig-live">
+        {value.toLocaleString("en-GB")}
+        {suffix}
+      </span>
     </span>
   );
 }

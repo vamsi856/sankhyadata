@@ -1038,6 +1038,46 @@ html::-webkit-scrollbar {
   }
 }
 
+/* Print: canvases do not print, so close up the scenes as html[data-nogl] does (keep the
+   three copies in step: here, html[data-nogl] below, and the <noscript> style in index.html);
+   print the dark bands on paper; print the final figure, not a count in progress. */
+@media print {
+  .gl-scene,
+  .persp-scrim {
+    display: none !important;
+  }
+  .persp-track {
+    height: auto !important;
+  }
+  .persp-sticky {
+    position: static !important;
+    height: auto !important;
+  }
+  .it-grid,
+  .rig-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas: "head" "list" !important;
+  }
+  .band-ink {
+    --paper: inherit;
+    --paper-2: inherit;
+    --paper-3: inherit;
+    --ink: inherit;
+    --ink-2: inherit;
+    --muted: inherit;
+    --rule: inherit;
+    --rule-2: inherit;
+    --line: inherit;
+    --focus: inherit;
+  }
+  .fig-live {
+    display: none;
+  }
+  [data-final]::after {
+    content: attr(data-final);
+  }
+}
+
 /* No WebGL (html[data-nogl], set on the first input when a context cannot be made): hide
    the scenes and close up their sections so no empty frames or long dark tracks remain. */
 html[data-nogl] .gl-scene,
