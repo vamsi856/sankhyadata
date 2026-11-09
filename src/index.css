@@ -979,6 +979,32 @@ html::-webkit-scrollbar {
   :root { --container: 90rem; }
 }
 
+/* Windows high contrast (forced colours) drops the backgrounds and inset shadows that draw
+   this page's pills, cards, the flowchart spine and active markers: give them real borders
+   in system colours. Nothing here applies outside forced-colours mode. */
+@media (forced-colors: active) {
+  .btn,
+  button[aria-pressed] {
+    border: 1px solid ButtonText;
+  }
+  button[aria-pressed="true"] {
+    border: 2px solid Highlight;
+  }
+  .flowx-card,
+  .flowx-dot {
+    border: 1px solid CanvasText;
+  }
+  .flowx::before {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+  .it-item[data-active="true"],
+  dl[data-rig][data-active="true"] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
 /* No WebGL (html[data-nogl], set on the first input when a context cannot be made): hide
    the scenes and close up their sections so no empty frames or long dark tracks remain. */
 html[data-nogl] .gl-scene,
