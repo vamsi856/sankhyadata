@@ -560,6 +560,30 @@ html.lenis body {
     );
   }
 }
+/* Narrow but wide-and-short (phones on their side, 200% zoom): stacking the text over the
+   scene would set the paragraph on the densest points, so use the desktop arrangement —
+   copy in the left half over a left-to-right ground, the scene to its right. */
+@media (max-width: 1023px) and (min-aspect-ratio: 5/4) {
+  .persp-scrim {
+    background: linear-gradient(100deg, var(--inv-paper) 0%, color-mix(in oklch, var(--inv-paper) 88%, transparent) 46%, transparent 68%);
+  }
+  .persp-copy,
+  .persp-note {
+    max-width: 50%;
+  }
+  /* Keep the top clear of the header the band pins under; set the copy a size smaller so
+     it and the caption fit a screen as short as 360px. */
+  .persp-sticky > .container-page {
+    padding-block: 5rem 0.75rem;
+  }
+  .persp-copy h2 {
+    font-size: 1.75rem;
+  }
+  .persp-copy p {
+    margin-top: 0.75rem;
+    font-size: 1rem;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .persp-track { height: auto; }
 }
