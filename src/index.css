@@ -728,6 +728,10 @@ html.lenis body {
 .faq {
   perspective: 900px;
 }
+/* Reaching a question by keyboard brings it up far enough that its answer opens in view. */
+.faq summary {
+  scroll-margin-bottom: 8rem;
+}
 .faq[open] > p {
   transform-origin: top center;
   animation: faq-fold 560ms var(--ease-out) both;
