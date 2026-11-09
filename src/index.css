@@ -1022,6 +1022,15 @@ html::-webkit-scrollbar {
     forced-color-adjust: none;
     background: CanvasText;
   }
+  /* Billing track: the line joining Recorded to Delivered, and its fill as it runs. */
+  [data-island="track"] li > .bg-line {
+    forced-color-adjust: none;
+    background: GrayText;
+  }
+  [data-island="track"] li > .bg-ink {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
   .it-item[data-active="true"],
   dl[data-rig][data-active="true"] {
     outline: 2px solid Highlight;
