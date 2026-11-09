@@ -149,8 +149,8 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     const eye: V3 = [Math.sin(va) * R, 3.0, Math.cos(va) * R];
     const vp = mul(perspective((30 * Math.PI) / 180, aspect, 0.1, 40), lookAt(eye, [0, 0.75, 0]));
     gl.uniformMatrix4fv(u.mvp, false, vp);
-    // Small screens: larger, darker points so the volume reads as a solid block.
-    const small = canvas.clientWidth < 520;
+    // Phones and tablets: larger, darker points so the volume reads as a solid block.
+    const small = window.innerWidth < 1024;
     gl.uniform1f(u.px, dpr * (small ? 2.3 : 1.7));
     gl.uniform1f(u.ink, small ? 0.8 : 0.55);
     gl.uniform1f(u.built, built);
