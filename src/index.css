@@ -958,6 +958,12 @@ html::-webkit-scrollbar {
   }
 }
 
+/* Large desktops (1680px and up): a wider page column, so sections fill the screen
+   instead of sitting in a narrow strip with wide empty margins. */
+@media (min-width: 1680px) {
+  :root { --container: 90rem; }
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;
