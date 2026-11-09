@@ -14,7 +14,7 @@ export function Rigs() {
           <h2 id="rigs-title" className="rig-head m-0 max-w-md text-[clamp(2rem,4vw,3.25rem)]">
             {rigs.title}
           </h2>
-          <div className="rig-scene">
+          <div className="rig-scene gl-scene">
             <Island name="rig" />
           </div>
           <div className="rig-list border-t border-rule">

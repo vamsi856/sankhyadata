@@ -11,6 +11,26 @@ type Engine = (() => void) | { stop: () => void; poke?: () => void } | null;
  */
 const EVENTS = ["scroll", "wheel", "pointerdown", "keydown", "touchstart"] as const;
 
+/**
+ * Whether this browser can draw WebGL at all, checked once (on the first arm, after the
+ * visitor's first input). If it cannot, html[data-nogl] is set and CSS tidies the layout:
+ * scenes are hidden and their sections close up, so no empty frames are left behind.
+ */
+let gl: boolean | undefined;
+const glOk = () => {
+  if (gl === undefined) {
+    try {
+      const c = document.createElement("canvas").getContext("webgl");
+      gl = !!c;
+      c?.getExtension("WEBGL_lose_context")?.loseContext();
+    } catch {
+      gl = false;
+    }
+    if (!gl) document.documentElement.dataset.nogl = "";
+  }
+  return gl;
+};
+
 export function liveGL<M>(host: HTMLElement, load: () => Promise<M>, begin: (mod: M, canvas: HTMLCanvasElement) => Engine) {
   let mod: M | null = null;
   let canvas: HTMLCanvasElement | null = null;
@@ -50,7 +70,7 @@ export function liveGL<M>(host: HTMLElement, load: () => Promise<M>, begin: (mod
   // (context, shader compile, geometry) off the load path.
   const arm = () => {
     for (const t of EVENTS) removeEventListener(t, arm);
-    if (!dead) io.observe(host);
+    if (!dead && glOk()) io.observe(host);
   };
   const r = host.getBoundingClientRect();
   if (r.top < innerHeight && r.bottom > 0) arm();

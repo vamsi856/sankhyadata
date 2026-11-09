@@ -964,6 +964,25 @@ html::-webkit-scrollbar {
   :root { --container: 90rem; }
 }
 
+/* No WebGL (html[data-nogl], set on the first input when a context cannot be made): hide
+   the scenes and close up their sections so no empty frames or long dark tracks remain. */
+html[data-nogl] .gl-scene,
+html[data-nogl] .persp-scrim {
+  display: none;
+}
+html[data-nogl] .persp-track {
+  height: auto;
+}
+html[data-nogl] .persp-sticky {
+  position: static;
+  height: auto;
+}
+html[data-nogl] .it-grid,
+html[data-nogl] .rig-grid {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "head" "list";
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;

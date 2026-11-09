@@ -22,7 +22,7 @@ export function Contact() {
           <span className="text-[0.875rem] text-muted">The email opens with the brief’s fields already listed.</span>
         </div>
         </div>
-        <Island name="mark" />
+        <Island name="mark" className="gl-scene" />
       </div>
     </section>
   );

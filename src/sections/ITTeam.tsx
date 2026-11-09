@@ -15,7 +15,7 @@ export function ITTeam() {
           </h2>
           <p className="mb-0 mt-5 max-w-lg text-ink-2">{itTeam.sentence}</p>
         </div>
-        <div className="it-scene">
+        <div className="it-scene gl-scene">
           <Island name="field" />
         </div>
         <dl className="it-list m-0 border-t border-rule">

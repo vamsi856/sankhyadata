@@ -11,7 +11,7 @@ export function Experience() {
           <h2 id="experience-title" className="exp-head m-0 max-w-md text-[clamp(2rem,4vw,3.25rem)]">
             {experience.title}
           </h2>
-          <div className="exp-vol">
+          <div className="exp-vol gl-scene">
             <Island name="hours" />
           </div>
           <div className="exp-card ticks rounded-[var(--radius-card)] p-7 sm:p-10">

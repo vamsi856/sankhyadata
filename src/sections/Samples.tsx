@@ -15,7 +15,7 @@ export function Samples() {
             </h2>
             <p className="mb-0 mt-5 max-w-lg text-ink-2">{samplesSection.sentence}</p>
           </div>
-          <Island name="wall" />
+          <Island name="wall" className="gl-scene" />
         </div>
 
         {samples.length > 0 ? (

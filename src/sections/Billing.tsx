@@ -14,7 +14,7 @@ export function Billing() {
             </h2>
             <p className="mb-0 mt-6 max-w-xl text-[1.125rem] text-ink-2">{billing.sentence}</p>
           </div>
-          <Island name="billing" />
+          <Island name="billing" className="gl-scene" />
         </div>
         <div className="mt-10 max-w-4xl">
           <Island name="track" />

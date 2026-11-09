@@ -11,7 +11,7 @@ export function HowItWorks() {
           <h2 id="how-title" className="m-0 max-w-md text-[clamp(2rem,4vw,3.25rem)]">
             {methodology.title}
           </h2>
-          <div className="pipeline-pin sticky top-16 z-10 bg-paper pb-3 pt-2 lg:static lg:mt-10 lg:bg-transparent lg:p-0">
+          <div className="pipeline-pin gl-scene sticky top-16 z-10 bg-paper pb-3 pt-2 lg:static lg:mt-10 lg:bg-transparent lg:p-0">
             <Island name="pipeline" />
           </div>
         </div>

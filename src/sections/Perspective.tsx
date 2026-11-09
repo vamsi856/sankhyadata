@@ -10,7 +10,7 @@ export function Perspective() {
   return (
     <section id="perspective" aria-labelledby="perspective-title" className="band-ink persp-track relative">
       <div className="persp-sticky sticky top-0 overflow-hidden">
-        <Island name="cloud" className="absolute inset-0" />
+        <Island name="cloud" className="gl-scene absolute inset-0" />
         <div aria-hidden className="persp-scrim pointer-events-none absolute inset-0" />
         <div className="container-page pointer-events-none relative flex h-full flex-col justify-between py-20 md:py-24">
           <div className="max-w-xl">
@@ -19,7 +19,7 @@ export function Perspective() {
             </h2>
             <p className="mb-0 mt-6 max-w-md text-[1.125rem] text-ink-2">{perspective.sentence}</p>
           </div>
-          <p className="m-0 max-w-md text-[0.8125rem] text-muted">{perspective.caption}</p>
+          <p className="gl-scene m-0 max-w-md text-[0.8125rem] text-muted">{perspective.caption}</p>
         </div>
       </div>
     </section>
