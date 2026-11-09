@@ -12,13 +12,13 @@ export function NotFoundPage() {
           </a>
         </div>
       </header>
-      <main id="main" className="container-page grid items-center gap-x-12 gap-y-14 py-20 md:py-28 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+      <main id="main" className="container-page grid grid-cols-[minmax(0,1fr)] items-center gap-x-12 gap-y-12 py-14 sm:gap-y-14 sm:py-20 md:py-24 lg:[@media(max-height:720px)]:py-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
         <div>
           <p className="m-0 text-[0.9375rem] text-muted">Error 404</p>
           <h1 className="m-0 mt-4 max-w-2xl text-[clamp(2.4rem,5vw,4rem)]">{notFound.title}</h1>
           <p className="mb-0 mt-5 max-w-lg text-ink-2">{notFound.sentence}</p>
           <p className="mb-0 mt-10">
-            <a className="btn btn-primary" href={notFound.link.href}>
+            <a className="btn btn-primary max-[379px]:px-5 max-[379px]:text-[0.9375rem] max-[359px]:whitespace-normal max-[359px]:py-3 max-[359px]:text-center max-[359px]:leading-snug max-[359px]:text-balance" href={notFound.link.href}>
               {notFound.link.label}
             </a>
           </p>
