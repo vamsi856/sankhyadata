@@ -58,7 +58,7 @@ function build() {
 
 const VS = `
 attribute vec4 a;
-uniform mat4 mvp; uniform float px, built, time, spread; uniform vec3 hi;
+uniform mat4 mvp; uniform float px, built, time, spread, ink; uniform vec3 hi;
 varying vec4 c;
 void main() {
   float slab = step(1.5, a.w);
@@ -77,7 +77,7 @@ void main() {
   gl_Position = q;
   gl_PointSize = px * (1.0 + 0.5 * slab + one * spread * 5.0) * clamp(6.0 / q.w, 0.6, 1.6);
   vec3 col = mix(vec3(0.17, 0.19, 0.21), vec3(0.38, 0.58, 0.0), max(slab, one * spread));
-  c = vec4(col, e * mix(0.55, 1.0, max(slab, one * spread)));
+  c = vec4(col, e * mix(ink, 1.0, max(slab, one * spread)));
 }`;
 const FS = `
 precision mediump float; varying vec4 c;
@@ -101,7 +101,7 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
   if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
   gl.useProgram(prog);
   const U = (n: string) => gl.getUniformLocation(prog, n);
-  const u = { mvp: U("mvp"), px: U("px"), built: U("built"), time: U("time"), spread: U("spread"), hi: U("hi") };
+  const u = { mvp: U("mvp"), px: U("px"), built: U("built"), time: U("time"), spread: U("spread"), hi: U("hi") , ink: U("ink") };
   const data = build();
   gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
   gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
@@ -149,7 +149,10 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     const eye: V3 = [Math.sin(va) * R, 3.0, Math.cos(va) * R];
     const vp = mul(perspective((30 * Math.PI) / 180, aspect, 0.1, 40), lookAt(eye, [0, 0.75, 0]));
     gl.uniformMatrix4fv(u.mvp, false, vp);
-    gl.uniform1f(u.px, dpr * 1.7);
+    // Small screens: larger, darker points so the volume reads as a solid block.
+    const small = canvas.clientWidth < 520;
+    gl.uniform1f(u.px, dpr * (small ? 2.3 : 1.7));
+    gl.uniform1f(u.ink, small ? 0.8 : 0.55);
     gl.uniform1f(u.built, built);
     gl.uniform1f(u.time, opts.still ? 0 : time);
     spread += ((opts.hover.on && built > BLOCK_TIME ? 1 : 0) - spread) * (opts.still ? 1 : 0.08);

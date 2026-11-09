@@ -938,6 +938,26 @@ html::-webkit-scrollbar {
   .hero-frame { align-self: center; }
 }
 
+/* Experience: figures card before the volume on phones; side by side from lg. */
+.exp-grid {
+  display: grid;
+  grid-template-areas: "head" "card" "vol";
+  row-gap: 2.5rem;
+}
+.exp-head { grid-area: head; }
+.exp-card { grid-area: card; }
+.exp-vol { grid-area: vol; }
+.exp-vol > [data-island] > figure { margin-top: 0; }
+@media (min-width: 1024px) {
+  .exp-grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-areas: "head card" "vol card";
+    column-gap: 3rem;
+    row-gap: 2rem;
+    align-items: end;
+  }
+}
+
 /* Rig table rows answer the pointer. */
 [data-rig] {
   cursor: pointer;

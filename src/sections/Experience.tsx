@@ -5,14 +5,16 @@ export function Experience() {
   return (
     <section id="experience" aria-labelledby="experience-title" className="border-t border-rule">
       <div className="container-page py-20 md:py-28">
-        <div className="grid items-end gap-x-12 gap-y-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-          <div>
-            <h2 id="experience-title" className="m-0 max-w-md text-[clamp(2rem,4vw,3.25rem)]">
-              {experience.title}
-            </h2>
+        {/* Phones: heading, the figures card, then the volume that illustrates them. From lg:
+            heading and volume on the left, the card on the right (as before). */}
+        <div className="exp-grid">
+          <h2 id="experience-title" className="exp-head m-0 max-w-md text-[clamp(2rem,4vw,3.25rem)]">
+            {experience.title}
+          </h2>
+          <div className="exp-vol">
             <Island name="hours" />
           </div>
-          <div className="ticks rounded-[var(--radius-card)] p-7 sm:p-10">
+          <div className="exp-card ticks rounded-[var(--radius-card)] p-7 sm:p-10">
             <p className="m-0 flex flex-wrap items-baseline gap-x-3">
               <Island name="figure" inline />
               <span className="text-[clamp(1.5rem,3vw,2.25rem)] font-[300] tracking-[-0.02em] text-muted">
