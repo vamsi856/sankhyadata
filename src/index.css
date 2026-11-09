@@ -888,6 +888,9 @@ html.lenis body {
   .it-scene figcaption { display: none; }
   .rig-scene .rig-stage { aspect-ratio: auto; height: 38svh; }
   .rig-scene figcaption { display: none; }
+  /* Keyboard focus (or a link) never parks an option under the pinned scene. */
+  .it-item { scroll-margin-top: calc(34svh + 2.5rem); }
+  .rig-row { scroll-margin-top: calc(38svh + 2.5rem); }
 }
 @media (min-width: 1024px) {
   .it-grid,

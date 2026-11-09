@@ -30,9 +30,16 @@ export function RigView() {
     // Scrolling drives the rig: the active one is the last block to have reached the reading
     // line (mid-screen beside the sticky viewer; just under the pinned viewer on phones).
     const pin = el.closest(".rig-scene") as HTMLElement | null;
+    let hold: HTMLElement | null = null;
+    const release = () => (hold = null);
     const measure = () => {
       const wide = innerWidth >= 1024;
-      const line = wide ? innerHeight * 0.5 : (pin?.getBoundingClientRect().bottom ?? 0) + 32;
+      const top = wide ? 0 : (pin?.getBoundingClientRect().bottom ?? 0);
+      // A block chosen by focus or tap holds while it is in view (focusing one scrolls the
+      // page, which must not hand the viewer to a neighbour); wheel or touch scrolling lets go.
+      const b = hold?.getBoundingClientRect();
+      if (b && b.bottom > top && b.top < innerHeight) return select(Number(hold!.dataset.rig));
+      const line = wide ? innerHeight * 0.5 : top + 32;
       let k = 0;
       rows.forEach((r, i) => r.getBoundingClientRect().top <= line && (k = i));
       select(k);
@@ -40,12 +47,16 @@ export function RigView() {
     measure();
     addEventListener("scroll", measure, { passive: true });
     addEventListener("resize", measure);
+    addEventListener("wheel", release, { passive: true });
+    addEventListener("touchstart", release, { passive: true });
     const off: (() => void)[] = [
       () => removeEventListener("scroll", measure),
       () => removeEventListener("resize", measure),
+      () => removeEventListener("wheel", release),
+      () => removeEventListener("touchstart", release),
     ];
     for (const row of rows) {
-      const on = () => select(Number(row.dataset.rig));
+      const on = () => select(Number((hold = row).dataset.rig));
       for (const type of ["focusin", "click"] as const) {
         row.addEventListener(type, on);
         off.push(() => row.removeEventListener(type, on));
