@@ -39,10 +39,11 @@ export function CountUp() {
 
   return (
     <span ref={ref} data-final={experience.figure} className="num text-[clamp(4.25rem,11vw,8.5rem)] font-[200] leading-[0.9] tracking-[-0.045em] text-ink">
-      <span className="fig-live">
+      <span className="fig-live" aria-hidden="true">
         {value.toLocaleString("en-GB")}
         {suffix}
       </span>
+      <span className="sr-only">{experience.figure}</span>
     </span>
   );
 }

@@ -499,13 +499,15 @@ html.lenis body {
   grid-template-columns: 2.5rem minmax(0, 1fr);
   column-gap: 1.25rem;
 }
+/* The flowchart's terminal: a quiet label, not a button (it is not clickable). */
 .flowx-end-pill {
   grid-column: 2;
   justify-self: start;
-  padding: 0.7rem 1.2rem;
-  border-radius: 999px;
-  background: var(--ink);
-  color: var(--paper);
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--rule-2);
   font-size: 0.9375rem;
 }
 @media (min-width: 1024px) {

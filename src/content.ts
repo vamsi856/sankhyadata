@@ -65,7 +65,7 @@ export const experience = {
 export const perspective = {
   title: "Every hour is a path through a real place.",
   sentence:
-    "A recorder moves through the capture site, and whatever enters the camera’s field of view becomes footage. Scroll, and the view passes from the site into the recorder’s own eyes.",
+    "A recorder moves through the capture site, and the camera records what the recorder sees. Scroll, and the view passes from the site into the recorder’s own eyes.",
   caption: "Schematic, not captured data: a recorder’s head trajectory and camera field of view in a workshop, drawn as a point cloud.",
 };
 
@@ -92,7 +92,7 @@ export const methodology = {
     },
     {
       role: stepRoles[4],
-      text: "Our narrators voice the scene descriptions and subtitles on active noise-cancelling (ANC) headphones, following a microphone and ambient-noise check.",
+      text: "Our narrators record the scene descriptions and subtitles wearing active noise-cancelling headphones, after a microphone and ambient-noise check.",
     },
     {
       role: stepRoles[5],
@@ -232,8 +232,9 @@ export const samplesWallCaption =
   "Schematic: the representative set, one tile per operational environment (69 in all). Named tiles are examples; interiors are abstract, not footage.";
 
 export const samplesSection = {
-  title: "One representative hour from each operational environment.",
+  title: "About one representative hour from each operational environment.",
   sentence: "Review our capture standard before commissioning: raw first-person recordings with their metadata, viewable in the browser through our samples viewer.",
+  open: "Open the samples viewer",
   next: { label: "Then send us your brief", href: "#contact" },
   wallCaption: samplesWallCaption,
 };
@@ -282,7 +283,7 @@ export const questions = {
       a: "Through our field contributor network, we can deliver 2,000 approved hours a week. Only hours that pass quality control are counted, invoiced and delivered.",
     },
     {
-      q: "Where is footage recorded?",
+      q: "In which environments is footage recorded?",
       a: "On site, during day-to-day operations, across some seventy operational environments, from agricultural farms to metal fabrication.",
     },
     {
@@ -327,9 +328,9 @@ export const contact = {
 };
 
 export const footer = {
-  tagline: "Egocentric data acquisition, annotation, narration and quality control, performed by our in-house teams.",
+  tagline: "Egocentric data acquisition by trained recorders; annotation, narration, quality control and IT by our in-house teams.",
   privacy: { label: "Privacy notice", href: "privacy/" },
-  security: { label: "Security contact", href: ".well-known/security.txt" },
+  security: { label: "Security contact", href: "/.well-known/security.txt" },
   note: "This site sets no cookies and loads nothing from other domains.",
 };
 

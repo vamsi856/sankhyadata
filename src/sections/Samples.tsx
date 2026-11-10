@@ -32,11 +32,11 @@ export function Samples() {
                   <span className="col-start-1 row-start-2 text-[0.9375rem] text-ink-2 sm:col-start-2 sm:row-start-1">
                     {s.text}
                   </span>
-                  <span className="col-start-2 row-span-2 row-start-1 inline-flex items-center gap-2 text-[0.9375rem] text-ink-2 transition-colors duration-150 group-hover:text-ink sm:col-start-3 sm:row-span-1">
-                    <span className="hidden sm:inline">Open the samples viewer</span>
+                  <span className="btn btn-primary col-start-1 row-start-3 mt-3 justify-self-start sm:col-start-3 sm:row-start-1 sm:mt-0">
+                    <span>{samplesSection.open}</span>
                     <ArrowUpRight aria-hidden className="h-5 w-5 transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5" strokeWidth={1.5} />
-                    <span className="sr-only">(opens the samples viewer in a new tab)</span>
                   </span>
+                  <span className="sr-only">(opens the samples viewer in a new tab)</span>
                 </a>
               </li>
             ))}
@@ -50,8 +50,8 @@ export function Samples() {
             .
           </p>
         )}
-        <p className="mb-0 mt-8 text-[0.9375rem] text-ink-2">
-          <a className="link" href={samplesSection.next.href}>
+        <p className="mb-0 mt-8">
+          <a className="btn btn-line" href={samplesSection.next.href}>
             {samplesSection.next.label}
           </a>
         </p>

@@ -5,7 +5,7 @@ export function Questions() {
   return (
     <section id="questions" aria-labelledby="questions-title" className="border-t border-rule">
       <div className="container-page grid gap-x-12 gap-y-10 py-20 md:py-28 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-        <h2 id="questions-title" className="m-0 max-w-md text-[clamp(2rem,4vw,3.25rem)]">
+        <h2 id="questions-title" className="m-0 max-w-md self-start text-[clamp(2rem,4vw,3.25rem)] lg:sticky lg:top-28">
           {questions.title}
         </h2>
         <div className="border-t border-rule">

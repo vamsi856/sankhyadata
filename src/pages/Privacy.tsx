@@ -1,4 +1,4 @@
-import { privacy, site } from "@/content";
+import { footer, privacy, site } from "@/content";
 import { Wordmark } from "@/sections/Header";
 
 /** Static privacy notice, prerendered to /privacy/ with no JavaScript. */
@@ -33,6 +33,10 @@ export function PrivacyPage() {
           © 2026 {site.name}.{" "}
           <a className="link text-muted" href={`mailto:${site.email}`}>
             {site.email}
+          </a>
+          {" · "}
+          <a className="link text-muted" href={footer.security.href}>
+            {footer.security.label}
           </a>
         </div>
       </footer>
