@@ -1022,6 +1022,11 @@ html::-webkit-scrollbar {
     forced-color-adjust: none;
     background: CanvasText;
   }
+  /* The 404 viewfinder is a picture (aria-hidden): keep its own dark frame and brackets,
+     which are drawn with gradients that forced colours would strip. */
+  .nf-frame {
+    forced-color-adjust: none;
+  }
   /* Billing track: the line joining Recorded to Delivered, and its fill as it runs. */
   [data-island="track"] li > .bg-line {
     forced-color-adjust: none;
