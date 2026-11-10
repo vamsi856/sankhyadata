@@ -11,12 +11,12 @@ export function Questions() {
         <div className="border-t border-rule">
           {questions.items.map((item) => (
             <details key={item.q} className="faq draw-rule group relative border-b border-rule">
-              <summary className="flex cursor-pointer list-none items-start justify-between gap-6 rounded-[4px] py-5 text-[1.125rem] font-[400] tracking-[-0.01em] text-ink [&::-webkit-details-marker]:hidden">
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-6 rounded-[4px] py-5 text-[1.125rem] font-[400] tracking-[-0.01em] text-ink [&::-webkit-details-marker]:hidden [&:hover_svg]:text-ink">
                 <span>{item.q}</span>
                 <svg
                   aria-hidden
                   viewBox="0 0 16 16"
-                  className="mt-1.5 h-4 w-4 shrink-0 text-muted transition-transform duration-200 ease-out group-open:rotate-45"
+                  className="mt-1.5 h-4 w-4 shrink-0 text-muted transition-[transform,color] duration-200 ease-out group-open:rotate-45"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="1.5"

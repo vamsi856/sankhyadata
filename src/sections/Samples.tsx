@@ -32,7 +32,7 @@ export function Samples() {
                   <span className="col-start-1 row-start-2 text-[0.9375rem] text-ink-2 sm:col-start-2 sm:row-start-1">
                     {s.text}
                   </span>
-                  <span className="btn btn-primary col-start-1 row-start-3 mt-3 justify-self-start sm:col-start-3 sm:row-start-1 sm:mt-0">
+                  <span className="btn btn-primary col-start-1 row-start-3 mt-3 justify-self-start group-hover:bg-ink-2 sm:col-start-3 sm:row-start-1 sm:mt-0">
                     <span>{samplesSection.open}</span>
                     <ArrowUpRight aria-hidden className="h-5 w-5 transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5" strokeWidth={1.5} />
                   </span>
