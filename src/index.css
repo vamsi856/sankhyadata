@@ -632,6 +632,52 @@ html.lenis body {
 @media (prefers-reduced-motion: reduce) {
   .persp-track { height: auto; }
 }
+/* Scroll cue: a label and a short line that fills as the visitor moves through the band,
+   fading out as the view reaches the recorder's eyes. */
+.persp-cue {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--ink-2);
+  font-size: 0.875rem;
+  opacity: calc(1 - max(0, var(--pp, 0) - 0.85) * 6.6);
+}
+.persp-cue-line {
+  position: relative;
+  width: 1px;
+  height: 3.25rem;
+  overflow: hidden;
+  background: var(--rule-2);
+}
+/* Before the visitor moves, a short light runs down the line; it fades once they scroll. */
+@media (prefers-reduced-motion: no-preference) {
+  .persp-cue-line::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 35%;
+    background: var(--label);
+    opacity: calc(1 - var(--pp, 0) * 12);
+    animation: persp-cue-run 1.8s var(--ease-in-out) infinite;
+  }
+}
+@keyframes persp-cue-run {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(290%); }
+}
+/* Reduced motion: the band does not pin, so there is nothing to scroll through. */
+@media (prefers-reduced-motion: reduce) {
+  .persp-cue { display: none; }
+}
+.persp-cue-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--label);
+  transform-origin: top;
+  transform: scaleY(var(--pp, 0));
+}
 
 /* Methodology pipeline: a pinned strip on phones, a framed panel in the sticky column from lg. */
 .pipeline {
@@ -1094,6 +1140,7 @@ html::-webkit-scrollbar {
 @media print {
   .gl-scene,
   .persp-scrim,
+  .persp-cue,
   .menu-btn {
     display: none !important;
   }

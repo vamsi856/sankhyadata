@@ -19,7 +19,14 @@ export function Perspective() {
             </h2>
             <p className="mb-0 mt-6 max-w-md text-[1.125rem] text-ink-2">{perspective.sentence}</p>
           </div>
-          <p className="persp-note gl-scene m-0 max-w-md text-[0.8125rem] text-muted">{perspective.caption}</p>
+          <div className="flex items-end justify-between gap-6">
+            <p className="persp-note gl-scene m-0 min-w-0 max-w-md text-[0.8125rem] text-muted">{perspective.caption}</p>
+            {/* Tells a visitor the pinned band moves with scrolling; its line fills with progress. */}
+            <span aria-hidden className="persp-cue gl-scene">
+              {perspective.cue}
+              <span className="persp-cue-line" />
+            </span>
+          </div>
         </div>
       </div>
     </section>

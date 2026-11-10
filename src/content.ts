@@ -70,6 +70,7 @@ export const perspective = {
   sentence:
     "A recorder moves through the capture site, and the camera records what the recorder sees. Scroll, and the view passes from the site into the recorder’s own eyes.",
   caption: "Schematic: a recorder’s head trajectory and camera field of view in a workshop, drawn as a point cloud.",
+  cue: "Scroll",
 };
 
 export const stepRoles = ["Scoping", "Instrumentation", "Acquisition", "Annotation", "Narration", "Quality control", "Delivery"];

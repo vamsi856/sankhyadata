@@ -28,10 +28,15 @@ export function SiteCloud() {
     const live = liveGL(canvas, () => import("@/lib/sitecloud-gl"), ({ start }, c) =>
       start(c, { progress, pointer: () => pointer, still }),
     );
+    // The band's scroll cue reads this to fill its line and fade out at the end.
+    const mark = () => track.style.setProperty("--pp", String(Math.min(1, Math.max(0, progress()))));
+    mark();
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("scroll", mark, { passive: true });
     return () => {
       live.stop();
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("scroll", mark);
     };
   }, []);
 
