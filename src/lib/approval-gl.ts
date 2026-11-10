@@ -330,7 +330,10 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     for (const b of blocks) {
       const col: V3 = [GREY[0] + (HOT[0] - GREY[0]) * b.hot, GREY[1] + (HOT[1] - GREY[1]) * b.hot, GREY[2] + (HOT[2] - GREY[2]) * b.hot];
       gl.uniform1f(uBurst, b.k);
-      drawMesh(blockMesh, at([b.x, b.y, b.z], b.s), col, clamp(b.a) * (b.st === "loop" ? 0.8 : 1));
+      // A new hour stays hidden until it has travelled clear of the canvas edge, then fades in,
+      // so it is never seen sliced by the frame.
+      const enter = clamp((b.x - START - 0.3) / 0.4);
+      drawMesh(blockMesh, at([b.x, b.y, b.z], b.s), col, clamp(b.a) * enter * (b.st === "loop" ? 0.8 : 1));
       gl.uniform1f(uBurst, 0);
       // A check is stamped above each hour as it is approved.
       if (b.stamp >= 0 && b.stamp < 1.4 && b.st !== "ship") {
@@ -346,7 +349,10 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
       const x = vp[0] * p[0] + vp[4] * p[1] + vp[8] * p[2] + vp[12];
       const y = vp[1] * p[0] + vp[5] * p[1] + vp[9] * p[2] + vp[13];
       const wq = vp[3] * p[0] + vp[7] * p[1] + vp[11] * p[2] + vp[15];
-      el.style.transform = `translate(${((x / wq + 1) / 2) * w}px, ${((1 - y / wq) / 2) * h}px) translate(-50%, -100%)`;
+      // Centred on its anchor, but never past the canvas edge.
+      const half = el.offsetWidth / 2;
+      const lx = Math.min(w - half, Math.max(half, ((x / wq + 1) / 2) * w));
+      el.style.transform = `translate(${lx}px, ${((1 - y / wq) / 2) * h}px) translate(-50%, -100%)`;
     });
   }
 
