@@ -365,8 +365,8 @@ export function start(canvas: HTMLCanvasElement, opts: Opts): (() => void) | nul
     last = performance.now();
     raf = requestAnimationFrame(loop);
   };
-  const io = new IntersectionObserver(([e]) => {
-    visible = e.isIntersecting;
+  const io = new IntersectionObserver((es) => {
+    visible = es[es.length - 1].isIntersecting;
     run();
   });
   io.observe(canvas);

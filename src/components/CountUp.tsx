@@ -18,8 +18,8 @@ export function CountUp() {
     if (el.getBoundingClientRect().top < window.innerHeight) return; // already on screen: leave it
     setValue(0);
     const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
+      (entries) => {
+        if (!entries[entries.length - 1].isIntersecting) return;
         io.disconnect();
         const start = performance.now();
         const dur = 3400;

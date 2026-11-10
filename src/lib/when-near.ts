@@ -54,8 +54,10 @@ export function liveGL<M>(host: HTMLElement, load: () => Promise<M>, begin: (mod
     canvas = null;
   };
   const io = new IntersectionObserver(
-    ([entry]) => {
-      near = entry.isIntersecting;
+    (entries) => {
+      // Entries can arrive batched (observe() plus a crossing in the same frame, e.g. under
+      // smooth scrolling): only the last one is the current state.
+      near = entries[entries.length - 1].isIntersecting;
       if (!near) return down();
       if (mod) return up();
       load().then((m) => {

@@ -238,8 +238,8 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     raf = requestAnimationFrame(loop);
   };
   const io = new IntersectionObserver(
-    ([e]) => {
-      visible = e.isIntersecting;
+    (es) => {
+      visible = es[es.length - 1].isIntersecting;
       run();
     },
     { threshold: 0.6 },
