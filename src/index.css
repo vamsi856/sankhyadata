@@ -1076,6 +1076,19 @@ html::-webkit-scrollbar {
   [data-final]::after {
     content: attr(data-final);
   }
+  /* Keep headings with what follows, and short blocks whole across page breaks. */
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+  .pv-sections > section,
+  .faq,
+  .flowx-node,
+  dl[data-rig],
+  .it-item {
+    break-inside: avoid;
+  }
 }
 
 /* No WebGL (html[data-nogl], set on the first input when a context cannot be made): hide
