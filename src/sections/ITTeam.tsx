@@ -3,7 +3,7 @@ import { Island } from "@/islands";
 
 /**
  * Heading, then the four IT functions as a list beside the field scene, which stays in view
- * (sticky) so pointing at, tapping or focusing an item visibly drives the scene.
+ * (sticky) while scrolling through the list acts out each function in turn.
  */
 export function ITTeam() {
   return (
