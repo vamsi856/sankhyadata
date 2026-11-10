@@ -35,7 +35,7 @@ export const heroFrame = {
 export const hero = {
   title: "Egocentric video data acquisition, executed end to end.",
   sentence:
-    "For physical-AI programmes, we deploy wearable capture rigs, our own or yours, and trained recorders on site, who capture day-to-day work or perform the tasks you specify, supported by in-house IT, annotation, narration and quality-control teams. Engagements are invoiced solely on approved hours.",
+    "For physical-AI programmes, we deploy trained recorders on site with wearable capture rigs, our own or yours. They capture day-to-day work or perform the tasks you specify, supported by in-house IT, annotation, narration and quality-control teams. Engagements are invoiced solely on approved hours.",
   primary: { label: "View representative samples", href: "#samples" },
   secondary: { label: "Discuss a capture programme", href: "#contact" },
   frame: heroFrame,
@@ -69,7 +69,7 @@ export const perspective = {
   title: "Every hour is a path through a real place.",
   sentence:
     "A recorder moves through the capture site, and the camera records what the recorder sees. Scroll, and the view passes from the site into the recorder’s own eyes.",
-  caption: "Schematic, not captured data: a recorder’s head trajectory and camera field of view in a workshop, drawn as a point cloud.",
+  caption: "Schematic: a recorder’s head trajectory and camera field of view in a workshop, drawn as a point cloud.",
 };
 
 export const stepRoles = ["Scoping", "Instrumentation", "Acquisition", "Annotation", "Narration", "Quality control", "Delivery"];
@@ -109,7 +109,7 @@ export const methodology = {
 };
 
 export const fieldLegend = ["IT hub", "Capture site", "IT at work"];
-export const fieldCaption = "Schematic; sites and timings are illustrative.";
+export const fieldCaption = "Schematic: sites and timings are illustrative.";
 
 export const itTitles = ["Device provisioning", "Site readiness", "Client portal", "Immediate field support"];
 
@@ -176,7 +176,7 @@ export const rigs = {
       text: "Beyond footage of day-to-day work, our recorders perform the specific tasks a client scripts, in the environments it specifies, so that every approved hour falls within the task taxonomy.",
     },
   ],
-  shared: "All rigs record 1080p at 30 fps, encoded in HEVC (H.265), and are provisioned by our in-house IT team.",
+  shared: "Our rigs record 1080p at 30 fps, encoded in HEVC (H.265), and are provisioned by our in-house IT team.",
 };
 
 export const deliverableTerms = ["Video", "Scene descriptions", "Subtitles", "Voice-over", "Organisation", "Manifest", "Verification"];

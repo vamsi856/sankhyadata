@@ -147,7 +147,7 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
     const va = 0.62 + sx * 0.4 + (opts.still ? 0 : 0.08 * Math.sin(time * 0.25));
     const R = (aspect < 1.1 ? 6.4 : 5.6) + spread * 1.6;
     const eye: V3 = [Math.sin(va) * R, 3.0, Math.cos(va) * R];
-    const vp = mul(perspective((30 * Math.PI) / 180, aspect, 0.1, 40), lookAt(eye, [0, 0.75, 0]));
+    const vp = mul(perspective((30 * Math.PI) / 180, aspect, 0.1, 40), lookAt(eye, [0, 0.45, 0]));
     gl.uniformMatrix4fv(u.mvp, false, vp);
     // Phones and tablets: larger, darker points so the volume reads as a solid block.
     const small = window.innerWidth < 1024;
@@ -176,7 +176,20 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
       const lw = el.offsetWidth;
       const sxp = ((x / q + 1) / 2) * w;
       const left = Math.min(w - lw, Math.max(0, i === 2 ? sxp + 20 : sxp - lw / 2));
-      const top = ((1 - y / q) / 2) * h + (i === 0 ? 10 : i === 2 ? -el.offsetHeight / 2 : -el.offsetHeight - 8);
+      // The block label sits below the lowest bottom corner on screen (the camera looks at
+      // the block from an angle, so the nearest corner drops below the front edge's centre).
+      let sy = ((1 - y / q) / 2) * h;
+      if (i === 0)
+        for (const cx of [-1, 1])
+          for (const cz of [-1, 1]) {
+            const c: V3 = [cx * ((BX - 1) * SP / 2) * f, MID_Y - MID_Y * f, cz * ((BZ - 1) * SP / 2) * f];
+            const cyv = vp[1] * c[0] + vp[5] * c[1] + vp[9] * c[2] + vp[13];
+            const cq = vp[3] * c[0] + vp[7] * c[1] + vp[11] * c[2] + vp[15];
+            sy = Math.max(sy, ((1 - cyv / cq) / 2) * h);
+          }
+      const raw = sy + (i === 0 ? 10 : i === 2 ? -el.offsetHeight / 2 : -el.offsetHeight - 8);
+      // Never past the canvas foot, so the label cannot touch the caption below.
+      const top = i === 0 ? Math.min(h - el.offsetHeight, raw) : raw;
       el.style.transform = `translate(${left}px, ${top}px)`;
       el.style.opacity = String(shown);
     });
