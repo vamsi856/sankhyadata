@@ -1,4 +1,4 @@
-import { headerCta, nav, site } from "@/content";
+import { headerCta, menuLabel, nav, site } from "@/content";
 
 /**
  * The mark: a viewfinder's four corners around one chartreuse point, the colour our
@@ -28,7 +28,7 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-rule bg-paper">
       {/* The page as one recording: a line along the header's edge fills as the visitor scrolls. */}
       <span aria-hidden className="rec-line" />
-      <div className="container-page flex h-16 items-center justify-between gap-6 max-[359px]:gap-3">
+      <div className="container-page flex h-16 items-center justify-between gap-6 max-[389px]:gap-3">
         <a href="#top" className="logo-link rounded-[4px] text-ink no-underline" aria-label={`${site.name}, back to top`}>
           <Wordmark animated />
         </a>
@@ -46,10 +46,33 @@ export function Header() {
             ))}
           </ul>
         </nav>
-        <a href={headerCta.href} className="btn btn-primary min-h-10 px-4 text-[0.9375rem] max-[359px]:px-3 max-[359px]:text-[0.875rem]">
-          {headerCta.label}
-        </a>
+        <div className="flex items-center gap-2">
+          {/* Phones and tablets: the section links open from a menu (a native popover, so it
+              opens, closes on Escape or an outside tap, and reports its state without script). */}
+          <button
+            type="button"
+            className="menu-btn btn btn-line h-10 min-h-10 w-10 px-0 lg:hidden"
+            aria-label={menuLabel}
+            {...{ popovertarget: "site-menu" }}
+          >
+            <svg aria-hidden viewBox="0 0 20 20" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.6">
+              <path d="M3 6h14M3 10h14M3 14h14" />
+            </svg>
+          </button>
+          <a href={headerCta.href} className="btn btn-primary min-h-10 px-4 text-[0.9375rem] max-[389px]:px-3 max-[389px]:text-[0.875rem]">
+            {headerCta.label}
+          </a>
+        </div>
       </div>
+      <nav id="site-menu" aria-label="Sections" className="site-menu" {...{ popover: "" }}>
+        <ul className="m-0 list-none p-0">
+          {nav.map((item) => (
+            <li key={item.href}>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </header>
   );
 }

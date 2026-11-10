@@ -11,6 +11,9 @@ export const site = {
     "Egocentric video acquisition for physical AI: capture rigs, trained recorders and in-house annotation, narration, QC and IT teams. Invoiced on approved hours.",
 };
 
+/** The phone menu button's accessible name. */
+export const menuLabel = "Sections";
+
 export const nav = [
   { label: "Methodology", href: "#methodology" },
   { label: "Deliverables", href: "#deliverables" },

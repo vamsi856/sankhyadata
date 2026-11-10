@@ -19,3 +19,8 @@ if (root.hasChildNodes()) {
 
 startSmoothScroll();
 startMagnets();
+
+// The phone section menu is a popover: a tap on one of its links also closes it.
+document.getElementById("site-menu")?.addEventListener("click", (e) => {
+  if ((e.target as Element).closest("a")) (e.currentTarget as HTMLElement).hidePopover?.();
+});
