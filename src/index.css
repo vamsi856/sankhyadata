@@ -585,7 +585,10 @@ html.lenis body {
   height: 100svh;
 }
 .persp-scrim {
-  background: linear-gradient(100deg, var(--inv-paper) 0%, color-mix(in oklch, var(--inv-paper) 70%, transparent) 32%, transparent 62%);
+  /* Left ground for the copy, and a low ground so the caption never reads over the cloud. */
+  background:
+    linear-gradient(to top, var(--inv-paper) 0%, color-mix(in oklch, var(--inv-paper) 85%, transparent) 12%, transparent 26%),
+    linear-gradient(100deg, var(--inv-paper) 0%, color-mix(in oklch, var(--inv-paper) 88%, transparent) 36%, transparent 64%);
 }
 @media (max-width: 1023px) {
   /* Narrow screens stack the text over the scene: give the heading and the caption their
