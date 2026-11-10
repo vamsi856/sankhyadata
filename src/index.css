@@ -1090,7 +1090,8 @@ html::-webkit-scrollbar {
    print the dark bands on paper; print the final figure, not a count in progress. */
 @media print {
   .gl-scene,
-  .persp-scrim {
+  .persp-scrim,
+  .menu-btn {
     display: none !important;
   }
   .persp-track {
