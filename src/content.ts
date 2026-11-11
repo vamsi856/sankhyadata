@@ -332,10 +332,11 @@ export const contact = {
 };
 
 export const footer = {
-  tagline: "Egocentric data acquisition by trained recorders; annotation, narration, quality control and IT by our in-house teams.",
+  tagline: "Egocentric video data acquisition by trained recorders; annotation, narration, quality control and IT by our in-house teams.",
   privacy: { label: "Privacy notice", href: "privacy/" },
   security: { label: "Security contact", href: "/.well-known/security.txt" },
   note: "This site sets no cookies and loads nothing from other domains.",
+  newTab: "(opens in a new tab)",
 };
 
 export const privacy = {

@@ -37,8 +37,11 @@ export function Footer() {
       <div className="container-page grid gap-10 py-14 md:grid-cols-[minmax(0,1fr)_auto_auto] md:gap-x-16">
         <div>
           <Wordmark />
-          <p className="mb-0 mt-4 max-w-sm text-[0.9375rem] text-ink-2">{footer.tagline}</p>
-          <p className="mb-0 mt-3 max-w-sm text-[0.8125rem] text-muted">{footer.note}</p>
+          <p className="mb-0 mt-4 max-w-md text-pretty text-[0.9375rem] text-ink-2">
+            {/* Keep the hyphenated compound on one line. */}
+            {footer.tagline.split(/(in-house)/).map((part, i) => (i % 2 ? <span key={i} className="whitespace-nowrap">{part}</span> : part))}
+          </p>
+          <p className="mb-0 mt-3 max-w-md text-balance text-[0.8125rem] text-muted">{footer.note}</p>
         </div>
         <nav aria-label="Footer: sections">
           <ul className="m-0 grid list-none gap-y-3 p-0 text-[0.9375rem]">
@@ -82,16 +85,17 @@ export function Footer() {
           <span>
             <a className="link text-muted" href={credits.frame.href} target="_blank" rel="noopener noreferrer">
               {credits.frame.text}
+              <span className="sr-only"> {footer.newTab}</span>
             </a>
             ,{" "}
             <a className="link text-muted" href={credits.frame.licenseHref} target="_blank" rel="noopener noreferrer">
               {credits.frame.license}
+              <span className="sr-only"> {footer.newTab}</span>
             </a>
           </span>
         </div>
       </div>
-      {/* End card: the name set large and cropped by the page's edge, like a frame running
-          off the viewfinder, with the mark's chartreuse dot. Decorative. */}
+      {/* End card: the name set large across the full column, like a closing title card, with the mark's chartreuse dot. Decorative. */}
       <div aria-hidden className="foot-mark container-page">
         <span className="foot-word">
           {site.name}

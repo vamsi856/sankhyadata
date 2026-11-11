@@ -239,10 +239,13 @@ export function start(canvas: HTMLCanvasElement, opts: Opts) {
   };
   const io = new IntersectionObserver(
     (es) => {
-      visible = es[es.length - 1].isIntersecting;
+      // Converge at 60% when scrolled into from above; also when the visitor lands below it
+      // (End key, fast scroll, reload at the foot), where 60% may never be on screen.
+      const e = es[es.length - 1];
+      visible = e.intersectionRatio >= 0.6 || (e.isIntersecting && e.boundingClientRect.top < 0);
       run();
     },
-    { threshold: 0.6 },
+    { threshold: [0, 0.6] },
   );
   io.observe(canvas);
   document.addEventListener("visibilitychange", run);
