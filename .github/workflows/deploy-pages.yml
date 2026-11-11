@@ -5,10 +5,10 @@ name: Deploy to GitHub Pages
 # GitHub Pages serves that branch at https://sankhyadata.com, so this source repo can be
 # private on a free plan.
 #
-# Needs the secret LIVE_REPO_TOKEN: a fine-grained personal access token with
-# "Contents: Read and write" on vamsi856/sankhyadata-live only. One-time setup: README.md,
-# "Moving from Hetzner". Until the domain points at GitHub Pages a missing token only warns;
-# after that it fails the run, so the live site never goes stale with every run green.
+# Needs the secret LIVE_DEPLOY_KEY: the private half of an SSH deploy key with write access to
+# vamsi856/sankhyadata-live only (scripts/move-to-pages.sh sets it up). Until the domain points
+# at GitHub Pages a missing key only warns; after that it fails the run, so the live site never
+# goes stale with every run green.
 
 on:
   push:
@@ -48,33 +48,39 @@ jobs:
 
       - name: Publish to the output repo
         env:
-          TOKEN: ${{ secrets.LIVE_REPO_TOKEN }}
+          KEY: ${{ secrets.LIVE_DEPLOY_KEY }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          if [ -z "$TOKEN" ]; then
+          if [ -z "$KEY" ]; then
             if getent ahostsv4 "$DOMAIN" | grep -q '^185\.199\.'; then
-              echo "::error::LIVE_REPO_TOKEN is not set (or has been removed); $DOMAIN is not being updated"
+              echo "::error::LIVE_DEPLOY_KEY is not set (or has been removed); $DOMAIN is not being updated"
               exit 1
             fi
-            echo "::warning::LIVE_REPO_TOKEN is not set; the site was built but not published to $LIVE_REPO"
+            echo "::warning::LIVE_DEPLOY_KEY is not set; the site was built but not published to $LIVE_REPO"
             exit 0
           fi
+          # The deploy key, and GitHub's SSH host keys from its API over verified HTTPS.
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$KEY" > ~/.ssh/live_key
+          chmod 600 ~/.ssh/live_key
+          gh api meta --jq '.ssh_keys[] | "github.com " + .' > ~/.ssh/known_hosts
+          [ -s ~/.ssh/known_hosts ] || { echo "::error::could not read GitHub's SSH host keys"; exit 1; }
           cd dist
           git init -q -b gh-pages
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -q -m "Site built from ${GITHUB_REPOSITORY}@${GITHUB_SHA::12}"
-          auth=$(printf 'x-access-token:%s' "$TOKEN" | base64 -w0)
-          echo "::add-mask::$auth"
-          git -c http.extraheader="AUTHORIZATION: basic $auth" \
-            push --force -q "https://github.com/${LIVE_REPO}.git" gh-pages
+          GIT_SSH_COMMAND="ssh -i $HOME/.ssh/live_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
+            git push --force -q "git@github.com:${LIVE_REPO}.git" gh-pages
+          rm -f ~/.ssh/live_key
           echo "Pushed to ${LIVE_REPO}@gh-pages; GitHub Pages publishes it within about a minute."
 
       - name: Check the live site
         env:
-          TOKEN: ${{ secrets.LIVE_REPO_TOKEN }}
+          KEY: ${{ secrets.LIVE_DEPLOY_KEY }}
         run: |
-          [ -n "$TOKEN" ] || exit 0
+          [ -n "$KEY" ] || exit 0
           # Before the DNS move the old server answers; nothing to wait for.
           getent ahostsv4 "$DOMAIN" | grep -q '^185\.199\.' || { echo "$DOMAIN does not point at GitHub Pages yet"; exit 0; }
           want=$(grep -o 'index-[A-Za-z0-9_-]*\.js' dist/index.html | head -1)

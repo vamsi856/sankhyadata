@@ -40,39 +40,32 @@ for missing paths with status 404 and caches every file for 10 minutes.
 The samples viewer runs on the portal server and is linked directly at
 `samples.egocentric.duckdns.org`.
 
-### Moving from Hetzner (one time, in this order)
+### Moving from Hetzner (one time)
 
-1. Create the **public**, empty repo `vamsi856/sankhyadata-live`.
-2. Create a fine-grained personal access token: resource owner `vamsi856`, only the repository
-   `sankhyadata-live`, permission **Contents: Read and write**, with an expiry date you note
-   here: `____`. Save it in this repo as the Actions secret `LIVE_REPO_TOKEN`.
-3. Run **Deploy to GitHub Pages** (Actions tab, Run workflow) so `gh-pages` exists.
-4. GitHub, profile **Settings > Pages > Add a domain**: `sankhyadata.com`. Add the TXT record it
-   shows (`_github-pages-challenge-vamsi856`) at Hostinger, click **Verify**, and keep that
-   record for good. This stops any other GitHub account claiming the domain.
-5. In `sankhyadata-live`, **Settings > Pages**: Source **Deploy from a branch**, `gh-pages`,
-   `/ (root)`, Save. Check that **Custom domain** shows `sankhyadata.com` (enter it if not).
-6. At Hostinger DNS, at a quiet hour, in one sitting:
-   - delete `A` `@` `5.161.223.5` and `AAAA` `@` `2a01:4ff:f0:860d::1` (replace, never add beside);
-   - add `A` `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`;
-   - add `AAAA` `@` → `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`,
-     `2606:50c0:8003::153`;
-   - change `www` to `CNAME` → `vamsi856.github.io`;
-   - delete the `portal` and `samples` records (they point at the Hetzner IP, which Hetzner
-     will give to someone else);
-   - keep MX, the SPF TXT, the DKIM records, the GitHub TXT from step 4 and the CAA records
-     (they allow `letsencrypt.org`, which GitHub uses).
-7. Wait for **Settings > Pages** to show the DNS check passing and the certificate issued
-   (usually under an hour; if nothing after about 15 minutes, Remove the domain and add it
-   again). Then tick **Enforce HTTPS** and check that `http://sankhyadata.com/` redirects to
-   `https://`.
-8. Make `vamsi856/sankhyadata` private.
-9. On the portal server, stop trusting forwarded client addresses from `5.161.223.5` /
-   `2a01:4ff:f0:860d::1` and drop its `portal.sankhyadata.com` / `samples.sankhyadata.com` host
-   entries.
-10. After about 48 hours, delete the Hetzner server `sankhyadata-web` with its firewall and
-    primary IPs (project `sankhyadata`), and revoke that project's API tokens. Do not touch
-    the portal server (`178.105.159.139`), which is a separate machine.
+[`scripts/move-to-pages.sh`](scripts/move-to-pages.sh) does the GitHub side with the GitHub CLI.
+Run it on your own computer, signed in as `vamsi856` (`gh auth login`):
+
+1. `bash scripts/move-to-pages.sh setup` creates the public repo `vamsi856/sankhyadata-live`,
+   a deploy key with write access to that repo only (its private half goes straight into the
+   secret `LIVE_DEPLOY_KEY` here; no copy is kept), runs the first publish, turns on GitHub
+   Pages from `gh-pages`, pauses while you verify `sankhyadata.com` on your account
+   (github.com/settings/pages, a TXT record at Hostinger; keep it for good), sets the custom
+   domain and prints the DNS changes.
+2. At Hostinger, in one sitting: replace (never add beside) the apex `A` `5.161.223.5` and
+   `AAAA` `2a01:4ff:f0:860d::1` with `A` `185.199.108.153`, `185.199.109.153`,
+   `185.199.110.153`, `185.199.111.153` and `AAAA` `2606:50c0:8000::153` to
+   `2606:50c0:8003::153`; make `www` a `CNAME` to `vamsi856.github.io`; delete the `portal` and
+   `samples` records (the Hetzner IP will go to someone else); keep MX, SPF, DKIM, CAA and the
+   GitHub TXT.
+3. `bash scripts/move-to-pages.sh finish` checks that the domain resolves to GitHub Pages only,
+   waits for the certificate (re-run it until it is issued), turns on Enforce HTTPS, switches
+   off the old redirect-only Pages site here and makes this repo private.
+4. On the portal server, stop trusting forwarded client addresses from `5.161.223.5` /
+   `2a01:4ff:f0:860d::1` and drop its `portal.sankhyadata.com` / `samples.sankhyadata.com`
+   host entries.
+5. About 48 hours later, delete the Hetzner server `sankhyadata-web` with its firewall and
+   primary IPs (project `sankhyadata`) and revoke that project's API tokens. Do not touch the
+   portal server (`178.105.159.139`), a separate machine.
 
 ## How it is built (and why it is fast)
 

@@ -16,12 +16,12 @@ approved hours.
 Commands: `npm run dev`, `npm run build` (output in `dist/`). Hosting is GitHub Pages:
 `.github/workflows/deploy-pages.yml` builds on every push to `main` and force-pushes `dist/`
 (plus `CNAME` and `.nojekyll`) to the `gh-pages` branch of the public output-only repo
-`vamsi856/sankhyadata-live` (secret `LIVE_REPO_TOKEN`), which serves https://sankhyadata.com.
+`vamsi856/sankhyadata-live` (deploy key in the secret `LIVE_DEPLOY_KEY`), which serves https://sankhyadata.com.
 This source repo can therefore be private. Pages sends no custom headers: the CSP and referrer
 policy are `<meta>` tags added by `scripts/prerender.mjs` (build only); keep them in step with
 any new asset type; Pages sends no HSTS, so Enforce HTTPS must stay on. DNS is at Hostinger
 (A/AAAA to GitHub Pages only, `www` CNAME to `vamsi856.github.io`, the GitHub domain-verification
-TXT; email records must be kept). The one-time move from Hetzner is a numbered list in README.md. The samples viewer is linked directly at
+TXT; email records must be kept). The one-time move from Hetzner: `scripts/move-to-pages.sh` (steps in README.md). The samples viewer is linked directly at
 `samples.egocentric.duckdns.org` on the portal server (a separate machine).
 
 The root `_config.yml` and `404.html` only matter if GitHub Pages is still enabled on this
