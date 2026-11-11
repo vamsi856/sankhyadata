@@ -264,7 +264,7 @@ export const questions = {
     },
     {
       q: "Which capture rigs do you deploy?",
-      a: "Head-mounted iPhones, cap-mounted cameras powered by a power bank, cap cameras connected by USB-C to a phone in the pocket that records through the capture app, and human rigs, our preferred configuration. All record 1080p at 30 fps, encoded in HEVC (H.265).",
+      a: "Four rigs: a head-mounted iPhone; a cap camera powered by a power bank; a cap camera connected by USB-C to a phone in the pocket, which records through the capture app; and the human rig, our preferred configuration. All record 1080p at 30 fps, encoded in HEVC (H.265).",
     },
     {
       q: "Can you capture with our own devices?",
