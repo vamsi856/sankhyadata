@@ -20,9 +20,11 @@ need() { command -v "$1" >/dev/null 2>&1 || die "needs '$1' installed"; }
 
 # Public DNS answers (data fields only), via DNS-over-HTTPS so local caches do not mislead.
 # Only the Answer section counts (a missing name returns the zone's SOA under Authority).
+# A failed lookup stops the script rather than reading as "no records".
 dns() {
-  curl -fsS "https://dns.google/resolve?name=$1&type=$2" | grep -o '"Answer": *\[[^]]*\]' |
-    grep -o '"data": *"[^"]*"' | sed 's/.*"\([^"]*\)"$/\1/' || true
+  local j
+  j=$(curl -fsS "https://dns.google/resolve?name=$1&type=$2") || die "cannot reach dns.google to look up $1"
+  printf '%s' "$j" | grep -o '"Answer": *\[[^]]*\]' | grep -o '"data": *"[^"]*"' | sed 's/.*"\([^"]*\)"$/\1/' || true
 }
 
 print_dns() {
@@ -114,15 +116,18 @@ finish() {
   gh auth status >/dev/null 2>&1 || die "run 'gh auth login' first"
 
   step "1. DNS"
-  a=$(dns "$DOMAIN" A | sort | tr '\n' ' ')
-  aaaa=$(dns "$DOMAIN" AAAA | sort | tr '\n' ' ')
+  a=$(dns "$DOMAIN" A)
+  aaaa=$(dns "$DOMAIN" AAAA)
+  a=$(printf '%s\n' "$a" | sort | tr '\n' ' ')
+  aaaa=$(printf '%s\n' "$aaaa" | sort | tr '\n' ' ')
   echo "A:    $a"
   echo "AAAA: $aaaa"
   for ip in $a; do case $ip in 185.199.10[89].153|185.199.11[01].153) ;; *) bad=1 ;; esac; done
   for ip in $aaaa; do case $ip in 2606:50c0:800[0-3]::153) ;; *) bad=1 ;; esac; done
   [ -n "$a" ] && [ -z "${bad:-}" ] || { print_dns; die "$DOMAIN must resolve to GitHub Pages only"; }
   for h in portal samples; do
-    [ -z "$(dns "$h.$DOMAIN" A)" ] || echo "Warning: $h.$DOMAIN still has an A record; delete it at Hostinger."
+    r=$(dns "$h.$DOMAIN" A)
+    [ -z "$r" ] || echo "Warning: $h.$DOMAIN still points at $r; delete it at Hostinger."
   done
 
   step "2. Certificate and Enforce HTTPS"

@@ -9,6 +9,10 @@ name: Deploy to GitHub Pages
 # vamsi856/sankhyadata-live only (scripts/move-to-pages.sh sets it up). Until the domain points
 # at GitHub Pages a missing key only warns; after that it fails the run, so the live site never
 # goes stale with every run green.
+#
+# Two jobs, so the deploy key never shares a runner with npm and the build: "build" installs
+# and builds with no secrets and hands over only the built files; "publish" runs no project
+# code. Actions are pinned to full commit SHAs.
 
 on:
   push:
@@ -23,14 +27,13 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     env:
-      LIVE_REPO: vamsi856/sankhyadata-live
       DOMAIN: sankhyadata.com
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
           cache: npm
@@ -45,12 +48,34 @@ jobs:
           for f in index.html 404.html privacy/index.html .well-known/security.txt robots.txt sitemap.xml; do
             test -s "dist/$f" || { echo "::error::dist/$f is missing"; exit 1; }
           done
+          grep -q 'index-[A-Za-z0-9_-]*\.js' dist/index.html || { echo "::error::no index-*.js in dist/index.html"; exit 1; }
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: site
+          path: dist
+          include-hidden-files: true
+          retention-days: 3
+          if-no-files-found: error
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      LIVE_REPO: vamsi856/sankhyadata-live
+      DOMAIN: sankhyadata.com
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: site
+          path: site
 
       - name: Publish to the output repo
         env:
           KEY: ${{ secrets.LIVE_DEPLOY_KEY }}
           GH_TOKEN: ${{ github.token }}
         run: |
+          test -f site/.nojekyll && test -s site/.well-known/security.txt || { echo "::error::hidden files were lost in the artifact"; exit 1; }
           if [ -z "$KEY" ]; then
             if getent ahostsv4 "$DOMAIN" | grep -q '^185\.199\.'; then
               echo "::error::LIVE_DEPLOY_KEY is not set (or has been removed); $DOMAIN is not being updated"
@@ -65,7 +90,7 @@ jobs:
           chmod 600 ~/.ssh/live_key
           gh api meta --jq '.ssh_keys[] | "github.com " + .' > ~/.ssh/known_hosts
           [ -s ~/.ssh/known_hosts ] || { echo "::error::could not read GitHub's SSH host keys"; exit 1; }
-          cd dist
+          cd site
           git init -q -b gh-pages
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -83,10 +108,12 @@ jobs:
           [ -n "$KEY" ] || exit 0
           # Before the DNS move the old server answers; nothing to wait for.
           getent ahostsv4 "$DOMAIN" | grep -q '^185\.199\.' || { echo "$DOMAIN does not point at GitHub Pages yet"; exit 0; }
-          want=$(grep -o 'index-[A-Za-z0-9_-]*\.js' dist/index.html | head -1)
+          want=$(grep -o 'index-[A-Za-z0-9_-]*\.js' site/index.html | head -1)
+          [ -n "$want" ] || { echo "::error::no index-*.js in the built index.html; cannot compare builds"; exit 1; }
+          live=
           for i in $(seq 1 12); do
             live=$(curl -fsS --max-time 10 "https://${DOMAIN}/?v=${GITHUB_SHA::7}$i" | grep -o 'index-[A-Za-z0-9_-]*\.js' | head -1 || true)
-            if [ "$live" = "$want" ]; then echo "https://${DOMAIN} serves this build ($want)"; exit 0; fi
+            if [ -n "$live" ] && [ "$live" = "$want" ]; then echo "https://${DOMAIN} serves this build ($want)"; exit 0; fi
             sleep 15
           done
-          echo "::notice::https://${DOMAIN} does not serve this build yet (wanted $want, saw ${live:-nothing}). Before the DNS move this is expected; after it, GitHub Pages may still be building or its cache (10 minutes) is stale."
+          echo "::notice::https://${DOMAIN} does not serve this build yet (wanted $want, saw ${live:-nothing}). GitHub Pages may still be building, or its 10-minute cache is stale."
