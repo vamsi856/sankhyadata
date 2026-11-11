@@ -6,8 +6,9 @@ name: Deploy to GitHub Pages
 # private on a free plan.
 #
 # Needs the secret LIVE_REPO_TOKEN: a fine-grained personal access token with
-# "Contents: Read and write" on vamsi856/sankhyadata-live only. Until it is set, the build still
-# runs and the publish step is skipped with a warning.
+# "Contents: Read and write" on vamsi856/sankhyadata-live only. One-time setup: README.md,
+# "Moving from Hetzner". Until the domain points at GitHub Pages a missing token only warns;
+# after that it fails the run, so the live site never goes stale with every run green.
 
 on:
   push:
@@ -50,6 +51,10 @@ jobs:
           TOKEN: ${{ secrets.LIVE_REPO_TOKEN }}
         run: |
           if [ -z "$TOKEN" ]; then
+            if getent ahostsv4 "$DOMAIN" | grep -q '^185\.199\.'; then
+              echo "::error::LIVE_REPO_TOKEN is not set (or has been removed); $DOMAIN is not being updated"
+              exit 1
+            fi
             echo "::warning::LIVE_REPO_TOKEN is not set; the site was built but not published to $LIVE_REPO"
             exit 0
           fi
@@ -70,9 +75,11 @@ jobs:
           TOKEN: ${{ secrets.LIVE_REPO_TOKEN }}
         run: |
           [ -n "$TOKEN" ] || exit 0
+          # Before the DNS move the old server answers; nothing to wait for.
+          getent ahostsv4 "$DOMAIN" | grep -q '^185\.199\.' || { echo "$DOMAIN does not point at GitHub Pages yet"; exit 0; }
           want=$(grep -o 'index-[A-Za-z0-9_-]*\.js' dist/index.html | head -1)
-          for i in $(seq 1 20); do
-            live=$(curl -fsS --max-time 20 "https://${DOMAIN}/?v=${GITHUB_SHA::7}$i" | grep -o 'index-[A-Za-z0-9_-]*\.js' | head -1 || true)
+          for i in $(seq 1 12); do
+            live=$(curl -fsS --max-time 10 "https://${DOMAIN}/?v=${GITHUB_SHA::7}$i" | grep -o 'index-[A-Za-z0-9_-]*\.js' | head -1 || true)
             if [ "$live" = "$want" ]; then echo "https://${DOMAIN} serves this build ($want)"; exit 0; fi
             sleep 15
           done

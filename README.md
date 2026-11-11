@@ -31,20 +31,48 @@ site, adds `CNAME` (`sankhyadata.com`) and `.nojekyll`, and force-pushes the bui
 single commit to the `gh-pages` branch of the public output-only repo
 [`vamsi856/sankhyadata-live`](https://github.com/vamsi856/sankhyadata-live). GitHub Pages serves
 that branch at **https://sankhyadata.com**, so this source repo can stay private on a free plan.
-The workflow needs the secret `LIVE_REPO_TOKEN` (a fine-grained token with "Contents: Read and
-write" on `vamsi856/sankhyadata-live` only); without it, it builds and skips publishing.
 
 GitHub Pages cannot set response headers, so `scripts/prerender.mjs` puts the content security
-policy and referrer policy in each page as `<meta>` tags. Pages serves `404.html` for missing
-paths with status 404 and caches every file for 10 minutes.
-
-DNS (Hostinger): `A` `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`,
-`185.199.111.153`; `AAAA` `@` → `2606:50c0:8000::153`, `2606:50c0:8001::153`,
-`2606:50c0:8002::153`, `2606:50c0:8003::153`; `CNAME` `www` → `vamsi856.github.io`. Keep the
-email records (MX, SPF and any DKIM/DMARC). The CAA records must keep allowing `letsencrypt.org`.
+policy and referrer policy in each page as `<meta>` tags. Pages sends no HSTS for custom
+domains, so **Enforce HTTPS** (its HTTP-to-HTTPS redirect) must stay on. Pages serves `404.html`
+for missing paths with status 404 and caches every file for 10 minutes.
 
 The samples viewer runs on the portal server and is linked directly at
 `samples.egocentric.duckdns.org`.
+
+### Moving from Hetzner (one time, in this order)
+
+1. Create the **public**, empty repo `vamsi856/sankhyadata-live`.
+2. Create a fine-grained personal access token: resource owner `vamsi856`, only the repository
+   `sankhyadata-live`, permission **Contents: Read and write**, with an expiry date you note
+   here: `____`. Save it in this repo as the Actions secret `LIVE_REPO_TOKEN`.
+3. Run **Deploy to GitHub Pages** (Actions tab, Run workflow) so `gh-pages` exists.
+4. GitHub, profile **Settings > Pages > Add a domain**: `sankhyadata.com`. Add the TXT record it
+   shows (`_github-pages-challenge-vamsi856`) at Hostinger, click **Verify**, and keep that
+   record for good. This stops any other GitHub account claiming the domain.
+5. In `sankhyadata-live`, **Settings > Pages**: Source **Deploy from a branch**, `gh-pages`,
+   `/ (root)`, Save. Check that **Custom domain** shows `sankhyadata.com` (enter it if not).
+6. At Hostinger DNS, at a quiet hour, in one sitting:
+   - delete `A` `@` `5.161.223.5` and `AAAA` `@` `2a01:4ff:f0:860d::1` (replace, never add beside);
+   - add `A` `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`;
+   - add `AAAA` `@` → `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`,
+     `2606:50c0:8003::153`;
+   - change `www` to `CNAME` → `vamsi856.github.io`;
+   - delete the `portal` and `samples` records (they point at the Hetzner IP, which Hetzner
+     will give to someone else);
+   - keep MX, the SPF TXT, the DKIM records, the GitHub TXT from step 4 and the CAA records
+     (they allow `letsencrypt.org`, which GitHub uses).
+7. Wait for **Settings > Pages** to show the DNS check passing and the certificate issued
+   (usually under an hour; if nothing after about 15 minutes, Remove the domain and add it
+   again). Then tick **Enforce HTTPS** and check that `http://sankhyadata.com/` redirects to
+   `https://`.
+8. Make `vamsi856/sankhyadata` private.
+9. On the portal server, stop trusting forwarded client addresses from `5.161.223.5` /
+   `2a01:4ff:f0:860d::1` and drop its `portal.sankhyadata.com` / `samples.sankhyadata.com` host
+   entries.
+10. After about 48 hours, delete the Hetzner server `sankhyadata-web` with its firewall and
+    primary IPs (project `sankhyadata`), and revoke that project's API tokens. Do not touch
+    the portal server (`178.105.159.139`), which is a separate machine.
 
 ## How it is built (and why it is fast)
 

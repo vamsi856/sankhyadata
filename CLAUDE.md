@@ -19,9 +19,10 @@ Commands: `npm run dev`, `npm run build` (output in `dist/`). Hosting is GitHub 
 `vamsi856/sankhyadata-live` (secret `LIVE_REPO_TOKEN`), which serves https://sankhyadata.com.
 This source repo can therefore be private. Pages sends no custom headers: the CSP and referrer
 policy are `<meta>` tags added by `scripts/prerender.mjs` (build only); keep them in step with
-any new asset type. DNS is at Hostinger (A/AAAA to GitHub Pages, `www` CNAME to
-`vamsi856.github.io`; email records must be kept). The samples viewer is linked directly at
-`samples.egocentric.duckdns.org` on the portal server. Nothing runs on Hetzner any more.
+any new asset type; Pages sends no HSTS, so Enforce HTTPS must stay on. DNS is at Hostinger
+(A/AAAA to GitHub Pages only, `www` CNAME to `vamsi856.github.io`, the GitHub domain-verification
+TXT; email records must be kept). The one-time move from Hetzner is a numbered list in README.md. The samples viewer is linked directly at
+`samples.egocentric.duckdns.org` on the portal server (a separate machine).
 
 The root `_config.yml` and `404.html` only matter if GitHub Pages is still enabled on this
 source repo: they make it publish a redirect to sankhyadata.com. They are not part of the Vite build.
