@@ -245,13 +245,13 @@ export const samplesSection = {
 
 /**
  * Sample recordings, shown as rows in the Samples section. The link opens the samples
- * viewer (served at samples.sankhyadata.com) and signs the visitor in to view-only access.
+ * viewer (served at samples.egocentric.duckdns.org on the portal server) and signs the visitor in to view-only access.
  */
 export const samples: { title: string; text: string; href: string }[] = [
   {
     title: "Sample folder",
     text: "163 recordings, approximately 66 hours, spanning 69 operational environments.",
-    href: "https://samples.sankhyadata.com/l/VmsbjbIHfe7fT6LKe_cTCkFyJBU8orNO",
+    href: "https://samples.egocentric.duckdns.org/l/VmsbjbIHfe7fT6LKe_cTCkFyJBU8orNO",
   },
 ];
 
@@ -342,12 +342,12 @@ export const footer = {
 export const privacy = {
   title: "Privacy notice",
   description:
-    "How the SankhyaData website handles information: no cookies, analytics or tracking, no access logs, and email used solely to respond to enquiries.",
-  updated: "4 November 2026",
+    "How the SankhyaData website handles information: no cookies, analytics or tracking, and email used solely to respond to enquiries.",
+  updated: "11 November 2026",
   sections: [
     {
       heading: "What this website collects",
-      body: "This website sets no cookies and uses no analytics, advertising or tracking technologies. It loads nothing from other domains: fonts and images are served from the same server as the pages. Your IP address is processed only to deliver each page, and the web server keeps no access logs.",
+      body: "This website sets no cookies and uses no analytics, advertising or tracking technologies. It loads nothing from other domains: fonts and images are served with the pages. We receive no information about visitors from the website itself.",
     },
     {
       heading: "When you write to us",
@@ -355,7 +355,7 @@ export const privacy = {
     },
     {
       heading: "Hosting and email",
-      body: "The website is served from a cloud server, used solely for this website, operated by Hetzner Online in Ashburn, Virginia (United States). Email to sankhyadata.com addresses is hosted by Hostinger. The link to representative recordings opens our samples viewer at samples.sankhyadata.com, which sets a session cookie solely to grant view-only access.",
+      body: "The website is hosted on GitHub Pages, operated by GitHub, Inc. (United States). GitHub records the IP address of each visitor for security purposes, under its own privacy statement; we have no access to these records. Email to sankhyadata.com addresses is hosted by Hostinger. The link to representative recordings opens our samples viewer at samples.egocentric.duckdns.org, which sets a session cookie solely to grant view-only access.",
     },
     {
       heading: "Your requests",

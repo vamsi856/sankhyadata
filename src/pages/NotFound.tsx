@@ -1,7 +1,7 @@
 import { notFound, site } from "@/content";
 import { Wordmark } from "@/sections/Header";
 
-/** Static 404 page, prerendered to /404.html with no JavaScript; Caddy serves it for missing paths. */
+/** Static 404 page, prerendered to /404.html with no JavaScript; GitHub Pages serves it for missing paths. */
 export function NotFoundPage() {
   return (
     <>

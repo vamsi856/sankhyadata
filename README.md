@@ -23,38 +23,28 @@ All text and links are in [`src/content.ts`](src/content.ts).
   with a frame from your own footage (keep the same file names; AVIF + WebP + JPEG), then
   remove the credit in `src/content.ts`.
 
-## Deploy (Hetzner)
+## Deploy (GitHub Pages)
 
-GitHub only holds the code. Every push to `main` runs
-[`.github/workflows/deploy-hetzner.yml`](.github/workflows/deploy-hetzner.yml), which builds
-the site and publishes it to the repo's `live` release. The dedicated Hetzner server
-`sankhyadata-web` (Ashburn, US; `5.161.223.5`) checks that release every 2 minutes
-([`deploy/pull.sh`](deploy/pull.sh), run by a systemd timer), verifies the checksums,
-unpacks a new build into `/var/www/sankhyadata/releases/<version>` and switches
-`/var/www/sankhyadata/current` to it (the last 5 are kept). Caddy serves it at
-**https://sankhyadata.com** with [`deploy/sankhyadata.caddy`](deploy/sankhyadata.caddy),
-installed by [`deploy/install-site.sh`](deploy/install-site.sh), which rolls back if Caddy
-rejects the config so the server's other sites keep running. No server credentials are
-stored in GitHub.
+Every push to `main` runs
+[`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml), which builds the
+site, adds `CNAME` (`sankhyadata.com`) and `.nojekyll`, and force-pushes the built files as a
+single commit to the `gh-pages` branch of the public output-only repo
+[`vamsi856/sankhyadata-live`](https://github.com/vamsi856/sankhyadata-live). GitHub Pages serves
+that branch at **https://sankhyadata.com**, so this source repo can stay private on a free plan.
+The workflow needs the secret `LIVE_REPO_TOKEN` (a fine-grained token with "Contents: Read and
+write" on `vamsi856/sankhyadata-live` only); without it, it builds and skips publishing.
 
-One-time setup on the server, as root (for example from the Hetzner Cloud web console):
+GitHub Pages cannot set response headers, so `scripts/prerender.mjs` puts the content security
+policy and referrer policy in each page as `<meta>` tags. Pages serves `404.html` for missing
+paths with status 404 and caches every file for 10 minutes.
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/vamsi856/sankhyadata/main/deploy/setup-pull.sh | bash
-```
+DNS (Hostinger): `A` `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`,
+`185.199.111.153`; `AAAA` `@` → `2606:50c0:8000::153`, `2606:50c0:8001::153`,
+`2606:50c0:8002::153`, `2606:50c0:8003::153`; `CNAME` `www` → `vamsi856.github.io`. Keep the
+email records (MX, SPF and any DKIM/DMARC). The CAA records must keep allowing `letsencrypt.org`.
 
-DNS (Hostinger): `A` `@` → `5.161.223.5`; `CNAME` `www` → `sankhyadata.com`. Hetzner firewall
-`sankhyadata-web`: inbound 80, 443 and ICMP only (SSH closed; use the Hetzner web console).
-
-New dedicated server (Hetzner project `sankhyadata`): with a project API token in
-`HCLOUD_TOKEN`, `python3 deploy/provision-hetzner.py` creates a firewall (80, 443, ICMP only)
-and an Ubuntu 24.04 server whose first boot ([`deploy/cloud-init.yaml`](deploy/cloud-init.yaml))
-installs Caddy, automatic security updates and the updater above, with no manual login. Then
-point the domain's `A`/`AAAA` records at the addresses it prints.
-
-Useful on the server: `systemctl list-timers sankhyadata-pull.timer`,
-`journalctl -u sankhyadata-pull -n 50`, roll back with
-`ln -sfn /var/www/sankhyadata/releases/<older> /var/www/sankhyadata/current`.
+The samples viewer runs on the portal server and is linked directly at
+`samples.egocentric.duckdns.org`.
 
 ## How it is built (and why it is fast)
 

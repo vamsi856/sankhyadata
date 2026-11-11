@@ -1,0 +1,79 @@
+name: Deploy to GitHub Pages
+
+# Every push to main builds the site and force-pushes the built files, and nothing else, as a
+# single commit to the gh-pages branch of the public output repo vamsi856/sankhyadata-live.
+# GitHub Pages serves that branch at https://sankhyadata.com, so this source repo can be
+# private on a free plan.
+#
+# Needs the secret LIVE_REPO_TOKEN: a fine-grained personal access token with
+# "Contents: Read and write" on vamsi856/sankhyadata-live only. Until it is set, the build still
+# runs and the publish step is skipped with a warning.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      LIVE_REPO: vamsi856/sankhyadata-live
+      DOMAIN: sankhyadata.com
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+      - name: Add the GitHub Pages files
+        run: |
+          # The custom domain, and no Jekyll processing (it would drop /.well-known/).
+          echo "$DOMAIN" > dist/CNAME
+          touch dist/.nojekyll
+          for f in index.html 404.html privacy/index.html .well-known/security.txt robots.txt sitemap.xml; do
+            test -s "dist/$f" || { echo "::error::dist/$f is missing"; exit 1; }
+          done
+
+      - name: Publish to the output repo
+        env:
+          TOKEN: ${{ secrets.LIVE_REPO_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::warning::LIVE_REPO_TOKEN is not set; the site was built but not published to $LIVE_REPO"
+            exit 0
+          fi
+          cd dist
+          git init -q -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Site built from ${GITHUB_REPOSITORY}@${GITHUB_SHA::12}"
+          auth=$(printf 'x-access-token:%s' "$TOKEN" | base64 -w0)
+          echo "::add-mask::$auth"
+          git -c http.extraheader="AUTHORIZATION: basic $auth" \
+            push --force -q "https://github.com/${LIVE_REPO}.git" gh-pages
+          echo "Pushed to ${LIVE_REPO}@gh-pages; GitHub Pages publishes it within about a minute."
+
+      - name: Check the live site
+        env:
+          TOKEN: ${{ secrets.LIVE_REPO_TOKEN }}
+        run: |
+          [ -n "$TOKEN" ] || exit 0
+          want=$(grep -o 'index-[A-Za-z0-9_-]*\.js' dist/index.html | head -1)
+          for i in $(seq 1 20); do
+            live=$(curl -fsS --max-time 20 "https://${DOMAIN}/?v=${GITHUB_SHA::7}$i" | grep -o 'index-[A-Za-z0-9_-]*\.js' | head -1 || true)
+            if [ "$live" = "$want" ]; then echo "https://${DOMAIN} serves this build ($want)"; exit 0; fi
+            sleep 15
+          done
+          echo "::notice::https://${DOMAIN} does not serve this build yet (wanted $want, saw ${live:-nothing}). Before the DNS move this is expected; after it, GitHub Pages may still be building or its cache (10 minutes) is stale."

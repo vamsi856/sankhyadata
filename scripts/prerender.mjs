@@ -2,7 +2,7 @@
 // first response paints the full page with no render-blocking requests.
 //   dist/index.html          the site (islands hydrate)
 //   dist/privacy/index.html  the privacy notice (no JavaScript)
-//   dist/404.html            the not-found page (no JavaScript; served by Caddy)
+//   dist/404.html            the not-found page (no JavaScript; GitHub Pages serves it for missing paths)
 import { readFile, writeFile, rm, mkdir } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import path from "node:path";
@@ -17,6 +17,28 @@ const { render, renderPrivacy, renderNotFound, content } = await import(
 );
 
 let template = await readFile(indexPath, "utf8");
+// GitHub Pages cannot send response headers, so the content security policy and referrer
+// policy travel in the pages themselves (build output only: the dev server needs inline scripts).
+// A meta policy cannot carry frame-ancestors; nothing on these pages acts on a click.
+const policy = [
+  "default-src 'self'",
+  "script-src 'self'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data:",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "manifest-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "upgrade-insecure-requests",
+].join("; ");
+const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1.0" />';
+if (!template.includes(viewport)) throw new Error("viewport meta not found");
+template = template.replace(
+  viewport,
+  () => `${viewport}\n    <meta http-equiv="Content-Security-Policy" content="${policy}" />\n    <meta name="referrer" content="strict-origin-when-cross-origin" />`,
+);
 if (!template.includes('<div id="root"></div>')) throw new Error("root placeholder not found");
 
 // Inline the stylesheet. Its url(../x) references are relative to /assets, so rebase them.
@@ -71,7 +93,7 @@ await writeFile(
   secondary(renderPrivacy(), {
     title: "Privacy notice | SankhyaData",
     description:
-      "How the SankhyaData website handles information: no cookies, analytics or tracking, no access logs, and email used solely to respond to enquiries.",
+      "How the SankhyaData website handles information: no cookies, analytics or tracking, and email used solely to respond to enquiries.",
     canonical: "https://sankhyadata.com/privacy/",
   }),
 );

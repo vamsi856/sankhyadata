@@ -13,17 +13,18 @@ approved hours.
   Only the islands in `src/islands.tsx` hydrate. New interactivity = a new island.
 - All copy and links: `src/content.ts`. Design tokens: `:root` in `src/index.css`.
 
-Commands: `npm run dev`, `npm run build` (output in `dist/`). GitHub holds only the code:
-`.github/workflows/deploy-hetzner.yml` publishes the built site to the `live` release (and, once the secret `LIVE_REPO_TOKEN` is set, to
-the public output-only repo `vamsi856/sankhyadata-live`, so this source repo can be private), and the
-dedicated Hetzner server `sankhyadata-web` (project "sankhyadata", Ashburn US, 5.161.223.5)
-pulls it every 2 minutes (`deploy/pull.sh`); Caddy serves https://sankhyadata.com with
-automatic certificates (Let's Encrypt, ZeroSSL fallback). Hetzner firewall: inbound 80, 443
-and ICMP only. DNS is at Hostinger (A record only; email records must be kept).
+Commands: `npm run dev`, `npm run build` (output in `dist/`). Hosting is GitHub Pages:
+`.github/workflows/deploy-pages.yml` builds on every push to `main` and force-pushes `dist/`
+(plus `CNAME` and `.nojekyll`) to the `gh-pages` branch of the public output-only repo
+`vamsi856/sankhyadata-live` (secret `LIVE_REPO_TOKEN`), which serves https://sankhyadata.com.
+This source repo can therefore be private. Pages sends no custom headers: the CSP and referrer
+policy are `<meta>` tags added by `scripts/prerender.mjs` (build only); keep them in step with
+any new asset type. DNS is at Hostinger (A/AAAA to GitHub Pages, `www` CNAME to
+`vamsi856.github.io`; email records must be kept). The samples viewer is linked directly at
+`samples.egocentric.duckdns.org` on the portal server. Nothing runs on Hetzner any more.
 
-GitHub Pages is not used, but the repo setting still builds `main` with Jekyll. The root
-`_config.yml` and `404.html` make that build publish only a redirect to sankhyadata.com:
-keep both files (they are not part of the Vite build).
+The root `_config.yml` and `404.html` only matter if GitHub Pages is still enabled on this
+source repo: they make it publish a redirect to sankhyadata.com. They are not part of the Vite build.
 
 ## Budgets (the site must stay fast)
 
