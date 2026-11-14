@@ -267,33 +267,28 @@ html.lenis body {
   }
 }
 
-/* Animated logo: the mark's columns appear one after another, counting out from the eye,
-   then the name. Fill mode "backwards" so hover can move the columns afterwards. */
-@keyframes logo-dot {
-  0% { opacity: 0; transform: scale(0); }
-  70% { opacity: 1; transform: scale(1.15); }
-  100% { transform: scale(1); }
+/* Animated logo: the woven mark turns in a quarter turn as it appears, then the name.
+   Fill mode "backwards" so hover can turn it afterwards. */
+@keyframes logo-mark {
+  from { opacity: 0; transform: rotate(-90deg) scale(0.6); }
+  to { opacity: 1; transform: none; }
 }
 @keyframes logo-word {
   from { opacity: 0; transform: translateX(-4px); }
   to { opacity: 1; transform: none; }
 }
-.logo-dot {
-  transform-box: fill-box;
+.logo-mark {
   transform-origin: center;
-  animation: logo-dot 420ms var(--ease-out) backwards;
-  transition: transform var(--dur-short) var(--ease-out);
+  animation: logo-mark 760ms var(--ease-out) 60ms backwards;
+  transition: transform 520ms var(--ease-out);
 }
-.ld-1 { animation-delay: 80ms; }
-.ld-2 { animation-delay: 200ms; --spread: 0.6px; }
-.ld-3 { animation-delay: 320ms; --spread: 1.4px; }
 .logo-word {
   display: inline-block;
   animation: logo-word 600ms var(--ease-out) 420ms backwards;
 }
-/* Answering the pointer: the field of view opens a little wider on hover. */
-.logo-link:hover :is(.ld-2, .ld-3) {
-  transform: translateX(var(--spread));
+/* Answering the pointer: the weave turns a little on hover. */
+.logo-link:hover .logo-mark {
+  transform: rotate(18deg);
 }
 
 /* Hero entrance: pure CSS so it plays on first paint, before JavaScript loads */
@@ -310,7 +305,7 @@ html.lenis body {
   #invoicing li > span {
     transform: none !important;
   }
-  .logo-dot,
+  .logo-mark,
   .logo-word {
     animation: none !important;
   }

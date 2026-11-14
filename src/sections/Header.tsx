@@ -1,17 +1,17 @@
 import { headerCta, menuLabel, nav, site } from "@/content";
-import { markDots } from "@/lib/mark";
+import { markIconPaths } from "@/lib/mark";
 
 /**
- * The mark: dots in columns of 1, 2 and 3 opening from the wearer's eye, a field of view
- * that is also a count. With `animated`, the columns appear one after another, counting out
- * from the eye, then the name follows (CSS only, once, on first paint).
+ * The mark: four ribbons woven into an S. Green parts take the brand green; the rest takes
+ * the text colour. With `animated`, it turns in a quarter turn as it appears, then the name
+ * follows (CSS only, once, on first paint).
  */
 export function Wordmark({ animated = false }: { animated?: boolean }) {
   return (
     <span className="inline-flex items-center gap-2.5 text-[1.0625rem] font-[460] tracking-[-0.02em] [font-variation-settings:'SHRP'_100]">
-      <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5 overflow-visible">
-        {markDots.map((d) => (
-          <circle key={`${d.x},${d.y}`} className={animated ? `logo-dot ld-${d.col}` : undefined} cx={d.x} cy={d.y} r={d.r} fill="currentColor" />
+      <svg aria-hidden viewBox="0 0 24 24" className={`h-5 w-5 overflow-visible ${animated ? "logo-mark" : ""}`}>
+        {markIconPaths.map((p, i) => (
+          <path key={i} d={p.d} fill={p.tone === "green" ? "var(--label)" : "currentColor"} />
         ))}
       </svg>
       <span className={animated ? "logo-word" : undefined}>{site.name}</span>

@@ -1,11 +1,11 @@
 /**
- * Closing mark (raw WebGL 1, lazy chunk). The SankhyaData mark (dots in columns of 1, 2 and
- * 3 opening from the wearer's eye, src/lib/mark.ts) is rebuilt from points with depth. When the section comes into view the points converge from a scattered cloud,
+ * Closing mark (raw WebGL 1, lazy chunk). The SankhyaData mark (four ribbons woven into an S,
+ * src/lib/mark.ts) is rebuilt from points with depth, green where the mark is green. When the section comes into view the points converge from a scattered cloud,
  * swirling in; then the mark breathes gently and turns toward the pointer. The animation is
  * done on the GPU: each point carries its target, its start and a delay.
  */
 
-import { markDots } from "./mark";
+import { markPaths } from "./mark";
 
 type V3 = [number, number, number];
 /** local: the pointer over the canvas (-1..1), whether it is inside, and a press count. */
@@ -61,22 +61,19 @@ function build() {
     const r = 2.2 + rnd() * 2.2;
     start.push(d[0] * r, d[1] * r, d[2] * r, rnd());
   };
-  // Each dot is a lens of points: filled, bulging in depth at its centre, with a denser rim
-  // so its edge stays crisp. Point counts follow area, so every dot has the same density.
-  for (const d of markDots) {
-    const fill = Math.round(d.r * d.r * 105);
-    for (let i = 0; i < fill; i++) {
-      const a = rnd() * Math.PI * 2;
-      const r = Math.sqrt(rnd()) * d.r * 0.92;
-      const bulge = Math.sqrt(Math.max(0, 1 - (r / d.r) ** 2)) * 0.06 * d.r;
-      add(d.x + Math.cos(a) * r, d.y + Math.sin(a) * r, (rnd() * 2 - 1) * bulge, 0);
-    }
-    const rim = Math.round(d.r * 70);
-    for (let i = 0; i < rim; i++) {
-      const a = (i / rim) * Math.PI * 2;
-      const r = d.r * (0.9 + rnd() * 0.12);
-      add(d.x + Math.cos(a) * r, d.y + Math.sin(a) * r, (rnd() - 0.5) * 0.08, 0);
-    }
+  // Fill each ribbon piece with points: sample the 24-unit square and keep the points that
+  // fall inside a piece (Path2D hit-testing on a throwaway 2D context). The ribbons sit at
+  // slightly different depths, so the weave keeps a little relief as the mark turns.
+  const hit = document.createElement("canvas").getContext("2d")!;
+  const pieces = markPaths.map((p, i) => ({ path: new Path2D(p.d), hot: p.tone === "green" ? 1 : 0, z: ((i % 4) - 1.5) * 0.035 }));
+  let kept = 0;
+  for (let tries = 0; kept < 5200 && tries < 60000; tries++) {
+    const x = 0.5 + rnd() * 23;
+    const y = 0.5 + rnd() * 23;
+    const piece = pieces.find((q) => hit.isPointInPath(q.path, x, y));
+    if (!piece) continue;
+    add(x, y, piece.z + (rnd() - 0.5) * 0.06, piece.hot);
+    kept++;
   }
   return { target: new Float32Array(target), start: new Float32Array(start) };
 }
