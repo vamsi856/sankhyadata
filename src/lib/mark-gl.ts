@@ -1,10 +1,11 @@
 /**
- * Closing mark (raw WebGL 1, lazy chunk). The SankhyaData mark (four viewfinder brackets
- * round a chartreuse dot, from public/brand/sankhyadata-mark.svg) is rebuilt from points
- * with depth. When the section comes into view the points converge from a scattered cloud,
+ * Closing mark (raw WebGL 1, lazy chunk). The SankhyaData mark (dots in columns of 1, 2 and
+ * 3 opening from the wearer's eye, src/lib/mark.ts) is rebuilt from points with depth. When the section comes into view the points converge from a scattered cloud,
  * swirling in; then the mark breathes gently and turns toward the pointer. The animation is
  * done on the GPU: each point carries its target, its start and a delay.
  */
+
+import { markDots } from "./mark";
 
 type V3 = [number, number, number];
 /** local: the pointer over the canvas (-1..1), whether it is inside, and a press count. */
@@ -60,35 +61,22 @@ function build() {
     const r = 2.2 + rnd() * 2.2;
     start.push(d[0] * r, d[1] * r, d[2] * r, rnd());
   };
-  // Brackets: polylines from the SVG path, stroke width 1.6, given depth.
-  const legs: [number, number, number, number][] = [
-    [3, 8, 3, 3], [3, 3, 8, 3],
-    [16, 3, 21, 3], [21, 3, 21, 8],
-    [21, 16, 21, 21], [21, 21, 16, 21],
-    [8, 21, 3, 21], [3, 21, 3, 16],
-  ];
-  for (const [x0, y0, x1, y1] of legs) {
-    const len = Math.hypot(x1 - x0, y1 - y0);
-    const n = Math.round(len * 95);
-    const nx = -(y1 - y0) / len;
-    const ny = (x1 - x0) / len;
-    for (let i = 0; i < n; i++) {
-      const u = rnd() * 1.1 - 0.05;
-      const w = (rnd() - 0.5) * 1.6;
-      add(x0 + (x1 - x0) * u + nx * w, y0 + (y1 - y0) * u + ny * w, (rnd() - 0.5) * 0.16, 0);
+  // Each dot is a lens of points: filled, bulging in depth at its centre, with a denser rim
+  // so its edge stays crisp. Point counts follow area, so every dot has the same density.
+  for (const d of markDots) {
+    const fill = Math.round(d.r * d.r * 105);
+    for (let i = 0; i < fill; i++) {
+      const a = rnd() * Math.PI * 2;
+      const r = Math.sqrt(rnd()) * d.r * 0.92;
+      const bulge = Math.sqrt(Math.max(0, 1 - (r / d.r) ** 2)) * 0.06 * d.r;
+      add(d.x + Math.cos(a) * r, d.y + Math.sin(a) * r, (rnd() * 2 - 1) * bulge, 0);
     }
-  }
-  // The dot: a lens of chartreuse points, ringed in ink as in the SVG.
-  for (let i = 0; i < 1400; i++) {
-    const a = rnd() * Math.PI * 2;
-    const r = Math.sqrt(rnd()) * 2.7;
-    const bulge = Math.sqrt(Math.max(0, 1 - (r / 3.2) ** 2)) * 0.18;
-    add(12 + Math.cos(a) * r, 12 + Math.sin(a) * r, (rnd() * 2 - 1) * bulge, 1);
-  }
-  for (let i = 0; i < 360; i++) {
-    const a = (i / 360) * Math.PI * 2;
-    const r = 3.0 + rnd() * 0.45;
-    add(12 + Math.cos(a) * r, 12 + Math.sin(a) * r, (rnd() - 0.5) * 0.1, 0);
+    const rim = Math.round(d.r * 70);
+    for (let i = 0; i < rim; i++) {
+      const a = (i / rim) * Math.PI * 2;
+      const r = d.r * (0.9 + rnd() * 0.12);
+      add(d.x + Math.cos(a) * r, d.y + Math.sin(a) * r, (rnd() - 0.5) * 0.08, 0);
+    }
   }
   return { target: new Float32Array(target), start: new Float32Array(start) };
 }

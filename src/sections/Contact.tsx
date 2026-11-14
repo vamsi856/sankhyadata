@@ -95,7 +95,7 @@ export function Footer() {
           </span>
         </div>
       </div>
-      {/* End card: the name set large across the full column, like a closing title card, with the mark's chartreuse dot. Decorative. */}
+      {/* End card: the name set large across the full column, like a closing title card, ending on a chartreuse full stop. Decorative. */}
       <div aria-hidden className="foot-mark container-page">
         <span className="foot-word">
           {site.name}

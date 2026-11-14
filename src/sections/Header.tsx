@@ -1,24 +1,20 @@
 import { headerCta, menuLabel, nav, site } from "@/content";
+import { markDots } from "@/lib/mark";
 
 /**
- * The mark: a viewfinder's four corners around one chartreuse point, the colour our
- * annotators use for what they identify. With `animated`, the corners close in like a
- * focus frame locking, then the point lands (CSS only, once, on first paint).
+ * The mark: dots in columns of 1, 2 and 3 opening from the wearer's eye, a field of view
+ * that is also a count. With `animated`, the columns appear one after another, counting out
+ * from the eye, then the name follows (CSS only, once, on first paint).
  */
 export function Wordmark({ animated = false }: { animated?: boolean }) {
-  const a = (name: string) => (animated ? name : undefined);
   return (
     <span className="inline-flex items-center gap-2.5 text-[1.0625rem] font-[460] tracking-[-0.02em] [font-variation-settings:'SHRP'_100]">
-      <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5 overflow-visible" fill="none">
-        <g stroke="currentColor" strokeWidth="1.6">
-          <path className={a("logo-corner lc-1")} d="M3 8V3h5" />
-          <path className={a("logo-corner lc-2")} d="M16 3h5v5" />
-          <path className={a("logo-corner lc-3")} d="M21 16v5h-5" />
-          <path className={a("logo-corner lc-4")} d="M8 21H3v-5" />
-        </g>
-        <circle className={a("logo-dot")} cx="12" cy="12" r="3.2" fill="var(--label)" stroke="var(--label-ink)" strokeWidth="1" />
+      <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5 overflow-visible">
+        {markDots.map((d) => (
+          <circle key={`${d.x},${d.y}`} className={animated ? `logo-dot ld-${d.col}` : undefined} cx={d.x} cy={d.y} r={d.r} fill="currentColor" />
+        ))}
       </svg>
-      <span className={a("logo-word")}>{site.name}</span>
+      <span className={animated ? "logo-word" : undefined}>{site.name}</span>
     </span>
   );
 }
