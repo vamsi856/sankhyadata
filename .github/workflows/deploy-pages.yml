@@ -117,3 +117,60 @@ jobs:
             sleep 15
           done
           echo "::notice::https://${DOMAIN} does not serve this build yet (wanted $want, saw ${live:-nothing}). GitHub Pages may still be building, or its 10-minute cache is stale."
+
+  # Until the move to GitHub Pages is finished, sankhyadata.com is still served by the Hetzner
+  # server, which pulls the "live" release of this repo every 2 minutes. Keep it on the latest
+  # build. The privacy notice there must name the host that actually serves it, so the hosting
+  # sentence is swapped for the Hetzner one in that copy only. Skips itself once the domain no
+  # longer points at the Hetzner server.
+  hetzner:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      DOMAIN: sankhyadata.com
+    steps:
+      - name: Is the domain still on the Hetzner server?
+        id: where
+        run: |
+          if getent ahostsv4 "$DOMAIN" | grep -q '^5\.161\.223\.5 '; then
+            echo "on=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "on=0" >> "$GITHUB_OUTPUT"
+            echo "$DOMAIN no longer points at the Hetzner server; nothing to publish there."
+          fi
+
+      - if: steps.where.outputs.on == '1'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: site
+          path: site
+
+      - name: Publish to the live release
+        if: steps.where.outputs.on == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          p = "site/privacy/index.html"
+          s = open(p, encoding="utf-8").read()
+          old = ("The website is hosted on GitHub Pages, operated by GitHub, Inc. (United States). "
+                 "GitHub records the IP address of each visitor for security purposes, under its own "
+                 "privacy statement; we have no access to these records.")
+          new = ("The website is served from a cloud server, used solely for this website, operated by "
+                 "Hetzner Online in Ashburn, Virginia (United States); the server keeps no access logs.")
+          if s.count(old) != 1:
+              raise SystemExit("privacy hosting sentence not found; not publishing a notice that names the wrong host")
+          open(p, "w", encoding="utf-8").write(s.replace(old, new))
+          PY
+          mkdir out
+          tar -C site -czf out/site.tar.gz .
+          gh release download live -R "$GITHUB_REPOSITORY" -p sankhyadata.caddy -D out
+          (cd out && sha256sum site.tar.gz sankhyadata.caddy > sha256sums.txt)
+          echo "${GITHUB_SHA::12}" > out/version.txt
+          gh release upload live -R "$GITHUB_REPOSITORY" out/site.tar.gz out/sha256sums.txt --clobber
+          # version.txt last, so the server never sees a version before its files.
+          gh release upload live -R "$GITHUB_REPOSITORY" out/version.txt --clobber
+          echo "Published ${GITHUB_SHA::12}; the Hetzner server installs it within 2 minutes."
+
