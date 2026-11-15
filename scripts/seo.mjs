@@ -15,7 +15,8 @@ export function jsonLd(c) {
         email: c.site.email,
         logo: { "@type": "ImageObject", url: `${SITE}/icon-512.png`, width: 512, height: 512 },
         description: c.site.description,
-        contactPoint: { "@type": "ContactPoint", contactType: "sales", email: c.site.email, availableLanguage: "en" },
+        telephone: c.site.phone.e164,
+        contactPoint: { "@type": "ContactPoint", contactType: "sales", email: c.site.email, telephone: c.site.phone.e164, availableLanguage: "en" },
       },
       { "@type": "WebSite", "@id": `${SITE}/#website`, url: `${SITE}/`, name: c.site.name, inLanguage: "en-GB", publisher: { "@id": org } },
       {
@@ -75,6 +76,7 @@ Key facts:
 
 ## Contact
 - [Email ${c.site.email}](mailto:${c.site.email}): capture programme enquiries
+- [WhatsApp ${c.site.phone.display}](https://wa.me/${c.site.phone.e164.slice(1)}): capture programme enquiries
 
 ## Optional
 - [Privacy notice](${SITE}/privacy/)
@@ -115,6 +117,6 @@ export function llmsFull(c) {
   h("Questions");
   for (const i of c.questions.items) lines.push(`### ${i.q}`, "", i.a, "");
   h("Contact");
-  lines.push(c.contact.title, "", c.contact.sentence, "", `Email: ${c.site.email}`);
+  lines.push(c.contact.title, "", c.contact.sentence, "", `Email: ${c.site.email}`, `WhatsApp: ${c.site.phone.display}`);
   return lines.join("\n").replace(/\n{3,}/g, "\n\n") + "\n";
 }

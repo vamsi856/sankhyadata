@@ -2,6 +2,9 @@ import { contact, credits, footer, nav, site } from "@/content";
 import { Wordmark } from "./Header";
 import { Island } from "@/islands";
 
+/** WhatsApp chat with the enquiry subject already typed. */
+const whatsapp = `https://wa.me/${site.phone.e164.slice(1)}?text=${encodeURIComponent(contact.whatsappText)}`;
+
 const mailto = `mailto:${site.email}?subject=${encodeURIComponent(contact.subject)}&body=${encodeURIComponent(
   contact.brief.join("\n\n") + "\n",
 )}`;
@@ -18,6 +21,10 @@ export function Contact() {
         <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
           <a className="btn btn-primary max-[359px]:whitespace-normal max-[359px]:py-3 max-[359px]:text-center max-[359px]:leading-snug max-[359px]:text-balance" href={mailto} data-magnet>
             {contact.button} {site.email}
+          </a>
+          <a className="btn btn-line" href={whatsapp} target="_blank" rel="noopener noreferrer" data-magnet>
+            {contact.whatsapp} {site.phone.display}
+            <span className="sr-only"> {footer.newTab}</span>
           </a>
           <span className="text-[0.875rem] text-muted">The email opens with the brief’s fields already listed.</span>
         </div>
@@ -64,6 +71,12 @@ export function Footer() {
             <li>
               <a className={footerLink} href={`mailto:${site.email}`}>
                 {site.email}
+              </a>
+            </li>
+            <li>
+              <a className={footerLink} href={whatsapp} target="_blank" rel="noopener noreferrer">
+                {footer.whatsapp} {site.phone.display}
+                <span className="sr-only"> {footer.newTab}</span>
               </a>
             </li>
             <li>

@@ -6,6 +6,8 @@
 export const site = {
   name: "SankhyaData",
   email: "contact@sankhyadata.com",
+  /** WhatsApp and phone: the number as shown, and in international form for links. */
+  phone: { display: "+91 63039 33688", e164: "+916303933688" },
   url: "https://sankhyadata.com/",
   description:
     "Egocentric video acquisition for physical AI: capture rigs, trained recorders and in-house annotation, narration, QC and IT teams. Invoiced on approved hours.",
@@ -318,6 +320,8 @@ export const contact = {
   sentence:
     "Send us your task taxonomy, target operational environments and required hours. We will respond with a scoped capture plan and representative samples.",
   button: "Write to",
+  whatsapp: "WhatsApp",
+  whatsappText: "Capture programme enquiry",
   subject: "Capture programme enquiry",
   brief: [
     "Organisation:",
@@ -337,6 +341,7 @@ export const footer = {
   security: { label: "Security contact", href: "/.well-known/security.txt" },
   note: "This site sets no cookies and loads nothing from other domains.",
   newTab: "(opens in a new tab)",
+  whatsapp: "WhatsApp",
 };
 
 export const privacy = {
@@ -351,7 +356,7 @@ export const privacy = {
     },
     {
       heading: "When you write to us",
-      body: "If you contact us at contact@sankhyadata.com, we use your message and contact details solely to respond to you and to discuss the engagement you enquire about.",
+      body: "If you contact us at contact@sankhyadata.com or on WhatsApp at +91 63039 33688, we use your message and contact details solely to respond to you and to discuss the engagement you enquire about. Messages sent on WhatsApp are carried by WhatsApp (Meta) under its own terms and privacy policy.",
     },
     {
       heading: "Hosting and email",
