@@ -9,7 +9,7 @@ export const site = {
   alternateName: "Sankhya Data",
   /** Official profiles (LinkedIn, GitHub, Crunchbase...), added only once each exists; emitted as
    *  JSON-LD sameAs and listed in the footer. */
-  profiles: [] as { label: string; href: string }[],
+  profiles: [{ label: "LinkedIn", href: "https://www.linkedin.com/company/sankhyadata/" }] as { label: string; href: string }[],
   email: "contact@sankhyadata.com",
   /** WhatsApp and phone: the number as shown, and in international form for links. */
   phone: { display: "+91 63039 33688", e164: "+916303933688" },

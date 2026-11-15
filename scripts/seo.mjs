@@ -78,7 +78,7 @@ Key facts:
 
 ## Contact
 - [Email ${c.site.email}](mailto:${c.site.email}): capture programme enquiries
-- [WhatsApp ${c.site.phone.display}](https://wa.me/${c.site.phone.e164.slice(1)}): capture programme enquiries
+- [WhatsApp ${c.site.phone.display}](https://wa.me/${c.site.phone.e164.slice(1)}): capture programme enquiries${c.site.profiles.map((p) => `\n- [${p.label}](${p.href})`).join("")}
 
 ## Optional
 - [Privacy notice](${SITE}/privacy/)
