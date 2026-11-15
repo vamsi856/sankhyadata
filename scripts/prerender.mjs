@@ -4,6 +4,7 @@
 //   dist/privacy/index.html  the privacy notice (no JavaScript)
 //   dist/404.html            the not-found page (no JavaScript; GitHub Pages serves it for missing paths)
 import { readFile, writeFile, rm, mkdir } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import path from "node:path";
 import { jsonLd, sitemap, llms, llmsFull } from "./seo.mjs";
@@ -60,7 +61,13 @@ await writeFile(
 );
 
 // SEO and machine-readable files, generated from the same content as the page.
-const today = new Date().toISOString().slice(0, 10);
+// lastmod: the date of the last commit that changed the page's content, not the build date
+// (a date that moves on every deploy tells search engines nothing).
+let today = new Date().toISOString().slice(0, 10);
+try {
+  const last = execFileSync("git", ["log", "-1", "--format=%cs", "--", "src", "index.html"], { cwd: root }).toString().trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(last)) today = last;
+} catch {}
 await writeFile(path.join(dist, "sitemap.xml"), sitemap(today));
 await writeFile(path.join(dist, "llms.txt"), llms(content));
 await writeFile(path.join(dist, "llms-full.txt"), llmsFull(content));
@@ -75,14 +82,15 @@ function secondary(html, { title, description, canonical, robots }) {
     .replace(/<link rel="preload"[^>]*>/g, "")
     .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g, "")
     .replace(/\s*<meta (property="og:|name="twitter:)[^>]*>/g, "")
-    .replace(/href="\.\/(fonts|favicon|apple-touch|site\.webmanifest)/g, 'href="/$1')
+    .replace(/href="\.\/(fonts|favicon|icon-|apple-touch|site\.webmanifest)/g, 'href="/$1')
     .replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`)
     .replace(/<meta name="description" content="[^"]*"/, `<meta name="description" content="${description}"`)
     .replace('<div id="root"></div>', () => `<div id="root">${html}</div>`);
   out = canonical
     ? out.replace(/<link rel="canonical" href="[^"]*"/, `<link rel="canonical" href="${canonical}"`)
     : out.replace(/\s*<link rel="canonical"[^>]*>/, "");
-  if (robots) out = out.replace("</title>", `</title>\n    <meta name="robots" content="${robots}" />`);
+  // Replace the template's robots meta rather than adding a second, conflicting one.
+  if (robots) out = out.replace(/<meta name="robots" content="[^"]*"/, `<meta name="robots" content="${robots}"`);
   return out;
 }
 

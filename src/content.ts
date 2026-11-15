@@ -5,12 +5,17 @@
 
 export const site = {
   name: "SankhyaData",
+  /** The two-word spelling people type into search. Structured data only, never visible copy. */
+  alternateName: "Sankhya Data",
+  /** Official profiles (LinkedIn, GitHub, Crunchbase...), added only once each exists; emitted as
+   *  JSON-LD sameAs and listed in the footer. */
+  profiles: [] as { label: string; href: string }[],
   email: "contact@sankhyadata.com",
   /** WhatsApp and phone: the number as shown, and in international form for links. */
   phone: { display: "+91 63039 33688", e164: "+916303933688" },
   url: "https://sankhyadata.com/",
   description:
-    "Egocentric video acquisition for physical AI: capture rigs, trained recorders and in-house annotation, narration, QC and IT teams. Invoiced on approved hours.",
+    "SankhyaData: egocentric video acquisition for physical AI. Capture rigs, trained recorders, in-house annotation, narration, QC and IT. Billed on approved hours.",
 };
 
 /** The phone menu button's accessible name. */

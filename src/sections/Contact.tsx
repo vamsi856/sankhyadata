@@ -79,6 +79,14 @@ export function Footer() {
                 <span className="sr-only"> {footer.newTab}</span>
               </a>
             </li>
+            {site.profiles.map((p) => (
+              <li key={p.href}>
+                <a className={footerLink} href={p.href} rel="me noopener noreferrer" target="_blank">
+                  {p.label}
+                  <span className="sr-only"> {footer.newTab}</span>
+                </a>
+              </li>
+            ))}
             <li>
               <a className={footerLink} href={footer.privacy.href}>
                 {footer.privacy.label}

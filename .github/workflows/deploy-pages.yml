@@ -31,8 +31,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOMAIN: sankhyadata.com
+      INDEXNOW_KEY: b093585c329886efb2bd721c477ddde0
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0 # the sitemap's lastmod comes from the last content commit
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
@@ -45,7 +48,7 @@ jobs:
           # The custom domain, and no Jekyll processing (it would drop /.well-known/).
           echo "$DOMAIN" > dist/CNAME
           touch dist/.nojekyll
-          for f in index.html 404.html privacy/index.html .well-known/security.txt robots.txt sitemap.xml; do
+          for f in index.html 404.html privacy/index.html .well-known/security.txt robots.txt sitemap.xml "$INDEXNOW_KEY.txt"; do
             test -s "dist/$f" || { echo "::error::dist/$f is missing"; exit 1; }
           done
           grep -q 'index-[A-Za-z0-9_-]*\.js' dist/index.html || { echo "::error::no index-*.js in dist/index.html"; exit 1; }
@@ -118,6 +121,17 @@ jobs:
           done
           echo "::notice::https://${DOMAIN} does not serve this build yet (wanted $want, saw ${live:-nothing}). GitHub Pages may still be building, or its 10-minute cache is stale."
 
+      # Tell IndexNow search engines (Bing, Yandex, Seznam, Naver...) the pages changed. The key
+      # file at the site root proves the site is ours. A failed ping never fails the deploy.
+      - name: Notify search engines (IndexNow)
+        env:
+          KEY: ${{ secrets.LIVE_DEPLOY_KEY }}
+        run: |
+          [ -n "$KEY" ] && getent ahostsv4 sankhyadata.com | grep -q '^185\.199\.' || { echo "Not on GitHub Pages yet; the Hetzner job notifies instead."; exit 0; }
+          curl -fsS -X POST https://api.indexnow.org/indexnow -H 'Content-Type: application/json; charset=utf-8' \
+            -d '{"host":"sankhyadata.com","key":"b093585c329886efb2bd721c477ddde0","keyLocation":"https://sankhyadata.com/b093585c329886efb2bd721c477ddde0.txt","urlList":["https://sankhyadata.com/","https://sankhyadata.com/privacy/"]}' \
+            && echo "IndexNow notified" || echo "::warning::IndexNow ping failed"
+
   # Until the move to GitHub Pages is finished, sankhyadata.com is still served by the Hetzner
   # server, which pulls the "live" release of this repo every 2 minutes. Keep it on the latest
   # build. The privacy notice there must name the host that actually serves it, so the hosting
@@ -173,4 +187,14 @@ jobs:
           # version.txt last, so the server never sees a version before its files.
           gh release upload live -R "$GITHUB_REPOSITORY" out/version.txt --clobber
           echo "Published ${GITHUB_SHA::12}; the Hetzner server installs it within 2 minutes."
+
+      # Tell IndexNow search engines (Bing, Yandex, Seznam, Naver...) the pages changed. The key
+      # file at the site root proves the site is ours. A failed ping never fails the deploy.
+      - name: Notify search engines (IndexNow)
+        if: steps.where.outputs.on == '1'
+        run: |
+          sleep 150 # let the server install the build first
+          curl -fsS -X POST https://api.indexnow.org/indexnow -H 'Content-Type: application/json; charset=utf-8' \
+            -d '{"host":"sankhyadata.com","key":"b093585c329886efb2bd721c477ddde0","keyLocation":"https://sankhyadata.com/b093585c329886efb2bd721c477ddde0.txt","urlList":["https://sankhyadata.com/","https://sankhyadata.com/privacy/"]}' \
+            && echo "IndexNow notified" || echo "::warning::IndexNow ping failed"
 
