@@ -42,7 +42,7 @@ export const heroFrame = {
 export const hero = {
   title: "Egocentric video data acquisition, executed end to end.",
   sentence:
-    "For physical-AI programmes, we deploy trained recorders on site with wearable capture rigs, our own or yours. They capture day-to-day work or perform the tasks you specify, supported by in-house IT, annotation, narration and quality-control teams. Engagements are invoiced solely on approved hours.",
+    "For physical-AI and robotics programmes, we deploy trained recorders on site with wearable capture rigs, our own or yours. They capture day-to-day work or perform the tasks you specify, supported by in-house IT, annotation, narration and quality-control teams. Engagements are invoiced solely on approved hours.",
   primary: { label: "View representative samples", href: "#samples" },
   secondary: { label: "Discuss a capture programme", href: "#contact" },
   frame: heroFrame,
@@ -267,7 +267,7 @@ export const questions = {
   items: [
     {
       q: "What does a capture programme include?",
-      a: "Wearable capture rigs (our own or client-supplied), trained recorders performing day-to-day work or directed tasks, and our in-house annotation, narration, quality-control and IT teams, from scoping to delivery.",
+      a: "Egocentric video data collection from scoping to delivery: wearable capture rigs (our own or client-supplied), trained recorders performing day-to-day work or directed tasks, and our in-house annotation, narration, quality-control and IT teams.",
     },
     {
       q: "Which capture rigs do you deploy?",
