@@ -2,18 +2,22 @@ import { headerCta, menuLabel, nav, site } from "@/content";
 import { markIconPaths } from "@/lib/mark";
 
 /**
- * The mark: four ribbons woven into an S. Green parts take the brand green; the rest takes
- * the text colour. With `animated`, it turns in a quarter turn as it appears, then the name
- * follows (CSS only, once, on first paint).
+ * The mark: four ribbons woven into an S, in green and creamy white on a small dark tile.
+ * With `animated`, it turns in a quarter turn as it appears, then the name follows (CSS
+ * only, once, on first paint).
  */
 export function Wordmark({ animated = false }: { animated?: boolean }) {
   return (
     <span className="inline-flex items-center gap-2.5 text-[1.0625rem] font-[460] tracking-[-0.02em] [font-variation-settings:'SHRP'_100]">
-      <svg aria-hidden viewBox="0 0 24 24" className={`h-5 w-5 overflow-visible ${animated ? "logo-mark" : ""}`}>
-        {markIconPaths.map((p, i) => (
-          <path key={i} d={p.d} fill={p.tone === "green" ? "var(--label)" : "currentColor"} />
-        ))}
-      </svg>
+      {/* The designer's mark sits on black: a small dark tile keeps its green and creamy white
+          as drawn, so it reads on the light header (green alone fades on creamy white). */}
+      <span aria-hidden className="logo-tile">
+        <svg viewBox="0 0 24 24" className={animated ? "logo-mark" : undefined}>
+          {markIconPaths.map((p, i) => (
+            <path key={i} d={p.d} fill={p.tone === "green" ? "var(--label)" : "var(--inv-ink)"} />
+          ))}
+        </svg>
+      </span>
       <span className={animated ? "logo-word" : undefined}>{site.name}</span>
     </span>
   );
@@ -25,7 +29,7 @@ export function Header() {
       {/* The page as one recording: a line along the header's edge fills as the visitor scrolls. */}
       <span aria-hidden className="rec-line" />
       <div className="container-page flex h-16 items-center justify-between gap-6 max-[389px]:gap-3">
-        <a href="#top" className="logo-link rounded-[4px] text-ink no-underline" aria-label={`${site.name}, back to top`}>
+        <a href="#top" className="logo-link inline-flex rounded-[4px] text-ink no-underline" aria-label={`${site.name}, back to top`}>
           <Wordmark animated />
         </a>
         <nav aria-label="Sections" className="hidden lg:block">

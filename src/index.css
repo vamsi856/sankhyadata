@@ -277,6 +277,22 @@ html.lenis body {
   from { opacity: 0; transform: translateX(-4px); }
   to { opacity: 1; transform: none; }
 }
+.logo-tile {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border-radius: 7px;
+  background: var(--inv-paper);
+  /* A logo keeps its own colours in forced-colours mode. */
+  forced-color-adjust: none;
+}
+.logo-tile svg {
+  width: 22px;
+  height: 22px;
+  overflow: visible;
+}
 .logo-mark {
   transform-origin: center;
   animation: logo-mark 760ms var(--ease-out) 60ms backwards;
