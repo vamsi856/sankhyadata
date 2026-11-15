@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { rigBrief, rigInsetLabel, rigViewerCaption } from "@/content";
 import { liveGL, prefersStill } from "@/lib/when-near";
+import { pinnedStep, scrollKeys } from "@/lib/pinstep";
 
 /**
  * 3D rig viewer. Scrolling through the rig list (blocks carry `data-rig`) fits each rig to
@@ -39,6 +40,9 @@ export function RigView() {
       // page, which must not hand the viewer to a neighbour); wheel or touch scrolling lets go.
       const b = hold?.getBoundingClientRect();
       if (b && b.bottom > top && b.top < innerHeight) return select(Number(hold!.dataset.rig));
+      // Desktop: the pinned section's scroll position picks the item.
+      const step = pinnedStep(section, rows.length);
+      if (step !== null) return select(step);
       const line = wide ? innerHeight * 0.5 : top + 32;
       let k = 0;
       rows.forEach((r, i) => r.getBoundingClientRect().top <= line && (k = i));
@@ -49,11 +53,14 @@ export function RigView() {
     addEventListener("resize", measure);
     addEventListener("wheel", release, { passive: true });
     addEventListener("touchstart", release, { passive: true });
+    const key = (e: KeyboardEvent) => scrollKeys.has(e.key) && release();
+    addEventListener("keydown", key);
     const off: (() => void)[] = [
       () => removeEventListener("scroll", measure),
       () => removeEventListener("resize", measure),
       () => removeEventListener("wheel", release),
       () => removeEventListener("touchstart", release),
+      () => removeEventListener("keydown", key),
     ];
     for (const row of rows) {
       const on = () => select(Number((hold = row).dataset.rig));

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { fieldCaption, fieldLegend, itTitles } from "@/content";
 import { liveGL, prefersStill } from "@/lib/when-near";
+import { pinnedStep, scrollKeys } from "@/lib/pinstep";
 
 /**
  * Schematic field-support network beside the IT section's list (WebGL, lazy). Scrolling
@@ -36,6 +37,9 @@ export function FieldSupport() {
       const top = wide ? 0 : (pin?.getBoundingClientRect().bottom ?? 0);
       const b = hold?.getBoundingClientRect();
       if (b && b.bottom > top && b.top < innerHeight) return show(Number(hold!.dataset.it));
+      // Desktop: the pinned section's scroll position picks the item.
+      const step = pinnedStep(section, cards.length);
+      if (step !== null) return show(step);
       const line = wide ? innerHeight * 0.5 : top + 32;
       let k = 0;
       cards.forEach((c, i) => c.getBoundingClientRect().top <= line && (k = i));
@@ -46,11 +50,14 @@ export function FieldSupport() {
     addEventListener("resize", measure);
     addEventListener("wheel", release, { passive: true });
     addEventListener("touchstart", release, { passive: true });
+    const key = (e: KeyboardEvent) => scrollKeys.has(e.key) && release();
+    addEventListener("keydown", key);
     const off: (() => void)[] = [
       () => removeEventListener("scroll", measure),
       () => removeEventListener("resize", measure),
       () => removeEventListener("wheel", release),
       () => removeEventListener("touchstart", release),
+      () => removeEventListener("keydown", key),
     ];
     for (const card of cards) {
       const on = () => show(Number((hold = card).dataset.it));

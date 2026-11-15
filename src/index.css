@@ -1038,6 +1038,55 @@ html.lenis body {
   }
 }
 
+/* Rigs and IT, desktop with room for it: the section pins (a sticky stage in a taller track)
+   and scrolling steps through the four items, about half a screen each. Only the active
+   item shows its details, so heading, list and scene fit one screen; the details fade in. */
+@media (min-width: 1024px) and (min-height: 720px) {
+  .pin-track {
+    height: calc(100svh - 4rem + 4 * 55svh);
+  }
+  .pin-stage {
+    position: sticky;
+    top: 4rem;
+    height: calc(100svh - 4rem);
+    display: flex;
+    align-items: flex-start;
+  }
+  /* Top-aligned, not centred: the block must not shift as the active item's height changes. */
+  .pin-inner {
+    width: 100%;
+    padding-block: clamp(1.25rem, 5svh, 3.5rem) 1.25rem;
+  }
+  /* Short laptop screens: the heading scales with the screen height so the stage fits. */
+  .pin-stage h2 {
+    font-size: min(clamp(2rem, 4vw, 3.25rem), 6.2svh);
+  }
+  .pin-stage :is(.rig-scene, .it-scene) {
+    position: static;
+  }
+  .pin-stage .rig-row {
+    padding-block: 1rem;
+  }
+  .pin-stage .it-item {
+    padding-block: 0.875rem;
+  }
+  .pin-stage [data-active="false"] .pin-more {
+    height: 0;
+    margin-top: 0;
+    overflow: hidden;
+    opacity: 0;
+  }
+}
+@media (min-width: 1024px) and (min-height: 720px) and (prefers-reduced-motion: no-preference) {
+  .pin-stage [data-active="true"] .pin-more {
+    animation: pin-more-in 360ms var(--ease-out) both;
+  }
+}
+@keyframes pin-more-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
 /* The page scrolls without a visible scrollbar (the header's recording line shows progress). */
 html {
   scrollbar-width: none;
@@ -1153,8 +1202,18 @@ html::-webkit-scrollbar {
   .menu-btn {
     display: none !important;
   }
-  .persp-track {
+  .persp-track,
+  .pin-track {
     height: auto !important;
+  }
+  .pin-stage {
+    position: static !important;
+    height: auto !important;
+  }
+  .pin-more {
+    height: auto !important;
+    margin-top: 0.5rem !important;
+    opacity: 1 !important;
   }
   .persp-sticky {
     position: static !important;
@@ -1204,8 +1263,18 @@ html[data-nogl] .gl-scene,
 html[data-nogl] .persp-scrim {
   display: none;
 }
-html[data-nogl] .persp-track {
+html[data-nogl] .persp-track,
+html[data-nogl] .pin-track {
   height: auto;
+}
+html[data-nogl] .pin-stage {
+  position: static;
+  height: auto;
+}
+html[data-nogl] .pin-more {
+  height: auto;
+  margin-top: 0.5rem;
+  opacity: 1;
 }
 html[data-nogl] .persp-sticky {
   position: static;
