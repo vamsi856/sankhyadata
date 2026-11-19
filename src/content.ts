@@ -317,7 +317,7 @@ export const questions = {
     },
     {
       q: "How does an engagement begin?",
-      a: "Write to contact@sankhyadata.com with your task taxonomy, target operational environments and required hours. We respond with a scoped capture plan and representative samples.",
+      a: "Write to contact@sankhyadata.com with your task taxonomy, target operational environments and required hours. We respond with a scoped capture plan and representative samples. To talk it through first, book a 30-minute call at calendly.com/sankhyadata.",
     },
   ],
 };
@@ -369,7 +369,7 @@ export const privacy = {
     },
     {
       heading: "Hosting and email",
-      body: "The website is hosted on GitHub Pages, operated by GitHub, Inc. (United States). GitHub records the IP address of each visitor for security purposes, under its own privacy statement; we have no access to these records. Email to sankhyadata.com addresses is hosted by Hostinger. The link to representative recordings opens our samples viewer at samples.egocentric.duckdns.org, which sets a session cookie solely to grant view-only access.",
+      body: "The website is hosted on GitHub Pages, operated by GitHub, Inc. (United States). GitHub records the IP address of each visitor for security purposes, under its own privacy statement; we have no access to these records. Email to sankhyadata.com addresses is hosted by Google Workspace, operated by Google LLC. The link to representative recordings opens our samples viewer at samples.egocentric.duckdns.org, which sets a session cookie solely to grant view-only access.",
     },
     {
       heading: "Your requests",
