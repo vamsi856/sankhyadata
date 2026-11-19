@@ -13,6 +13,8 @@ export const site = {
   email: "contact@sankhyadata.com",
   /** WhatsApp and phone: the number as shown, and in international form for links. */
   phone: { display: "+91 63039 33688", e164: "+916303933688" },
+  /** Calendly booking page for a 30-minute call (Google Meet). Plain link: no embed, nothing loaded from Calendly. */
+  booking: "https://calendly.com/sankhyadata/30min",
   url: "https://sankhyadata.com/",
   description:
     "SankhyaData: egocentric video acquisition for physical AI. Capture rigs, trained recorders, in-house annotation, narration, QC and IT. Billed on approved hours.",
@@ -326,6 +328,7 @@ export const contact = {
     "Send us your task taxonomy, target operational environments and required hours. We will respond with a scoped capture plan and representative samples.",
   button: "Write to",
   whatsapp: "WhatsApp",
+  booking: "Book a 30-minute call",
   whatsappText: "Capture programme enquiry",
   subject: "Capture programme enquiry",
   brief: [
@@ -347,13 +350,14 @@ export const footer = {
   note: "This site sets no cookies and loads nothing from other domains.",
   newTab: "(opens in a new tab)",
   whatsapp: "WhatsApp",
+  booking: "Book a call",
 };
 
 export const privacy = {
   title: "Privacy notice",
   description:
     "How the SankhyaData website handles information: no cookies, analytics or tracking, and email used solely to respond to enquiries.",
-  updated: "11 November 2026",
+  updated: "19 November 2026",
   sections: [
     {
       heading: "What this website collects",
@@ -361,7 +365,7 @@ export const privacy = {
     },
     {
       heading: "When you write to us",
-      body: "If you contact us at contact@sankhyadata.com or on WhatsApp at +91 63039 33688, we use your message and contact details solely to respond to you and to discuss the engagement you enquire about. Messages sent on WhatsApp are carried by WhatsApp (Meta) under its own terms and privacy policy.",
+      body: "If you contact us at contact@sankhyadata.com or on WhatsApp at +91 63039 33688, we use your message and contact details solely to respond to you and to discuss the engagement you enquire about. Messages sent on WhatsApp are carried by WhatsApp (Meta) under its own terms and privacy policy. If you book a call, the booking page is run by Calendly under its own terms and privacy policy; we receive the details you enter there and use them solely for that call.",
     },
     {
       heading: "Hosting and email",

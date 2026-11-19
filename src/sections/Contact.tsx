@@ -22,6 +22,10 @@ export function Contact() {
           <a className="btn btn-primary max-[359px]:whitespace-normal max-[359px]:py-3 max-[359px]:text-center max-[359px]:leading-snug max-[359px]:text-balance" href={mailto} data-magnet>
             {contact.button} {site.email}
           </a>
+          <a className="btn btn-line" href={site.booking} target="_blank" rel="noopener noreferrer" data-magnet>
+            {contact.booking}
+            <span className="sr-only"> {footer.newTab}</span>
+          </a>
           <a className="btn btn-line" href={whatsapp} target="_blank" rel="noopener noreferrer" data-magnet>
             {contact.whatsapp} {site.phone.display}
             <span className="sr-only"> {footer.newTab}</span>
@@ -76,6 +80,12 @@ export function Footer() {
             <li>
               <a className={footerLink} href={whatsapp} target="_blank" rel="noopener noreferrer">
                 {footer.whatsapp} {site.phone.display}
+                <span className="sr-only"> {footer.newTab}</span>
+              </a>
+            </li>
+            <li>
+              <a className={footerLink} href={site.booking} target="_blank" rel="noopener noreferrer">
+                {footer.booking}
                 <span className="sr-only"> {footer.newTab}</span>
               </a>
             </li>
